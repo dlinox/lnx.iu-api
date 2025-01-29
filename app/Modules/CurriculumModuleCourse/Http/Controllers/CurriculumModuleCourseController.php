@@ -7,7 +7,7 @@ use App\Http\Responses\ApiResponse;
 use App\Modules\CurriculumModuleCourse\Http\Requests\CurriculumModuleCourseStoreRequest;
 use App\Modules\CurriculumModuleCourse\Http\Requests\CurriculumModuleCourseUpdateRequest;
 use App\Modules\CurriculumModuleCourse\Http\Resources\CurriculumModuleCourseDataTableItemsResource;
-use App\Modules\CurriculumModulecourse\Http\Resources\CurriculumModuleCourseItemResource;
+use App\Modules\CurriculumModuleCourse\Http\Resources\CurriculumModuleCourseItemResource;
 use App\Modules\CurriculumModuleCourse\Models\CurriculumModuleCourse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
