@@ -1,0 +1,20 @@
+
+INSERT INTO `schedules` (`id`, `days`) VALUES (1, 'LUN-MIE-VIE');
+INSERT INTO `schedules` (`id`, `days`) VALUES (2, 'MAR-JUE');
+INSERT INTO `schedules` (`id`, `days`) VALUES (3, 'SAB-DOM');
+INSERT INTO `schedules` (`id`, `days`) VALUES (4, 'DOM');
+INSERT INTO `schedules` (`id`, `days`) VALUES (5, 'LUN');
+INSERT INTO `schedules` (`id`, `days`) VALUES (6, 'SAB');
+INSERT INTO `schedules` (`id`, `days`) VALUES (7, 'LUN-MAR-MIE-JUE-VIE');
+INSERT INTO `schedules` (`id`, `days`) VALUES (8, 'MAR-JUE-SAB-DOM-MAR');
+INSERT INTO `schedules` (`id`, `days`) VALUES (9, 'VIE-SAB');
+INSERT INTO `schedules` (`id`, `days`) VALUES (10, 'SAB-SAB');
+INSERT INTO `schedules` (`id`, `days`) VALUES (11, 'JUE');
+INSERT INTO `schedules` (`id`, `days`) VALUES (12, 'LUN-MIE');
+INSERT INTO `schedules` (`id`, `days`) VALUES (13, 'MIE-VIE');
+INSERT INTO `schedules` (`id`, `days`) VALUES (14, 'VIE-VIE');
+INSERT INTO `schedules` (`id`, `days`) VALUES (15, 'MAR-MIE');
+INSERT INTO `schedules` (`id`, `days`) VALUES (16, 'JUE-VIE');
+INSERT INTO `schedules` (`id`, `days`) VALUES (17, 'LUN-MAR');
+INSERT INTO `schedules` (`id`, `days`) VALUES (18, 'VIE');
+INSERT INTO `schedules` (`id`, `days`) VALUES (19, 'LUN-MIE-JUE');

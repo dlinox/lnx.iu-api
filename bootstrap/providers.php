@@ -2,6 +2,8 @@
 
 return [
     App\Providers\AppServiceProvider::class,
+    App\Modules\Schedule\Providers\ScheduleServiceProvider::class,
+    App\Modules\SessionTime\Providers\SessionTimeServiceProvider::class,
     App\Modules\DocumentType\Providers\DocumentTypeServiceProvider::class,
     App\Modules\StudentType\Providers\StudentTypeServiceProvider::class,
     App\Modules\PaymentType\Providers\PaymentTypeServiceProvider::class,
