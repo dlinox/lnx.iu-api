@@ -1,10 +1,4 @@
 <?php
-header('Access-Control-Allow-Origin: http://34.55.61.47:81'); // Cambia esto al dominio permitido
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, Content-Type, Authorization, X-Requested-With, X-Auth-Token, XSRF-TOKEN');
-
-header('Access-Control-Allow-Credentials: true'); // Permitir credenciales
-
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
