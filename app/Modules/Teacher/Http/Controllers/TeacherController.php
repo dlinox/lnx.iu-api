@@ -117,4 +117,36 @@ class TeacherController extends Controller
             return ApiResponse::error($e->getMessage());
         }
     }
+
+
+    public function getItemsForSelect(Request $request)
+    {
+        try {
+
+            $query = Teacher::select(
+                'teachers.id as value',
+                DB::raw("CONCAT_WS(' ',people.name,people.last_name_father,people.last_name_mother) as label")
+            )
+                ->join('people', 'teachers.person_id', '=', 'people.id')
+                ->enabled();
+
+            if ($request->search) {
+                $query->where(function ($query) use ($request) {
+                    $query->whereRaw("CONCAT_WS(' ',people.name,people.last_name_father,people.last_name_mother) like '%" . $request->search . "%'");
+                });
+            }
+            if ($request->limit) {
+                $query->limit($request->limit);
+            } else {
+                $query->limit(10);
+            }
+            if ($request->id) {
+                $query->whereIn('teachers.id', explode(',', $request->id));
+            }
+            $item = $query->get();
+            return ApiResponse::success($item);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
+    }
 }

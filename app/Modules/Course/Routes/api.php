@@ -10,5 +10,5 @@ Route::prefix('api/course')->group(function () {
     Route::delete('', [CourseController::class, 'destroy']);
     
     Route::get('items/for-select', [CourseController::class, 'getItemsForSelect']);
-    Route::get('prerequisite-by-curriculum/items/for-select/{module}', [CourseController::class, 'getPreRequisiteByCurriculumItemsForSelect']);
+    Route::get('prerequisite-by-curriculum/items/for-select/{curriculumId}', [CourseController::class, 'getPreRequisiteByCurriculumItemsForSelect']);
 });

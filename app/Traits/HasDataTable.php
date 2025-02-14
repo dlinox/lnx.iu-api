@@ -33,9 +33,9 @@ trait HasDataTable
     {
         $itemsPerPage = $request->has('pageSize') ? $request->pageSize : 10;
 
-        if ($request->has('filters') && is_array($request->filters)) {
-            $query->filter($request->filters);
-        }
+        // if ($request->has('filters') && is_array($request->filters)) {
+        //     $query->filter($request->filters);
+        // }
 
         if ($request->has('search')) {
             $searchColumns = $searchColumns ?: $query->getModel()->searchColumns;

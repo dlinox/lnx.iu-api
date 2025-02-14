@@ -69,11 +69,14 @@ class ModuleController extends Controller
 
     public function getItemsCurriculumForSelect(Request $request)
     {
-
         try {
-            $item = Module::select('id as value', 'name as label')
-                // ->whereRaw('id NOT IN (SELECT module_id FROM curriculum_modules WHERE curriculum_id = ?)', [$request->id])
-                ->get();
+            $query = Module::select('id as value', 'name as label');
+            $query->whereIn('id', function ($query) use ($request) {
+                $query->select('module_id')
+                    ->from('curriculum_courses')
+                    ->where('curriculum_id', $request->id);
+            });
+            $item = $query->get();
             return ApiResponse::success($item);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());

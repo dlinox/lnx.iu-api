@@ -9,7 +9,7 @@ use App\Modules\Course\Http\Requests\CourseStoreRequest;
 use App\Modules\Course\Http\Requests\CourseUpdateRequest;
 use App\Modules\Course\Models\Course;
 use App\Modules\Course\Http\Resources\CourseDataTableItemsResource;
-use App\Modules\CurriculumModule\Models\CurriculumModule;
+// use App\Modules\CurriculumModule\Models\CurriculumModule;
 use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
@@ -72,17 +72,13 @@ class CourseController extends Controller
     public function getPreRequisiteByCurriculumItemsForSelect(Request $request)
     {
         try {
-            $curriculum = CurriculumModule::select('curriculum_id')
-                ->where('id', $request->module)
-                ->first();
             $item = Course::select(
-                'curriculum_module_courses.id as value',
-                DB::raw("CONCAT_WS(' - ', curriculum_module_courses.code, courses.name) as label")
+                'curriculum_courses.id as value',
+                DB::raw("CONCAT_WS(' - ', curriculum_courses.code, courses.name) as label")
             )
-                ->join('curriculum_module_courses', 'curriculum_module_courses.course_id', '=', 'courses.id')
-                ->join('curriculum_modules', 'curriculum_modules.id', '=', 'curriculum_module_courses.curriculum_module_id')
-                ->where('curriculum_modules.curriculum_id', $curriculum->curriculum_id)
-                ->where('curriculum_module_courses.is_enabled', true)
+                ->join('curriculum_courses', 'curriculum_courses.course_id', '=', 'courses.id')
+                ->where('curriculum_courses.curriculum_id', $request->curriculumId)
+                ->where('curriculum_courses.is_enabled', true)
                 ->get();
             return ApiResponse::success($item);
         } catch (\Exception $e) {

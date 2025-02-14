@@ -67,9 +67,7 @@ class CurriculumController extends Controller
             return ApiResponse::error($e->getMessage());
         }
     }
-
-
-
+    
     public function getItemsForSelect(Request $request)
     {
         try {
