@@ -120,4 +120,47 @@ class StudentController extends Controller
             return ApiResponse::error($e->getMessage());
         }
     }
+
+    ///student/search/list
+    public function searchList(Request $request)
+    {
+
+        try {
+            $items = Student::select(
+                'students.id',
+                'people.code',
+                'student_types.name as studentType',
+                'document_types.name as documentType',
+                'people.document_number as documentNumber',
+                'people.name',
+                DB::raw("CONCAT_WS(' ', people.last_name_father, people.last_name_mother) as lastName"),
+                'students.is_enabled as isEnabled'
+            )
+                ->join('people', 'students.person_id', '=', 'people.id')
+                ->leftJoin('document_types', 'people.document_type_id', '=', 'document_types.id')
+                ->join('student_types', 'students.student_type_id', '=', 'student_types.id')
+                ->when($request->name, function ($query) use ($request) {
+                    $query->where('people.name', 'like', '%' . $request->name . '%');
+                })
+                ->when($request->lastNameFather, function ($query) use ($request) {
+                    $query->where('people.last_name_father', 'like', '%' . $request->lastNameFather . '%');
+                })
+                ->when($request->lastNameMother, function ($query) use ($request) {
+                    $query->where('people.last_name_mother', 'like', '%' . $request->lastNameMother . '%');
+                })
+                ->when($request->documentNumber, function ($query) use ($request) {
+                    $query->where('people.document_number', 'like', '%' . $request->documentNumber . '%');
+                })
+                ->when($request->code, function ($query) use ($request) {
+                    $query->where('people.code', 'like', '%' . $request->code . '%');
+                })
+                ->limit(10)
+                ->get();
+
+            return ApiResponse::success($items);
+        } catch (\Exception $e) {
+
+            return ApiResponse::error($e->getMessage());
+        }
+    }
 }

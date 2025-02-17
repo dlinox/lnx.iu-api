@@ -36,6 +36,7 @@ return [
     App\Modules\PreEnrollment\Providers\PreEnrollmentServiceProvider::class,
     //EnrollmentGroupServiceProvider
     App\Modules\EnrollmentGroup\Providers\EnrollmentGroupServiceProvider::class,
-
+    //EnrollmentGradeServiceProvider
+    App\Modules\EnrollmentGrade\Providers\EnrollmentGradeServiceProvider::class,
 
 ];

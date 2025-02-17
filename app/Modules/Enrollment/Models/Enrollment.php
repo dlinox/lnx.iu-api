@@ -10,10 +10,10 @@ class Enrollment extends Model
 {
     use HasDataTable, HasEnabledState;
 
-    protected $fillable = [
-        'day',
-        'start_hour',
-        'end_hour',
+    protected $fillable = [ 
+        'curriculum_id',
+        'student_id',
+        'module_id',
+        'payment_id',
     ];
-    public $timestamps = false;
 }

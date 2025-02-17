@@ -20,6 +20,17 @@ class Student extends Model
         'is_enabled' => 'boolean',
     ];
 
+    //un estudiante pertenece a una persona
+    public function person()
+    {
+        return $this->belongsTo('App\Modules\Person\Models\Person');
+    }
+    //un studinate puede estar matriculado en varios cursos
+    public function enrollments()
+    {
+        return $this->hasMany('App\Modules\Enrollment\Models\Enrollment');
+    }
+
     static $searchColumns = [
         'people.code',
         'people.document_number',

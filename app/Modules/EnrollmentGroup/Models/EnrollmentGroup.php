@@ -11,9 +11,7 @@ class EnrollmentGroup extends Model
     use HasDataTable, HasEnabledState;
 
     protected $fillable = [
-        'day',
-        'start_hour',
-        'end_hour',
+        'pre_enrollment_id',
+        'payment_id',
     ];
-    public $timestamps = false;
 }

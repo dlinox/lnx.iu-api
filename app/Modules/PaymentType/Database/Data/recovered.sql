@@ -5,5 +5,6 @@ INSERT INTO `payment_types` (`id`, `name`) VALUES
 (3, 'CHEQUE'),
 (4, 'BECA'),
 (5, 'VISA'),
-(7, 'BANCO DE LA NACION'),
-(8, 'AGENTES KASNET');
+(7, '   '),
+(8, 'AGENTES KASNET'),
+(9, 'BN - PAGALO.PE');

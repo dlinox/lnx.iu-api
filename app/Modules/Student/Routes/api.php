@@ -10,4 +10,5 @@ Route::prefix('api/student')->group(function () {
     Route::delete('', [StudentController::class, 'destroy']);
 
     Route::get('item/by-id/{id}', [StudentController::class, 'getById']);
+    Route::post('search/list', [StudentController::class, 'searchList']);
 });

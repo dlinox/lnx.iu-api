@@ -44,18 +44,18 @@ class AuthController extends Controller
 
     public function user(Request $request)
     {
-        // $user =  $request->user();
-
-        $user = Auth::user();
-        return ApiResponse::success($this->userState($user));
+        $user =  $request->user();
+        $userState = $this->userState($user);
+        return ApiResponse::success($userState);
     }
 
     private function userState($user)
     {
         $role = $this->getUserRole($user);
+        $currentUser = User::find($user->id);
 
         return [
-            'token' => $this->getUserToken($user),
+            'token' => $this->getUserToken($currentUser),
             'user' => [
                 'name' => $user->name,
                 'email' => $user->email,
@@ -68,12 +68,15 @@ class AuthController extends Controller
 
     private function getUserToken($user)
     {
-        $token = $user->currentAccessToken();
 
-        if (!$token) {
-            return $user->createToken($user->email)->plainTextToken;
+        $token = request()->bearerToken();
+
+        if ($token) {
+            return $token;
         }
-        return null;
+
+        // Si no hay token en el header, crear uno nuevo
+        return $user->createToken($user->email)->plainTextToken;
     }
 
     private function getUserRole($user)
