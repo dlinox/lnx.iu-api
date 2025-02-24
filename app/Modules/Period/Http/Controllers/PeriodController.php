@@ -78,4 +78,20 @@ class PeriodController extends Controller
             return ApiResponse::error($e->getMessage());
         }
     }
+
+    public function getCurrent()
+    {
+        try {
+            $item = Period::select(
+                'periods.id as value',
+                DB::raw('CONCAT(year, "-", view_month_constants.label) as label')
+            )->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
+                ->where('is_enabled', 1)
+                ->first();
+
+            return ApiResponse::success($item);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 'Error al obtener el periodo actual');
+        }
+    }
 }

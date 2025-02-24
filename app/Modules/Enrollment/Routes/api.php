@@ -4,7 +4,7 @@ use App\Modules\Enrollment\Http\Controllers\EnrollmentController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('api/enrollment')->group(function () {
-    Route::post('{id}/student-enrollment/{curriculumId}/curriculum', [EnrollmentController::class, 'getStudentEnrollment']);
+    Route::post('student-enrollment-avaliable', [EnrollmentController::class, 'getStudentEnrollmentAvaliable']);
     Route::post('{studentId}/student/{curriculumId}/curriculum', [EnrollmentController::class, 'getModulesEnrollment']);
     Route::post('validate-payment', [EnrollmentController::class, 'validatePaymentEnrollment']);
     //enrollmentModuleStore

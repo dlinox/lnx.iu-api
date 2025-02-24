@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Modules\Price\Http\Resources;
+namespace App\Modules\ModulePrice\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Ramsey\Uuid\Type\Decimal;
 
-class PriceDataTableItemsResource extends JsonResource
+class ModulePriceDataTableItemsResource extends JsonResource
 {
     public function toArray($request)
     {
@@ -16,9 +16,7 @@ class PriceDataTableItemsResource extends JsonResource
             'module' => $this->module,
             'studentTypeId' => $this->student_type_id,
             'studentType' => $this->student_type,
-            'enrollmentPrice' => (float) $this->enrollment_price,
-            'presentialPrice' =>  (float) $this->presential_price,
-            'virtualPrice' => (float) $this->virtual_price,
+            'price' =>  (float) $this->price,
             'isEnabled' => $this->is_enabled,
         ];
         return parent::toArray($request);

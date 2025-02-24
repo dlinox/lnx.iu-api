@@ -2,11 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Modules\Price\Http\Controllers\PriceController;
+use App\Modules\ModulePrice\Http\Controllers\ModulePriceController;
 
-Route::prefix('api/price')->group(function () {
-    Route::post('load-data-table', [PriceController::class, 'loadDataTable']);
-    Route::post('', [PriceController::class, 'store']);
-    Route::put('', [PriceController::class, 'update']);
-    Route::delete('', [PriceController::class, 'destroy']);
+Route::prefix('api/module-price')->group(function () {
+    Route::post('load-data-table', [ModulePriceController::class, 'loadDataTable']);
+    Route::post('', [ModulePriceController::class, 'store']);
+    Route::put('', [ModulePriceController::class, 'update']);
+    Route::delete('', [ModulePriceController::class, 'destroy']);
 });

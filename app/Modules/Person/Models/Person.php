@@ -31,10 +31,25 @@ class Person extends Model
         'name',
     ];
 
+    //generar codigo de persona año + correlativo 20250001
+    public static function generateCode()
+    {
+        $year = date('Y');
+        $correlative = self::where('code', 'like', $year . '%')->count() + 1;
+        return $correlative;
+    }
+
     public static function registerItem($data)
     {
+
+        if (isset($data['code'])) {
+            $code = $data['code'];
+        } else {
+            $code = self::generateCode();
+        }
+
         $item =  self::create([
-            'code' => $data['code'],
+            'code' => $code,
             'document_type_id' => $data['document_type_id'],
             'document_number' => $data['document_number'],
             'name' => $data['name'],
@@ -42,7 +57,7 @@ class Person extends Model
             'last_name_mother' => $data['last_name_mother'],
             'gender' => $data['gender'],
             'date_of_birth' => $data['date_of_birth'],
-            'address' => $data['address'],
+            'address' => $data['address'] ?? '',
             'phone' => $data['phone'],
             'email' => $data['email'],
         ]);

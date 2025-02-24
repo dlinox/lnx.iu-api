@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\Price\Http\Requests;
+namespace App\Modules\CoursePrice\Http\Requests;
 
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class PriceUpdateRequest extends FormRequest
+class CoursePriceUpdateRequest extends FormRequest
 {
     public function authorize()
     {
@@ -19,9 +19,8 @@ class PriceUpdateRequest extends FormRequest
         $id = $this->id;
         return [
             'curriculum_id' => 'required|integer',
-            'module_id' => 'required|integer|unique:prices,module_id,' . $id . ',id,student_type_id,' . $this->student_type_id . ',curriculum_id,' . $this->curriculum_id,
+            'module_id' => 'required|integer|unique:course_prices,course_id,' . $id . ',id,student_type_id,' . $this->student_type_id . ',curriculum_id,' . $this->curriculum_id,
             'student_type_id' => 'required|integer',
-            'enrollment_price' => 'required|numeric',
             'presential_price' => 'required|numeric',
             'virtual_price' => 'required|numeric',
             'is_enabled' => 'required|boolean',
@@ -31,10 +30,16 @@ class PriceUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Obligatorio',
-            'name.max' => 'Máximo de 50 caracteres',
-            'name.unique' => 'Ya existe un registro con este nombre',
-            'description.max' => 'Máximo de 255 caracteres',
+            'curriculum_id.required' => 'Obligatorio',
+            'module_id.required' => 'Obligatorio',
+            'module_id.integer' => 'Debe ser un número entero',
+            'module_id.unique' => 'Ya existe un registro con estos datos',
+            'student_type_id.required' => 'Obligatorio',
+            'student_type_id.integer' => 'Debe ser un número entero',
+            'presential_price.required' => 'Obligatorio',
+            'presential_price.numeric' => 'Debe ser un número',
+            'virtual_price.required' => 'Obligatorio',
+            'virtual_price.numeric' => 'Debe ser un número',
             'is_enabled.required' => 'Obligatorio',
         ];
     }
@@ -43,9 +48,8 @@ class PriceUpdateRequest extends FormRequest
     {
         $this->merge([
             'curriculum_id' => $this->input('curriculumId', $this->curriculum_id),
-            'module_id' => $this->input('moduleId', $this->module_id),
+            'course_id' => $this->input('courseId', $this->course_id),
             'student_type_id' => $this->input('studentTypeId', $this->student_type_id),
-            'enrollment_price' => $this->input('enrollmentPrice', $this->enrollment_price),
             'presential_price' => $this->input('presentialPrice', $this->presential_price),
             'virtual_price' => $this->input('virtualPrice', $this->virtual_price),
             'is_enabled' => $this->input('isEnabled', $this->is_enabled),

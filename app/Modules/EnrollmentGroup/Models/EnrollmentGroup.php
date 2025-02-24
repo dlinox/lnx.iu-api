@@ -11,7 +11,9 @@ class EnrollmentGroup extends Model
     use HasDataTable, HasEnabledState;
 
     protected $fillable = [
-        'pre_enrollment_id',
+        'student_id',
+        'group_id',
+        'period_id',
         'payment_id',
     ];
 }

@@ -10,4 +10,6 @@ Route::prefix('api/period')->group(function () {
     Route::delete('', [PeriodController::class, 'destroy']);
 
     Route::get('items/for-select', [PeriodController::class, 'getItemsForSelect']);
+    //getCurrent
+    Route::get('current', [PeriodController::class, 'getCurrent']);
 });

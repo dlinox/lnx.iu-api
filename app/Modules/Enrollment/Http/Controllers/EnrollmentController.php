@@ -9,10 +9,11 @@ use App\Modules\CurriculumCourse\Models\CurriculumCourse;
 use App\Modules\Enrollment\Models\Enrollment;
 use App\Modules\EnrollmentGroup\Models\EnrollmentGroup;
 use App\Modules\Group\Models\Group;
+use App\Modules\Module\Models\Module;
 use App\Modules\Student\Models\Student;
 use App\Modules\Payment\Models\Payment;
 use App\Modules\Period\Models\Period;
-use App\Modules\PreEnrollment\Models\PreEnrollment;
+use App\Modules\Schedule\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -60,28 +61,24 @@ class EnrollmentController extends Controller
 
             $period = Period::where('is_enabled', true)->first();
 
-            $preEnrollment = PreEnrollment::create([
+            EnrollmentGroup::create([
                 'student_id' => $request->studentId,
                 'group_id' => $request->groupId,
                 'period_id' => $period->id,
-            ]);
-
-            EnrollmentGroup::create([
-                'pre_enrollment_id' => $preEnrollment->id,
                 'payment_id' => $payment->id,
             ]);
 
             DB::commit();
-            return ApiResponse::success(null, 'Grupo matriculado correctamente');
+            return ApiResponse::success(null, 'Matriculado correctamente');
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), 'Error al matricular el grupo');
         }
     }
 
-    public function getStudentEnrollment(Request $request)
+    public function getStudentEnrollmentAvaliable(Request $request)
     {
         try {
-            $exists = Student::exists($request->id);
+            $exists = Student::exists($request->studentId);
             if (!$exists) {
                 return ApiResponse::error('No se encontró el estudiante', 'No se encontró el estudiante');
             }
@@ -102,21 +99,27 @@ class EnrollmentController extends Controller
                 ->join('people', 'students.person_id', '=', 'people.id')
                 ->join('student_types', 'students.student_type_id', '=', 'student_types.id')
                 ->leftJoin('document_types', 'people.document_type_id', '=', 'document_types.id')
-                ->where('students.id', $request->id)
+                ->where('students.id', $request->studentId)
                 ->first();
 
 
-            $student['enrollments'] = $student->enrollments()->select(
-                'enrollments.id',
-                'modules.name as moduleName',
-                'modules.id as moduleId',
-            )
+            $student['enrollments'] =
+                Module::select(
+                    'modules.id',
+                    'modules.id as moduleId',
+                    'modules.name as moduleName',
+                )
                 ->distinct()
-                ->join('modules', 'enrollments.module_id', '=', 'modules.id')
-                ->join('curriculum_courses', 'enrollments.module_id', '=', 'curriculum_courses.module_id')
-                ->where('curriculum_courses.curriculum_id', $request->curriculumId)
-                ->get()->map(function ($enrollment) use ($request) {
-
+                ->join('curriculum_courses', 'modules.id', '=', 'curriculum_courses.module_id')
+                ->where(function ($query) use ($request) {
+                    $query->whereIn('modules.id', function ($query) use ($request) {
+                        $query->select('enrollments.module_id')
+                            ->from('enrollments')
+                            ->where('enrollments.student_id', $request->studentId);
+                    })->orWhere('curriculum_courses.is_extracurricular', true);
+                })
+                ->get()
+                ->map(function ($enrollment) use ($request) {
                     $enrollment['courses'] = CurriculumCourse::select(
                         'curriculum_courses.id',
                         'curriculum_courses.order',
@@ -127,6 +130,18 @@ class EnrollmentController extends Controller
                         ->where('curriculum_courses.module_id', $enrollment->moduleId)
                         ->where('curriculum_courses.is_enabled', true)
                         ->orderBy('curriculum_courses.order')
+                        ->whereNotIn('courses.id', function ($query) use ($request) {
+                            $query->select('curriculum_courses.course_id')
+                                ->from('enrollment_groups')
+                                ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
+                                ->join('curriculum_courses', 'groups.curriculum_course_id', '=', 'curriculum_courses.id')
+                                ->join('periods', 'groups.period_id', '=', 'periods.id')
+                                ->join('enrollment_grades', 'enrollment_groups.id', '=', 'enrollment_grades.enrollment_group_id')
+                                ->where('enrollment_groups.student_id', $request->studentId)
+                                ->where('enrollment_grades.grade', '>=', 11)
+                                ->where('periods.id', '!=', $request->periodId);
+                        })
+
                         ->get()
                         ->map(function ($course) use ($request) {
                             $course['enrollmentCourse'] = EnrollmentGroup::select(
@@ -134,13 +149,28 @@ class EnrollmentController extends Controller
                                 'groups.name as groupName',
                                 'periods.year as periodYear',
                                 'periods.month as periodMonth',
+                                //docente del grupo
+                                DB::raw('CONCAT(people.name, " ", people.last_name_father, " ", people.last_name_mother) as teacher'),
+                                //modalidad del grupo
+                                'groups.modality as modality',
+                                //depende de la modalidad muestra el precio //VIRTUAL O PRESENCIAL
+                                'payments.amount as price',
+                                //laboratorio del grupo
+                                'laboratories.name as laboratory',
+                                //nota del estudiante
                                 'enrollment_grades.grade as grade',
-                            )->join('pre_enrollments', 'enrollment_groups.pre_enrollment_id', '=', 'pre_enrollments.id')
-                                ->join('groups', 'pre_enrollments.group_id', '=', 'groups.id')
+                            )
+                                ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
                                 ->join('periods', 'groups.period_id', '=', 'periods.id')
+                                ->join('curriculum_courses', 'groups.curriculum_course_id', '=', 'curriculum_courses.id')
+                                ->join('payments', 'enrollment_groups.payment_id', '=', 'payments.id')
+                                ->leftJoin('laboratories', 'groups.laboratory_id', '=', 'laboratories.id')
+                                ->leftJoin('teachers', 'groups.teacher_id', '=', 'teachers.id')
+                                ->leftJoin('people', 'teachers.person_id', '=', 'people.id')
                                 ->leftJoin('enrollment_grades', 'enrollment_groups.id', '=', 'enrollment_grades.enrollment_group_id')
                                 ->where('groups.curriculum_course_id', $course->id)
-                                ->where('pre_enrollments.student_id', $request->id)
+                                ->where('enrollment_groups.student_id', $request->studentId)
+                                ->where('periods.id', $request->periodId)
                                 ->get();
                             return $course;
                         });
@@ -168,13 +198,14 @@ class EnrollmentController extends Controller
 
             $modules = CurriculumCourse::select(
                 'modules.id as value',
-                DB::raw('CONCAT_WS(" ", modules.name, "( S/.", prices.enrollment_price, ")") as label')
+                DB::raw('CONCAT_WS(" ", modules.name, "( S/.", module_prices.price, ")") as label'),
+                'module_prices.price as price',
             )
                 ->distinct()
                 ->join('modules', 'curriculum_courses.module_id', '=', 'modules.id')
-                ->join('prices', 'prices.module_id', '=', 'modules.id')
+                ->join('module_prices', 'module_prices.module_id', '=', 'modules.id')
                 ->where('curriculum_courses.curriculum_id', $request->curriculumId)
-                ->where('prices.student_type_id', $student->student_type_id)
+                ->where('module_prices.student_type_id', $student->student_type_id)
                 ->whereNotIn('modules.id', function ($query) use ($request) {
                     $query->select('enrollments.module_id')
                         ->from('enrollments')
@@ -183,7 +214,7 @@ class EnrollmentController extends Controller
                 ->where('curriculum_courses.is_enabled', true)
                 ->get();
 
-            return ApiResponse::success($modules, 'Registros cargados correctamente');
+            return ApiResponse::success($modules);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
         }
@@ -243,7 +274,7 @@ class EnrollmentController extends Controller
         return  true;
     }
 
-    //enrollment/enabled-groups
+
     public function enabledGroups(Request $request)
     {
         try {
@@ -257,17 +288,37 @@ class EnrollmentController extends Controller
             $period = Period::where('is_enabled', true)->first();
 
             $enrollmentGroups = Group::select(
-                'groups.id as value',
-                DB::raw('CONCAT_WS(" ", groups.name, "(S/.", prices.presential_price, ")") as label')
-                //precio de matricula
+                'groups.id',
+                'groups.name as group',
+                //modalidad del grupo
+                'groups.modality as modality',
+                //depende de la modalidad muestra el precio //VIRTUAL O PRESENCIAL
+                DB::raw('IF(groups.modality = "PRESENCIAL", course_prices.presential_price, course_prices.virtual_price) as price'),
+                'laboratories.name as laboratory',
+                //nombre del docente
+                DB::raw('CONCAT(people.name, " ", people.last_name_father, " ", people.last_name_mother) as teacher'),
             )
                 ->join('periods', 'groups.period_id', '=', 'periods.id')
                 ->join('curriculum_courses', 'groups.curriculum_course_id', '=', 'curriculum_courses.id')
-                ->join('prices', 'prices.module_id', '=', 'curriculum_courses.module_id')
-                ->where('prices.student_type_id', $student->student_type_id)
-                ->where('periods.id', $period->id)
+                ->join('course_prices', 'course_prices.course_id', '=', 'curriculum_courses.course_id')
+                ->leftJoin('laboratories', 'groups.laboratory_id', '=', 'laboratories.id')
+                ->leftJoin('teachers', 'groups.teacher_id', '=', 'teachers.id')
+                ->leftJoin('people', 'teachers.person_id', '=', 'people.id')
+                ->where('course_prices.student_type_id', $student->student_type_id)
                 ->where('curriculum_courses.id', $request->curriculumCourseId)
-                ->get();
+                ->where('periods.id', $period->id)
+                ->where('groups.is_enabled', true)
+                ->get()
+                ->map(function ($group) use ($request) {
+                    $group['schedules'] = Schedule::select(
+                        'schedules.day as day',
+                        'schedules.start_hour as startHour',
+                        'schedules.end_hour as endHour',
+                    )
+                        ->where('schedules.group_id', $group->id)
+                        ->get();
+                    return $group;
+                });
 
             return ApiResponse::success($enrollmentGroups, 'Registros cargados correctamente');
         } catch (\Exception $e) {
