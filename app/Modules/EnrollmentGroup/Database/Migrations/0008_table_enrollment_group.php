@@ -9,14 +9,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // INSERT INTO enrollment_groups(id, pre_enrollment_id, payment_id) VALUES (1, 1, 2);
         Schema::dropIfExists('enrollment_groups');
         Schema::create('enrollment_groups', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('pre_enrollment_id');
+            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('group_id');
+            $table->unsignedBigInteger('period_id');
             $table->unsignedBigInteger('payment_id');
+            $table->enum('status', ['APERTURADO', 'CANCELADO', 'RETIRADO'])->default('APERTURADO');
             $table->timestamps();
-            $table->foreign('pre_enrollment_id')->references('id')->on('pre_enrollments');
+            $table->foreign('student_id')->references('id')->on('students');
+            $table->foreign('group_id')->references('id')->on('groups');
+            $table->foreign('period_id')->references('id')->on('periods');
             $table->foreign('payment_id')->references('id')->on('payments');
         });
 

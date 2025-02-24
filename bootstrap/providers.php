@@ -27,13 +27,14 @@ return [
     App\Modules\Schedule\Providers\ScheduleServiceProvider::class,
 
     // PriceServiceProvider
-    App\Modules\Price\Providers\PriceServiceProvider::class,
+    App\Modules\ModulePrice\Providers\ModulePriceServiceProvider::class,
+    App\Modules\CoursePrice\Providers\CoursePriceServiceProvider::class,
     //PaymentServiceProvider
     App\Modules\Payment\Providers\PaymentServiceProvider::class,
     //EnrollmentServiceProvider
     App\Modules\Enrollment\Providers\EnrollmentServiceProvider::class,
     //PreEnrollmentServiceProvider
-    App\Modules\PreEnrollment\Providers\PreEnrollmentServiceProvider::class,
+    // App\Modules\PreEnrollment\Providers\PreEnrollmentServiceProvider::class,
     //EnrollmentGroupServiceProvider
     App\Modules\EnrollmentGroup\Providers\EnrollmentGroupServiceProvider::class,
     //EnrollmentGradeServiceProvider
