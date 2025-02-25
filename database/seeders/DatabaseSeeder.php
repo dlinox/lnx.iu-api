@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
         ]);
         //crear rol
         $role = Role::create(['name' => 'admin']);
+        Role::create(['name' => 'estudiante']);
+        Role::create(['name' => 'docente']);
         //asignar rol al usuario
         $user = User::find(1);
         $user->assignRole($role);

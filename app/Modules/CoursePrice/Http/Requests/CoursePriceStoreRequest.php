@@ -20,7 +20,7 @@ class CoursePriceStoreRequest extends FormRequest
     {
         return [
             'curriculum_id' => 'required|integer',
-            'course_id' => 'required|integer|unique:prices,course_id,NULL,id,student_type_id,' . $this->student_type_id . ',curriculum_id,' . $this->curriculum_id,
+            'course_id' => 'required|integer|unique:course_prices,course_id,NULL,id,student_type_id,' . $this->student_type_id . ',curriculum_id,' . $this->curriculum_id,
             'student_type_id' => 'required|integer',
             'presential_price' => 'required|numeric',
             'virtual_price' => 'required|numeric',

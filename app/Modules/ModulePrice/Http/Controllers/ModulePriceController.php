@@ -5,10 +5,10 @@ namespace App\Modules\ModulePrice\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Modules\ModulePrice\Http\Requests\ModulePriceStoreRequest;
+use App\Modules\ModulePrice\Http\Requests\ModulePriceUpdateRequest;
 use App\Modules\ModulePrice\Http\Resources\ModulePriceDataTableItemsResource;
-use App\Modules\Price\Http\Requests\PriceStoreRequest;
-use App\Modules\Price\Http\Requests\PriceUpdateRequest;
-use App\Modules\Price\Models\Price;
+
 use App\Modules\ModulePrice\Models\ModulePrice;
 
 class ModulePriceController extends Controller
@@ -41,23 +41,23 @@ class ModulePriceController extends Controller
     }
 
 
-    public function store(PriceStoreRequest $request)
+    public function store(ModulePriceStoreRequest $request)
     {
         try {
             $data =  $request->validated();
-            $documentType = Price::create($data);
-            return ApiResponse::success($documentType, 'Registro creado correctamente', 201);
+            $item = ModulePrice::create($data);
+            return ApiResponse::success($item, 'Registro creado correctamente', 201);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
         }
     }
 
-    public function update(PriceUpdateRequest $request)
+    public function update(ModulePriceUpdateRequest $request)
     {
         try {
             $data = $request->validated();
-            $documentType = Price::find($request->id);
-            $documentType->update($data);
+            $item = ModulePrice::find($request->id);
+            $item->update($data);
             return ApiResponse::success($request->all(), 'Registro actualizado correctamente', 200);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
@@ -68,7 +68,7 @@ class ModulePriceController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $item = Price::find($request->id);
+            $item = ModulePrice::find($request->id);
             $item->delete();
             return ApiResponse::success(null, 'Registro eliminado correctamente', 204);
         } catch (\Exception $e) {

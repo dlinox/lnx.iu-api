@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id();
             $table->integer('year');
             $table->integer('month');
+            $table->boolean('enrollment_enabled')->default(false);
             $table->boolean('is_enabled')->default(false);
             $table->unique(['year', 'month']);
             $table->timestamps();

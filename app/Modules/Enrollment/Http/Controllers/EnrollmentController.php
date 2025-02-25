@@ -15,8 +15,10 @@ use App\Modules\Payment\Models\Payment;
 use App\Modules\Period\Models\Period;
 use App\Modules\Schedule\Models\Schedule;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class EnrollmentController extends Controller
 {
@@ -111,6 +113,7 @@ class EnrollmentController extends Controller
                 )
                 ->distinct()
                 ->join('curriculum_courses', 'modules.id', '=', 'curriculum_courses.module_id')
+                ->where('curriculum_courses.curriculum_id', $request->curriculumId)
                 ->where(function ($query) use ($request) {
                     $query->whereIn('modules.id', function ($query) use ($request) {
                         $query->select('enrollments.module_id')
@@ -269,8 +272,6 @@ class EnrollmentController extends Controller
 
     private function _validatePaymentService($data)
     {
-        //TODO: SERVICE PAYMENT VALIDATION 
-
         return  true;
     }
 
@@ -290,12 +291,9 @@ class EnrollmentController extends Controller
             $enrollmentGroups = Group::select(
                 'groups.id',
                 'groups.name as group',
-                //modalidad del grupo
                 'groups.modality as modality',
-                //depende de la modalidad muestra el precio //VIRTUAL O PRESENCIAL
                 DB::raw('IF(groups.modality = "PRESENCIAL", course_prices.presential_price, course_prices.virtual_price) as price'),
                 'laboratories.name as laboratory',
-                //nombre del docente
                 DB::raw('CONCAT(people.name, " ", people.last_name_father, " ", people.last_name_mother) as teacher'),
             )
                 ->join('periods', 'groups.period_id', '=', 'periods.id')
@@ -322,6 +320,196 @@ class EnrollmentController extends Controller
 
             return ApiResponse::success($enrollmentGroups, 'Registros cargados correctamente');
         } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
+        }
+    }
+
+    public function downloadEnrollmentRecord(Request $request)
+    {
+
+        $enrollment = EnrollmentGroup::select(
+            'enrollment_groups.id',
+            'groups.name as group',
+            DB::raw('CONCAT(view_month_constants.label, " ", periods.year) as period'),
+            DB::raw('CONCAT_WS(" ", people.name, people.last_name_father, people.last_name_mother) as student'),
+            'modules.name as module',
+            'courses.name as course',
+            'student_types.name as studentType',
+        )
+            ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
+            ->join('periods', 'groups.period_id', '=', 'periods.id')
+            ->join('curriculum_courses', 'groups.curriculum_course_id', '=', 'curriculum_courses.id')
+            ->join('modules', 'curriculum_courses.module_id', '=', 'modules.id')
+            ->join('students', 'enrollment_groups.student_id', '=', 'students.id')
+            ->join('student_types', 'students.student_type_id', '=', 'student_types.id')
+            ->join('people', 'students.person_id', '=', 'people.id')
+            ->join('view_month_constants', 'periods.month', '=', 'view_month_constants.id')
+            ->join('payment_types', 'payments.payment_type_id', '=', 'payment_types.id')
+            ->where('enrollment_groups.id', $request->id)
+            ->first();
+
+
+        $pdf = PDF::loadView('pdf.EnrollmentRecord', ['enrollment' => $enrollment]);
+        return $pdf->output();
+    }
+
+    //STUDENT ENROLLMENT
+
+    public function storeStudentEnrollment(Request $request)
+    {
+        try {
+            //bucar estudiante 
+            $user = Auth::user();
+
+            $student = Student::select('students.id')
+                ->join('people', 'students.person_id', '=', 'people.id')
+                ->where('people.document_number', $user->username)
+                ->first();
+
+            if (!$student) {
+                return ApiResponse::error('No se encontró el estudiante', 'No se encontró el estudiante');
+            }
+
+            //validar pago
+            $paymentData = [
+                'studentId' => $student->id,
+                'amount' => (float) $request->paymentAmount,
+                'date' => $request->paymentDate,
+                'sequenceNumber' => $request->paymentSequence,
+                'paymentTypeId' => $request->paymentMethod,
+            ];
+
+            $payment = $this->validatePayment($paymentData);
+            $payment = Crypt::decrypt($payment);
+
+            //marcar como utilizado el pago 
+            $payment = Payment::find($payment);
+            $payment->is_enabled = true;
+            $payment->save();
+
+            $data = [
+                'student_id' => $student->id,
+                'module_id' => $request->moduleId,
+                'curriculum_id' => $request->curriculumId,
+                'payment_id' => $payment->id,
+            ];
+
+            Enrollment::create($data);
+
+            return ApiResponse::success(null, 'Matricula exitosa');
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
+        }
+    }
+
+    //get enalble groups by user authenticated
+
+    public function enabledGroupsEnrollment(Request $request)
+    {
+        try {
+
+            $user = Auth::user();
+
+            $student = Student::select(
+                'students.id',
+                'student_type_id',
+            )
+                ->join('people', 'students.person_id', '=', 'people.id')
+                ->where('people.document_number', $user->username)
+                ->first();
+
+            $period = Period::where('is_enabled', true)->first();
+
+            $enrollmentGroups = Group::select(
+                'groups.id',
+                'groups.name as group',
+                'groups.modality as modality',
+                DB::raw('IF(groups.modality = "PRESENCIAL", course_prices.presential_price, course_prices.virtual_price) as price'),
+                'laboratories.name as laboratory',
+                DB::raw('CONCAT(people.name, " ", people.last_name_father, " ", people.last_name_mother) as teacher'),
+            )
+                ->join('periods', 'groups.period_id', '=', 'periods.id')
+                ->join('curriculum_courses', 'groups.curriculum_course_id', '=', 'curriculum_courses.id')
+                ->join('course_prices', 'course_prices.course_id', '=', 'curriculum_courses.course_id')
+                ->leftJoin('laboratories', 'groups.laboratory_id', '=', 'laboratories.id')
+                ->leftJoin('teachers', 'groups.teacher_id', '=', 'teachers.id')
+                ->leftJoin('people', 'teachers.person_id', '=', 'people.id')
+                ->where('course_prices.student_type_id', $student->student_type_id)
+                ->where('curriculum_courses.id', $request->curriculumCourseId)
+                ->where('periods.id', $period->id)
+                ->where('groups.is_enabled', true)
+                ->get()
+                ->map(function ($group) use ($request) {
+                    $group['schedules'] = Schedule::select(
+                        'schedules.day as day',
+                        'schedules.start_hour as startHour',
+                        'schedules.end_hour as endHour',
+                    )
+                        ->where('schedules.group_id', $group->id)
+                        ->get();
+                    return $group;
+                });
+
+            return ApiResponse::success($enrollmentGroups, 'Registros cargados correctamente');
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
+        }
+    }
+    public function storeGroupEnrollment(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $user = Auth::user();
+
+            $student = Student::select('students.id')
+                ->join('people', 'students.person_id', '=', 'people.id')
+                ->where('people.document_number', $user->username)
+                ->first();
+
+            if (!$student) {
+                return ApiResponse::error('No se encontró el estudiante', 'No se encontró un estudiante asociado a su usuario');
+            }
+
+            //validar pago
+            $paymentData = [
+                'studentId' => $student->id,
+                'amount' => (float) $request->paymentAmount,
+                'date' => $request->paymentDate,
+                'sequenceNumber' => $request->paymentSequence,
+                'paymentTypeId' => $request->paymentMethod,
+            ];
+
+            $payment = $this->validatePayment($paymentData);
+            $payment = Crypt::decrypt($payment);
+
+            //marcar como utilizado el pago 
+            $payment = Payment::find($payment);
+            $payment->is_enabled = true;
+            $payment->save();
+
+            $period = Period::where('is_enabled', true)
+                ->where('enrollment_enabled', true)
+                ->first();
+
+            if (!$period) {
+                return ApiResponse::error('No se encontró el periodo de matrícula', 'No se encontró el periodo de matrícula');
+            }
+
+            $data = [
+                'student_id' => $student->id,
+                'group_id' => $request->groupId,
+                'period_id' => $period->id,
+                'payment_id' => $payment->id,
+            ];
+
+            EnrollmentGroup::create($data);
+
+            DB::commit();
+            return ApiResponse::success(null, 'Matricula exitosa');
+        } catch (\Exception $e) {
+            DB::rollBack();
             return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
         }
     }

@@ -111,6 +111,7 @@ INSERT INTO `courses` (`id`, `name`) VALUES (251, TRIM('PROGRAMACIÓN VBA CON MI
 INSERT INTO `courses` (`id`, `name`) VALUES (252, TRIM('SOFTWARE ANTIPLAGIO PARA LA INVESTIGACIÓN'));
 INSERT INTO `courses` (`id`, `name`) VALUES (253, TRIM('SOFTWARE GESTOR BIBLIOGRÁFICO PARA LA INVESTIGACIÓN'));
 INSERT INTO `courses` (`id`, `name`) VALUES (254, TRIM('SOFTWARE R PARA LA INVESTIGACIÓN'));
+
 INSERT INTO `courses` (`id`, `name`) VALUES 
 (255, TRIM('Bases de Datos y Lenguaje SQL')),
 (256, TRIM('Programación R y RStudio avanzado')),

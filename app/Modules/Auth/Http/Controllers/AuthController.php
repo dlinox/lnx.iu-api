@@ -25,10 +25,15 @@ class AuthController extends Controller
 
     public function signIn(Request $request)
     {
-        $user = $this->user->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+        $user = $this->user->select(
+            'users.*',
+        )
+            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->where('email', $request->username)
-            ->orWhere('username', $request->username)
+            ->where(function ($query) use ($request) {
+                $query->where('username', $request->username)
+                    ->orWhere('email', $request->username);
+            })
             ->where('roles.name', 'admin')
             ->first();
 
@@ -45,16 +50,19 @@ class AuthController extends Controller
 
     public function signInStudent(Request $request)
     {
-        $user = User::join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+        $user = $this->user->select(
+            'users.*',
+        )
+            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            // ->where('email', $request->username)
-            // ->orWhere('username', $request->username)
             ->where(function ($query) use ($request) {
-                $query->where('email', $request->username)
-                    ->orWhere('username', $request->username);
+                $query->where('username', $request->username)
+                    ->orWhere('email', $request->username);
             })
             ->where('roles.name', 'estudiante')
             ->first();
+
+        // return $user;
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return ApiResponse::error('', 'Credenciales incorrectas');
@@ -83,11 +91,12 @@ class AuthController extends Controller
                 'name' => $person->name . ' ' . $person->last_name_father . ' ' . $person->last_name_mother,
                 'username' => $person->document_number,
                 'email' => $data['email'],
-                'password' => Hash::make($person->document_number),
+                'password' => $person->document_number,
                 'is_enabled' => 1,
             ]);
 
-            $user->assignRole('estudiante');
+            $user->syncRoles(['estudiante']);
+
             DB::commit();
             return ApiResponse::success(null, 'Registro creado correctamente', 201);
         } catch (\Exception $e) {
@@ -136,8 +145,7 @@ class AuthController extends Controller
             return $token;
         }
 
-        // Si no hay token en el header, crear uno nuevo
-        return $user->createToken($user->email)->plainTextToken;
+        return $user->createToken('app-token')->plainTextToken;
     }
 
     private function getUserRole($user)

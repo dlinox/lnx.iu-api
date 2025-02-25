@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Modules\Price\Http\Requests;
+namespace App\Modules\ModulePrice\Http\Requests;
 
+use Illuminate\Support\Str;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-use Illuminate\Support\Str;
-
-class PriceStoreRequest extends FormRequest
+class ModulePriceUpdateRequest extends FormRequest
 {
     public function authorize()
     {
@@ -18,14 +16,12 @@ class PriceStoreRequest extends FormRequest
 
     public function rules()
     {
+        $id = $this->id;
         return [
             'curriculum_id' => 'required|integer',
-            //no se puede repetir el módulo para el mismo tipo de estudiante en la misma currícula
-            'module_id' => 'required|integer|unique:prices,module_id,NULL,id,student_type_id,' . $this->student_type_id . ',curriculum_id,' . $this->curriculum_id,
+            'module_id' => 'required|integer|unique:module_prices,module_id,' . $id . ',id,student_type_id,' . $this->student_type_id . ',curriculum_id,' . $this->curriculum_id,
             'student_type_id' => 'required|integer',
-            'enrollment_price' => 'required|numeric',
-            'presential_price' => 'required|numeric',
-            'virtual_price' => 'required|numeric',
+            'price' => 'required|numeric',
             'is_enabled' => 'required|boolean',
         ];
     }
@@ -39,12 +35,8 @@ class PriceStoreRequest extends FormRequest
             'module_id.unique' => 'Ya existe un registro con este módulo y tipo de estudiante',
             'student_type_id.required' => 'Obligatorio',
             'student_type_id.integer' => 'Debe ser un número entero',
-            'enrollment_price.required' => 'Obligatorio',
-            'enrollment_price.numeric' => 'Debe ser un número',
-            'presential_price.required' => 'Obligatorio',
-            'presential_price.numeric' => 'Debe ser un número',
-            'virtual_price.required' => 'Obligatorio',
-            'virtual_price.numeric' => 'Debe ser un número',
+            'price.required' => 'Obligatorio',
+            'price.numeric' => 'Debe ser un número',
             'is_enabled.required' => 'Obligatorio',
         ];
     }
@@ -55,14 +47,9 @@ class PriceStoreRequest extends FormRequest
             'curriculum_id' => $this->input('curriculumId', $this->curriculum_id),
             'module_id' => $this->input('moduleId', $this->module_id),
             'student_type_id' => $this->input('studentTypeId', $this->student_type_id),
-            'enrollment_price' => $this->input('enrollmentPrice', $this->enrollment_price),
-            'presential_price' => $this->input('presentialPrice', $this->presential_price),
-            'virtual_price' => $this->input('virtualPrice', $this->virtual_price),
             'is_enabled' => $this->input('isEnabled', $this->is_enabled),
         ]);
     }
-
-
 
     protected function failedValidation(Validator $validator)
     {
@@ -76,7 +63,7 @@ class PriceStoreRequest extends FormRequest
             response()->json(
                 [
                     'errors' => $errors,
-                    'message' => 'Error al guardar los registros, verifique los datos ingresados'
+                    'message' => 'Error en la operación, revise los datos ingresados'
                 ],
                 422
             )

@@ -35,7 +35,15 @@ class Person extends Model
     public static function generateCode()
     {
         $year = date('Y');
-        $correlative = self::where('code', 'like', $year . '%')->count() + 1;
+        $correlative = self::where('code', 'like', $year . '%')->max('code');
+        if ($correlative) {
+            $correlative = (int) substr($correlative, 4);
+            $correlative++;
+        } else {
+            $correlative = 1;
+        }
+        $correlative = str_pad($correlative, 4, '0', STR_PAD_LEFT);
+        $correlative = $year . $correlative;
         return $correlative;
     }
 

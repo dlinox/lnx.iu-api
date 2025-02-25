@@ -85,4 +85,26 @@ class CourseController extends Controller
             return ApiResponse::error($e->getMessage());
         }
     }
+
+    //geCurriculumCourses
+    public function getCurriculumCourses(Request $request)
+    {
+        try {
+            $courses = Course::geCurriculumCourses($request->curriculumId, $request->moduleId);
+            return ApiResponse::success($courses);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+
+    //getItemsForSelect
+    public function getItemsCurriculumForSelect(Request $request)
+    {
+        try {
+            $item = Course::getItemsForSelect($request->id);
+            return ApiResponse::success($item);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
+    }
 }
