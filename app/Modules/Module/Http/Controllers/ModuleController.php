@@ -85,39 +85,4 @@ class ModuleController extends Controller
             return ApiResponse::error($e->getMessage());
         }
     }
-
-    //getByCurriculum
-    public function getByCurriculum(Request $request)
-    {
-        try {
-            $modules = Module::getByCurriculum($request->id);
-            return ApiResponse::success($modules);
-        } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage());
-        }
-    }
-    //getModuleByCurriculum
-    public function getModuleByCurriculum(Request $request)
-    {
-        try {
-            $module = Module::getModuleByCurriculum($request->curriculumId, $request->id);
-
-            $user = Auth::user();
-
-            $student = Student::select('students.id')->join('people', 'students.person_id', '=', 'people.id')
-                ->where('people.document_number', $user->username)
-                ->first();
-
-            $enrollment = Enrollment::where('curriculum_id', $request->curriculumId)
-                ->where('module_id', $request->id)
-                ->where('student_id', $student->id)
-                ->first();
-
-            $module->isEnrolled = $enrollment ? true : false;
-
-            return ApiResponse::success($module);
-        } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage());
-        }
-    }
 }

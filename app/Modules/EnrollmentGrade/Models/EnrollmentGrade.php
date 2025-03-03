@@ -2,18 +2,15 @@
 
 namespace App\Modules\EnrollmentGroup\Models;
 
-use App\Traits\HasDataTable;
-use App\Traits\HasEnabledState;
 use Illuminate\Database\Eloquent\Model;
 
-class EnrollmentGroup extends Model
+class EnrollmentGrade extends Model
 {
-    use HasDataTable, HasEnabledState;
 
     protected $fillable = [
-        'day',
-        'start_hour',
-        'end_hour',
+        'final_grade',
+        'capacity_average',
+        'attitude_grade',
+        'enrollment_group_id',
     ];
-    public $timestamps = false;
 }

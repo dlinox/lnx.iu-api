@@ -42,7 +42,6 @@ class Module extends Model
         return $modules;
     }
 
-    //get 1 module by curriculum 2
     public static function getModuleByCurriculum($curriculum_id, $id)
     {
         $module = self::select(

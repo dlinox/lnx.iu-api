@@ -112,46 +112,124 @@ INSERT INTO `courses` (`id`, `name`) VALUES (252, TRIM('SOFTWARE ANTIPLAGIO PARA
 INSERT INTO `courses` (`id`, `name`) VALUES (253, TRIM('SOFTWARE GESTOR BIBLIOGRÁFICO PARA LA INVESTIGACIÓN'));
 INSERT INTO `courses` (`id`, `name`) VALUES (254, TRIM('SOFTWARE R PARA LA INVESTIGACIÓN'));
 
-INSERT INTO `courses` (`id`, `name`) VALUES 
-(255, TRIM('Bases de Datos y Lenguaje SQL')),
-(256, TRIM('Programación R y RStudio avanzado')),
-(257, TRIM('Programación Python básico')),
-(258, TRIM('Power BI')),
-(259, TRIM('Servidores en Linux básico')),
-(260, TRIM('Servidores en Linux Avanzado')),
-(261, TRIM('Servidores en Windows básico')),
-(262, TRIM('Servidores en Windows avanzado')),
-(263, TRIM('Corel Draw')),
-(264, TRIM('Adobe Photoshop')),
-(265, TRIM('Adobe Ilustrator')),
-(266, TRIM('Adobe After Effects')),
-(267, TRIM('Adobe Premiere')),
-(268, TRIM('Adobe InDesing')),
-(269, TRIM('Matlab')),
-(270, TRIM('Programación C#')),
-(271, TRIM('Programación C++')),
-(272, TRIM('Programación Java')),
-(273, TRIM('Programación Python intermedio')),
-(274, TRIM('Programación Python avanzado')),
-(275, TRIM('Programación Laravel')),
-(276, TRIM('Programación Google Colab')),
-(277, TRIM('Programación Go')),
-(278, TRIM('Programación Kotlin')),
-(279, TRIM('Big Data')),
-(280, TRIM('Statistics')),
-(281, TRIM('Software Minitab')),
-(282, TRIM('Software SAS')),
-(283, TRIM('Software Epidat, Epinfo')),
-(284, TRIM('Software Stata')),
-(285, TRIM('Software Eviews')),
-(286, TRIM('Cisco Packet tracert basico')),
-(287, TRIM('Cisco Packet tracert avanzado')),
-(288, TRIM('Internet de las cosas')),
-(289, TRIM('Administración de Moodle I')),
-(290, TRIM('Administración de Moodle II')),
-(291, TRIM('Scratch')),
-(292, TRIM('ArcGIS')),
-(293, TRIM('Oracle')),
-(294, TRIM('María DB')),
-(295, TRIM('Mongo DB')),
-(296, TRIM('LaTex'));
+INSERT INTO `courses` (`id`, `name`) VALUES
+(255, 'Sistema Operativo Windows'),
+(256, 'Microsoft Word'),
+(257, 'Microsoft Excel Básico'),
+(258, 'Microsoft PowerPoint y Canva');
+
+INSERT INTO `courses` (`id`, `name`) VALUES
+(259, 'Programación en R'),
+(260, 'Procesamiento de datos con SPSS'),
+(261, 'Microsoft Excel Avanzado'),
+(262, 'Programación Python');
+
+INSERT INTO `courses` (`id`, `name`) VALUES
+(263, 'Mantenimiento y Reparación de Hardware'),
+(264, 'Gestión de Bases de Datos (SQL)'),
+(265, 'Programación Web y Móvil'),
+(266, 'Redes de Computadoras');	
+
+INSERT INTO `courses` (`id`, `name`) VALUES
+(267, 'Autocad Básico'),
+(268, 'Sistemas de Información Geográfica (GIS)'),
+(269, 'Sistemas de Gestión Pública (SIGA-SIAF-SEACE)'),
+(270, 'Programación Python');
+
+-- Insertar cursos en la tabla `courses`
+INSERT INTO `courses` (`id`, `name`) VALUES
+(271, 'Autocad Intermedio'),
+(272, 'GIS Avanzado (IoT)'),
+(273, 'Microsoft Project'),
+(274, 'Revit Architecture');
+
+
+-- Extracurriculares
+INSERT INTO `courses` (`id`, `name`) VALUES
+(275, 'Autocad Avanzado'),
+(276, 'Software de Costos y Presupuestos'),
+(277, 'PMBOOK para Arquitectura e Ingenierías'),
+(278, 'Revit Structure'),
+(279, 'Programación en Python'),
+(280, 'Inteligencia Estadística'),
+(281, 'Gestión de Base de Datos SQL y NoSQL'),
+(282, 'Modelamiento de Dataset'),
+(283, 'Machine Learning – Deep Learning'),
+(284, 'Python para Data Science'),
+(285, 'Microsoft Excel Básico'),
+(286, 'Microsoft Excel Intermedio'),
+(287, 'Microsoft Excel Avanzado'),
+(288, 'Microsoft Excel con Power BI'),
+(289, 'Microsoft Excel con Python'),
+(290, 'Minería de Datos con Excel'),
+(291, 'Programación en PHP y MySQL'),
+(292, 'PHP Avanzado Orientado a Móviles'),
+(293, 'GIT, ITIL y DEVOPS'),
+(294, 'Laravel'),
+(295, 'Fundamentos de Ciberseguridad'),
+(296, 'Gestión de Riesgos y Protección de Datos'),
+(297, 'Ciberseguridad de Servidores'),
+(298, 'Ciberseguridad Forense');
+
+
+-- Insertar cursos en la tabla `courses`
+INSERT INTO `courses` (`id`, `name`) VALUES
+(299, 'Inteligencia Artificial Generativa para Docencia'),
+(300, 'Programación VBA con Microsoft Excel para Docencia'),
+(301, 'Software Gestor Bibliográfico para la Investigación'),
+(302, 'Software Antiplagio para la Investigación'),
+(303, 'Programación R y RStudio'),
+(304, 'Software SPSS'),
+(305, 'Software STATA'),
+(306, 'Software Python'),
+(307, 'Arduino - Nivel Básico'),
+(308, 'Arduino - Nivel Intermedio'),
+(309, 'Arduino - Nivel Avanzado'),
+(310, 'Arduino - Nivel Experto');
+
+
+
+-- Insertar cursos extracurriculares en la tabla `courses`
+INSERT INTO `courses` (`id`, `name`) VALUES
+(311, 'Bases de Datos y Lenguaje SQL'),
+(312, 'Programación R y RStudio avanzado'),
+(313, 'Programación Python básico'),
+(314, 'Power BI'),
+(315, 'Servidores en Linux básico'),
+(316, 'Servidores en Linux Avanzado'),
+(317, 'Servidores en Windows básico'),
+(318, 'Servidores en Windows avanzado'),
+(319, 'Corel Draw'),
+(320, 'Adobe Photoshop'),
+(321, 'Adobe Illustrator'),
+(322, 'Adobe After Effects'),
+(323, 'Adobe Premiere'),
+(324, 'Adobe InDesign'),
+(325, 'Matlab'),
+(326, 'Programación C#'),
+(327, 'Programación C++'),
+(328, 'Programación Java'),
+(329, 'Programación Python intermedio'),
+(330, 'Programación Python avanzado'),
+(331, 'Programación Laravel'),
+(332, 'Programación Google Colab'),
+(333, 'Programación Go'),
+(334, 'Programación Kotlin'),
+(335, 'Big Data'),
+(336, 'Statistics'),
+(337, 'Software Minitab'),
+(338, 'Software SAS'),
+(339, 'Software Epidat, Epinfo'),
+(340, 'Software Stata'),
+(341, 'Software Eviews'),
+(342, 'Cisco Packet Tracer básico'),
+(343, 'Cisco Packet Tracer avanzado'),
+(344, 'Internet de las cosas'),
+(345, 'Administración de Moodle I'),
+(346, 'Administración de Moodle II'),
+(347, 'Scratch'),
+(348, 'ArcGIS'),
+(349, 'Oracle'),
+(350, 'MariaDB'),
+(351, 'MongoDB'),
+(352, 'LaTeX');

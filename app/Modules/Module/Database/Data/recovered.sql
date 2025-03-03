@@ -21,4 +21,5 @@ INSERT INTO `modules` (`id`, `name`) VALUES
 (19, 'Ciberseguridad y Redes'),
 (20, 'Informática para docentes'),
 (21, 'Informática para investigación'),
-(22, 'Programación robótica');
+(22, 'Programación robótica'),
+(23, 'Extracurricular');

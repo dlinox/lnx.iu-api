@@ -401,7 +401,6 @@ class EnrollmentController extends Controller
             return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
         }
     }
-
     //get enalble groups by user authenticated
 
     public function enabledGroupsEnrollment(Request $request)

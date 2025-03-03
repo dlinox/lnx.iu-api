@@ -41,6 +41,11 @@ class CurriculumCourse extends Model
         'is_enabled' => 'boolean',
     ];
 
+    
+    static $searchColumns = [
+        'courses.name',
+    ];
+
 
     static function getPreRequisiteById($id)
     {

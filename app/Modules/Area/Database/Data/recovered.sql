@@ -3,11 +3,14 @@ INSERT INTO `areas` (`id`, `name`) VALUES (1, 'CURSOS REGULARES');
 INSERT INTO `areas` (`id`, `name`) VALUES (2, 'CURSOS ESPECIALES');
 
 INSERT INTO `areas` (`id`, `name`) VALUES 
-(3, 'Técnico en Computación e Informática'),
-(4, 'Técnico en Informática para Ingenierías'),
-(5, 'Ciencia de datos'),
-(6, 'Microsoft Excel'),
-(7, 'Desarrollo de Software'),
-(8, 'Ciberseguridad y Redes'),
-(9, 'Informática para docentes'),
-(10, 'Informática para investigación');
+(3, 'Base de Datos Distribuidas'),
+(4, 'Sistemas CAD Básico'),
+(5, 'Sistemas CAD Intermedio'),
+(6, 'Sistemas CAD Avanzado'),
+(7, 'Ciencia de Datos'),
+(8, 'Microsoft Excel'),
+(9, 'Desarrollo de Software'),
+(10, 'Ciberseguridad y Redes'),
+(11, 'Informática para docentes'),
+(12, 'Informática para investigación'),
+(13, 'Programación robótica');
