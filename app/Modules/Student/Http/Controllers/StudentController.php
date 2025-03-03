@@ -94,9 +94,6 @@ class StudentController extends Controller
         }
     }
 
-
-    
-
     public function update(StudentUpdateRequest $request)
     {
         try {
@@ -119,6 +116,38 @@ class StudentController extends Controller
             $Student = Student::find($request->id);
             $Student->delete();
             return ApiResponse::success(null, 'Registro eliminado correctamente', 204);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+
+
+    public function getItemsForSelect(Request $request)
+    {
+        try {
+
+            $query = Student::select(
+                'students.id as value',
+                DB::raw("CONCAT_WS(' ',people.name,people.last_name_father,people.last_name_mother) as label")
+            )
+                ->join('people', 'students.person_id', '=', 'people.id')
+                ->enabled();
+
+            if ($request->search) {
+                $query->where(function ($query) use ($request) {
+                    $query->whereRaw("CONCAT_WS(' ',people.name,people.last_name_father,people.last_name_mother) like '%" . $request->search . "%'");
+                });
+            }
+            if ($request->limit) {
+                $query->limit($request->limit);
+            } else {
+                $query->limit(10);
+            }
+            if ($request->id) {
+                $query->whereIn('students.id', explode(',', $request->id));
+            }
+            $item = $query->get();
+            return ApiResponse::success($item);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
         }

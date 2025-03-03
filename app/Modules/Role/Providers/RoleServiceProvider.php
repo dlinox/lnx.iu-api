@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Modules\User\Providers;
+namespace App\Modules\Role\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class UserServiceProvider extends ServiceProvider
+class RoleServiceProvider extends ServiceProvider
 {
     public function boot()
     {

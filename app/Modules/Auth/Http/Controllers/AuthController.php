@@ -23,7 +23,7 @@ class AuthController extends Controller
         $this->user = $user;
     }
 
-    public function signInAdmin(Request $request)
+    public function signIn(Request $request)
     {
         $user = $this->user->select(
             'users.*',
@@ -32,7 +32,7 @@ class AuthController extends Controller
                 $query->where('username', $request->username)
                     ->orWhere('email', $request->username);
             })
-            ->where('users.level_acount', 'admin')
+            ->where('users.account_level', 'admin')
             ->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {

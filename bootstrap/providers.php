@@ -39,5 +39,7 @@ return [
     App\Modules\EnrollmentGroup\Providers\EnrollmentGroupServiceProvider::class,
     //EnrollmentGradeServiceProvider
     App\Modules\EnrollmentGrade\Providers\EnrollmentGradeServiceProvider::class,
+    //RoleServiceProvider
+    App\Modules\Role\Providers\RoleServiceProvider::class,
 
 ];

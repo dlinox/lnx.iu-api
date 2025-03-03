@@ -14,14 +14,11 @@ class StudentType extends Model
         'name',
         'is_enabled',
     ];
-
     protected $casts = [
         'is_enabled' => 'boolean',
     ];
-
     static $searchColumns = [
         'name',
     ];
-
     public $timestamps = false;
 }

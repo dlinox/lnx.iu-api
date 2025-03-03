@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum('account_level', ['admin', 'teacher', 'student']);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->unsignedBigInteger('model_id')->nullable();
             $table->boolean('is_enabled')->default(true);
             $table->timestamps();
         });

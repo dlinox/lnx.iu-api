@@ -2,6 +2,7 @@
 
 namespace App\Modules\User\Models;
 
+use App\Traits\HasDataTable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -9,7 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use  Notifiable,  HasRoles, HasApiTokens;
+    use  Notifiable,  HasRoles, HasApiTokens, HasDataTable;
 
     protected $fillable = [
         'name',
@@ -19,6 +20,7 @@ class User extends Authenticatable
         'account_level',
         'email_verified_at',
         'is_enabled',
+        'model_id',
     ];
 
     protected $hidden = [
@@ -33,4 +35,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    static $searchColumns = [
+        'users.name',
+        'users.username',
+        'users.email',
+    ];
 }

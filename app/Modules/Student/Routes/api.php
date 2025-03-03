@@ -11,4 +11,6 @@ Route::prefix('api/student')->group(function () {
 
     Route::get('item/by-id/{id}', [StudentController::class, 'getById']);
     Route::post('search/list', [StudentController::class, 'searchList']);
+    //getItemsForSelect
+    Route::get('items/for-select', [StudentController::class, 'getItemsForSelect']);
 });
