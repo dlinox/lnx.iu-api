@@ -30,7 +30,7 @@ class DocumentTypeController extends Controller
             $documentType = DocumentType::create($data);
             return ApiResponse::success($documentType, 'Registro creado correctamente', 201);
         } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage());
+            return ApiResponse::error($e->getMessage(), 'Error al crear el registro');
         }
     }
 

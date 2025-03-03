@@ -1,28 +1,30 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\User\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use  Notifiable,  HasRoles, HasApiTokens;
 
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
+        'account_level',
+        'email_verified_at',
+        'is_enabled',
     ];
 
-    
     protected $hidden = [
+        'level_acount',
         'password',
-        'remember_token',
     ];
-
 
     protected function casts(): array
     {

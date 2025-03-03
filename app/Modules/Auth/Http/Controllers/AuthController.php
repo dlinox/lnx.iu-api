@@ -23,18 +23,16 @@ class AuthController extends Controller
         $this->user = $user;
     }
 
-    public function signIn(Request $request)
+    public function signInAdmin(Request $request)
     {
         $user = $this->user->select(
             'users.*',
         )
-            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
             ->where(function ($query) use ($request) {
                 $query->where('username', $request->username)
                     ->orWhere('email', $request->username);
             })
-            ->where('roles.name', 'admin')
+            ->where('users.level_acount', 'admin')
             ->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -62,8 +60,6 @@ class AuthController extends Controller
             ->where('roles.name', 'estudiante')
             ->first();
 
-        // return $user;
-
         if (!$user || !Hash::check($request->password, $user->password)) {
             return ApiResponse::error('', 'Credenciales incorrectas');
         }
@@ -75,7 +71,6 @@ class AuthController extends Controller
         return ApiResponse::success($this->userState($user));
     }
 
-    //signUp
     public function signUp(SignUpRequest $request)
     {
         try {
@@ -145,7 +140,7 @@ class AuthController extends Controller
             return $token;
         }
 
-        return $user->createToken('app-token')->plainTextToken;
+        return $user->createToken('admin-access-token')->plainTextToken;
     }
 
     private function getUserRole($user)

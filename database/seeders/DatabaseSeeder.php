@@ -20,13 +20,13 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'username' => 'admin',
             'password' => 'admin',
+            'account_level' => 'admin',
             'is_enabled' => true,
         ]);
-        //crear rol
+
         $role = Role::create(['name' => 'admin']);
         Role::create(['name' => 'estudiante']);
         Role::create(['name' => 'docente']);
-        //asignar rol al usuario
         $user = User::find(1);
         $user->assignRole($role);
     }

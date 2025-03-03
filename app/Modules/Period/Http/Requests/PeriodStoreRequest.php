@@ -26,7 +26,6 @@ class PeriodStoreRequest extends FormRequest
                     return $query->where('year', $this->year);
                 }),
             ],
-            'is_enabled' => 'required|boolean',
         ];
     }
 
@@ -39,7 +38,6 @@ class PeriodStoreRequest extends FormRequest
             'month.required' => 'Obligatorio',
             'month.between' => 'No es un mes válido',
             'month.unique' => 'El periodo ya existe',
-            'is_enabled.required' => 'Obligatorio',
         ];
     }
 

@@ -22,7 +22,7 @@ class ApiResponse
         ], $status);
     }
 
-    public static function warning($message = null, $data = null, $status = 300)
+    public static function warning($data = null, $message = null,$status = 300)
     {
         return response()->json([
             'success' => false,

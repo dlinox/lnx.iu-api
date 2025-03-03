@@ -16,14 +16,15 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'account_level',
+        'email_verified_at',
         'is_enabled',
     ];
 
-
     protected $hidden = [
+        'level_acount',
         'password',
     ];
-
 
     protected function casts(): array
     {
