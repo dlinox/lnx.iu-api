@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Modules\CoursePrice\Http\Requests\CoursePriceStoreRequest;
+use App\Modules\CoursePrice\Http\Requests\CoursePriceUpdateRequest;
 use App\Modules\CoursePrice\Models\CoursePrice;
 use App\Modules\CoursePrice\Http\Resources\CoursePriceDataTableItemsResource;
-use App\Modules\Price\Http\Requests\PriceUpdateRequest as RequestsPriceUpdateRequest;
+use Illuminate\Support\Facades\DB;
 
 class CoursePriceController extends Controller
 {
@@ -19,17 +20,17 @@ class CoursePriceController extends Controller
             $items = CoursePrice::select(
                 'course_prices.id',
                 'course_prices.course_id',
-                'courses.name as course',
+                DB::raw('CONCAT_WS(" - ", courses.code, courses.name) as course'),
                 'course_prices.student_type_id',
                 'student_types.name as student_type',
                 'course_prices.presential_price',
                 'course_prices.virtual_price',
                 'course_prices.is_enabled',
-                'course_prices.curriculum_id'
+                'courses.curriculum_id'
             )
                 ->join('courses', 'courses.id', '=', 'course_prices.course_id')
                 ->join('student_types', 'student_types.id', '=', 'course_prices.student_type_id')
-                ->where('course_prices.curriculum_id', $request->filters['curriculumId'])
+                ->where('courses.curriculum_id', $request->filters['curriculumId'])
                 ->orderBy('courses.name')
                 ->orderBy('student_types.name')
                 ->dataTable($request);
@@ -52,7 +53,7 @@ class CoursePriceController extends Controller
         }
     }
 
-    public function update(RequestsPriceUpdateRequest $request)
+    public function update(CoursePriceUpdateRequest $request)
     {
         try {
             $data = $request->validated();

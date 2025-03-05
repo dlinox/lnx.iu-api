@@ -13,19 +13,24 @@ class Module extends Model
 
     protected $fillable = [
         'name',
+        'code',
         'description',
+        'curriculum_id',
         'is_enabled',
+        'is_extracurricular',
     ];
 
     protected $casts = [
+        'curriculum_id' => 'integer',
+        'is_extracurricular' => 'boolean',
         'is_enabled' => 'boolean',
     ];
 
     static $searchColumns = [
-        'name',
+        'modules.name',
+        'modules.code',
+        'curriculums.name',
     ];
-
-    //get module by curriculum 2
 
     public static function getByCurriculum($curriculum_id)
     {

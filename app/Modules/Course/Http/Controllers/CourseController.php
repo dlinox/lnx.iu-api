@@ -9,6 +9,7 @@ use App\Modules\Course\Http\Requests\CourseStoreRequest;
 use App\Modules\Course\Http\Requests\CourseUpdateRequest;
 use App\Modules\Course\Models\Course;
 use App\Modules\Course\Http\Resources\CourseDataTableItemsResource;
+use App\Modules\Course\Http\Resources\CourseItemResource;
 // use App\Modules\CurriculumModule\Models\CurriculumModule;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +18,30 @@ class CourseController extends Controller
     public function loadDataTable(Request $request)
     {
         try {
-            $items = Course::dataTable($request);
+            $items = Course::select(
+                'courses.id',
+                'courses.code',
+                'courses.name',
+                'courses.is_enabled',
+                'courses.area_id',
+                'areas.name as area',
+                'modules.name as module',
+                'curriculums.name as curriculum',
+                'courses.hours_practice',
+                'courses.hours_theory',
+                'courses.credits',
+                'courses.pre_requisite_id',
+                'courses.order',
+                'courses.description',
+                'courses.units',
+                DB::raw("CONCAT_WS(' - ', pre_requisite.code, pre_requisite.name) as pre_requisite")
+            )
+                ->join('areas', 'courses.area_id', '=', 'areas.id')
+                ->join('curriculums', 'curriculums.id', '=', 'courses.curriculum_id')
+                ->join('modules', 'modules.id', '=', 'courses.module_id')
+                ->leftJoin('courses as pre_requisite', 'pre_requisite.id', '=', 'courses.pre_requisite_id')
+                ->where('courses.curriculum_id', 'LIKE', '%' . $request->filters['curriculumId'] . '%')
+                ->dataTable($request);
             CourseDataTableItemsResource::collection($items);
             return ApiResponse::success($items);
         } catch (\Exception $e) {
@@ -62,7 +86,28 @@ class CourseController extends Controller
     public function getItemsForSelect(Request $request)
     {
         try {
-            $item = Course::select('id as value', 'name as label')->enabled()->get();
+            $item = Course::select(
+                'id as value',
+                DB::raw("CONCAT_WS(' - ', code, name) as label")
+            )
+                ->distinct()
+                ->when($request->has('curriculumId'), function ($query) use ($request) {
+                    return $query->where('curriculum_id', $request->curriculumId);
+                })
+                ->enabled()
+                ->orderBy('label')
+                ->get();
+            return ApiResponse::success($item);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+
+    public function getItemById(Request $request)
+    {
+        try {
+            $item = Course::find($request->id);
+            $item =  CourseItemResource::make($item);
             return ApiResponse::success($item);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());

@@ -1,235 +1,213 @@
-INSERT INTO `courses` (`id`, `name`) VALUES (1, TRIM('MS WINDOWS E INTERNET'));
-INSERT INTO `courses` (`id`, `name`) VALUES (2, TRIM('MS WORD'));
-INSERT INTO `courses` (`id`, `name`) VALUES (3, TRIM('MS EXCEL'));
-INSERT INTO `courses` (`id`, `name`) VALUES (4, TRIM('MS POWER POINT Y ACCESS'));
-INSERT INTO `courses` (`id`, `name`) VALUES (9, TRIM('VISUAL FOX PRO II'));
-INSERT INTO `courses` (`id`, `name`) VALUES (10, TRIM('ENSAMBLAJE Y MANTENIMIENTO DE PCS'));
-INSERT INTO `courses` (`id`, `name`) VALUES (13, TRIM('AUTOCAD BASICO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (14, TRIM('AUTOCAD INTERMEDIO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (15, TRIM('AUTOCAD AVANZADO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (16, TRIM('PRINT ARTIST Y VISIO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (17, TRIM('COREL DRAW BASICO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (18, TRIM('COREL DRAW INTERMEDIO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (19, TRIM('MACROMEDIA FIREWORK Y FLASH BASICO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (20, TRIM('MACROMEDIA FLASH AVANZADO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (21, TRIM('MACROMEDIA DREAMWEAVER'));
-INSERT INTO `courses` (`id`, `name`) VALUES (22, TRIM('MANEJO SOFTWARE EDUCATIVO NI'));
-INSERT INTO `courses` (`id`, `name`) VALUES (23, TRIM('MANEJO SOFTWARE EDUCATIVO JOVEN'));
-INSERT INTO `courses` (`id`, `name`) VALUES (24, TRIM('MANEJO SOFTWARE EDUCATIVO PROFESIONAL'));
-INSERT INTO `courses` (`id`, `name`) VALUES (25, TRIM('MS PROJECT'));
-INSERT INTO `courses` (`id`, `name`) VALUES (26, TRIM('EDICION DE AUDIO Y VIDEO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (27, TRIM('ARCGIS'));
-INSERT INTO `courses` (`id`, `name`) VALUES (28, TRIM('SPSS'));
-INSERT INTO `courses` (`id`, `name`) VALUES (29, TRIM('GNU LINUX'));
-INSERT INTO `courses` (`id`, `name`) VALUES (30, TRIM('ARCHICAD'));
-INSERT INTO `courses` (`id`, `name`) VALUES (31, TRIM('MECANOGRAFIA'));
-INSERT INTO `courses` (`id`, `name`) VALUES (32, TRIM('AUTOCAD LAND'));
-INSERT INTO `courses` (`id`, `name`) VALUES (33, TRIM('EXCEL AVANZADO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (35, TRIM('S-10 COSTOS Y PRESUPUESTOS'));
-INSERT INTO `courses` (`id`, `name`) VALUES (36, TRIM('ETABS'));
-INSERT INTO `courses` (`id`, `name`) VALUES (37, TRIM('SEMINARIO OFIMATICA'));
-INSERT INTO `courses` (`id`, `name`) VALUES (38, TRIM('OFIMATICA'));
-INSERT INTO `courses` (`id`, `name`) VALUES (39, TRIM('HERRAMIENTAS Y RECURSOS TIC'));
-INSERT INTO `courses` (`id`, `name`) VALUES (40, TRIM('3D ESTUDIO MAX I'));
-INSERT INTO `courses` (`id`, `name`) VALUES (41, TRIM('EXCEL APLICADO A PROYEC'));
-INSERT INTO `courses` (`id`, `name`) VALUES (42, TRIM('OFIMATICA ESPECIAL'));
-INSERT INTO `courses` (`id`, `name`) VALUES (43, TRIM('PROGRAMACION EN AUTOCAD'));
-INSERT INTO `courses` (`id`, `name`) VALUES (44, TRIM('CIVIL 3 DESING'));
-INSERT INTO `courses` (`id`, `name`) VALUES (45, TRIM('ENSAMB. MANTEN.'));
-INSERT INTO `courses` (`id`, `name`) VALUES (180, TRIM('STATA I'));
-INSERT INTO `courses` (`id`, `name`) VALUES (181, TRIM('TOPOGRAFIA DIGITAL'));
-INSERT INTO `courses` (`id`, `name`) VALUES (182, TRIM('DISEÑO GRAFICO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (183, TRIM('MS VISIO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (184, TRIM('AUTOCAD I'));
-INSERT INTO `courses` (`id`, `name`) VALUES (185, TRIM('AUTOCAD II'));
-INSERT INTO `courses` (`id`, `name`) VALUES (186, TRIM('AUTOCAD III'));
-INSERT INTO `courses` (`id`, `name`) VALUES (187, TRIM('MAP INFO DISCOVER'));
-INSERT INTO `courses` (`id`, `name`) VALUES (188, TRIM('SAP 2000 BASICO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (189, TRIM('DISEÑO DE PAGINAS WEB'));
-INSERT INTO `courses` (`id`, `name`) VALUES (190, TRIM('SOFTWARE EDUCATIVO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (191, TRIM('DISEÑO GRÁFICO COREL DRAW'));
-INSERT INTO `courses` (`id`, `name`) VALUES (192, TRIM('EXCEL BASICO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (193, TRIM('WATERCAD'));
-INSERT INTO `courses` (`id`, `name`) VALUES (194, TRIM('AUTOCAD CIVIL 3D BÁSICO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (195, TRIM('EXCEL CONTABLE'));
-INSERT INTO `courses` (`id`, `name`) VALUES (196, TRIM('DISEÑO GRÁFICO PHOTOSHOP'));
-INSERT INTO `courses` (`id`, `name`) VALUES (197, TRIM('CIVIL 3D BASICO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (198, TRIM('AUTOCAD CIVIL 3D INTERMEDIO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (199, TRIM('MECANOGRAFIA COMPUTARIZADA'));
-INSERT INTO `courses` (`id`, `name`) VALUES (200, TRIM('MECANOGRAFIA COMPUTARIZADA'));
-INSERT INTO `courses` (`id`, `name`) VALUES (201, TRIM('MS WINDOWS E INTERNET-'));
-INSERT INTO `courses` (`id`, `name`) VALUES (202, TRIM('CIVIL 3D AVANZADO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (203, TRIM('SQL SERVER'));
-INSERT INTO `courses` (`id`, `name`) VALUES (204, TRIM('MYSQL '));
-INSERT INTO `courses` (`id`, `name`) VALUES (205, TRIM('MICROSOFT ACCESS'));
-INSERT INTO `courses` (`id`, `name`) VALUES (206, TRIM('AUTOCAD II'));
-INSERT INTO `courses` (`id`, `name`) VALUES (207, TRIM('AUTOCAD II'));
-INSERT INTO `courses` (`id`, `name`) VALUES (208, TRIM('CIVIL 3D INTERMEDIO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (209, TRIM('WORD'));
-INSERT INTO `courses` (`id`, `name`) VALUES (210, TRIM('INTRODUCCIÃ“N A LA INFORMATICA BASICA'));
-INSERT INTO `courses` (`id`, `name`) VALUES (211, TRIM('MODULO II INFORMÃTICA BÃSICA'));
-INSERT INTO `courses` (`id`, `name`) VALUES (212, TRIM('WORD'));
-INSERT INTO `courses` (`id`, `name`) VALUES (213, TRIM('MS WORD-POWERPOINT'));
-INSERT INTO `courses` (`id`, `name`) VALUES (214, TRIM('POWER POINT ACCESS'));
-INSERT INTO `courses` (`id`, `name`) VALUES (215, TRIM('SISTEMAS OPERATIVOS'));
-INSERT INTO `courses` (`id`, `name`) VALUES (216, TRIM('REVIT ARCHITECTURE I'));
-INSERT INTO `courses` (`id`, `name`) VALUES (217, TRIM('REVIT ARCHITECTURE II'));
-INSERT INTO `courses` (`id`, `name`) VALUES (218, TRIM('REDES Y CONECTIVIDAD'));
-INSERT INTO `courses` (`id`, `name`) VALUES (219, TRIM('VISUAL FOXPRO 9.0'));
-INSERT INTO `courses` (`id`, `name`) VALUES (220, TRIM('APLICACIÓN CLIENTE SERVIDOR'));
-INSERT INTO `courses` (`id`, `name`) VALUES (221, TRIM('DELPHIN EXPRESS'));
-INSERT INTO `courses` (`id`, `name`) VALUES (222, TRIM('PROGRAMACIÓN EN JAVA I'));
-INSERT INTO `courses` (`id`, `name`) VALUES (223, TRIM('PROGRAMACIÓN EN JAVA II'));
-INSERT INTO `courses` (`id`, `name`) VALUES (224, TRIM('GEOSTUDIO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (225, TRIM('PROGRAMACIÓN DE OBRA CON MS PROJECT'));
-INSERT INTO `courses` (`id`, `name`) VALUES (226, TRIM('SIGA BASICO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (227, TRIM('REVIT ARCHITECTURE III'));
-INSERT INTO `courses` (`id`, `name`) VALUES (228, TRIM('PROTECCIÓN DE REDES ELÉCTRICAS'));
-INSERT INTO `courses` (`id`, `name`) VALUES (229, TRIM('LATEX'));
-INSERT INTO `courses` (`id`, `name`) VALUES (230, TRIM('FULL-STACK WEB DEVELOPMENT I'));
-INSERT INTO `courses` (`id`, `name`) VALUES (231, TRIM('DISEÑO DE REDES DE BAJA Y MEDIA TENSIÓN'));
-INSERT INTO `courses` (`id`, `name`) VALUES (232, TRIM('DISEÑO DE LÍNEAS DE TRANSMISIÓN'));
-INSERT INTO `courses` (`id`, `name`) VALUES (233, TRIM('EXCEL FINANCIERO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (234, TRIM('SIAF BÁSICO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (235, TRIM('SIAF INTERMEDIO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (236, TRIM('EXCEL AVANZADO.'));
-INSERT INTO `courses` (`id`, `name`) VALUES (237, TRIM('SIAF AVANZADO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (238, TRIM('ENDNOTE'));
-INSERT INTO `courses` (`id`, `name`) VALUES (239, TRIM('PROGRAMACIÓN EN R - I'));
-INSERT INTO `courses` (`id`, `name`) VALUES (240, TRIM('ANÁLISIS DE DATOS EN WEKA I'));
-INSERT INTO `courses` (`id`, `name`) VALUES (241, TRIM('STATA II'));
-INSERT INTO `courses` (`id`, `name`) VALUES (242, TRIM('WORKSHOP ETHICAL HACKING'));
-INSERT INTO `courses` (`id`, `name`) VALUES (243, TRIM('EXCEL INTERMEDIO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (244, TRIM('DISEÑO Y ADMINISTRACIÓN DE REDES CON SERVIDOR MikroTik'));
-INSERT INTO `courses` (`id`, `name`) VALUES (245, TRIM('FUNDAMENTOS DE PROGRAMACION I'));
-INSERT INTO `courses` (`id`, `name`) VALUES (246, TRIM('SPSS AVANZADO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (247, TRIM('MATLAB AVANZADO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (248, TRIM('PYTHON AVANZADO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (249, TRIM('LATEX AVANZADO'));
-INSERT INTO `courses` (`id`, `name`) VALUES (250, TRIM(' INTELIGENCIA ARTIFICIAL GENERATIVA PARA DOCENCIA'));
-INSERT INTO `courses` (`id`, `name`) VALUES (251, TRIM('PROGRAMACIÓN VBA CON MICROSOFT EXCEL PARA LA DOCENCIA'));
-INSERT INTO `courses` (`id`, `name`) VALUES (252, TRIM('SOFTWARE ANTIPLAGIO PARA LA INVESTIGACIÓN'));
-INSERT INTO `courses` (`id`, `name`) VALUES (253, TRIM('SOFTWARE GESTOR BIBLIOGRÁFICO PARA LA INVESTIGACIÓN'));
-INSERT INTO `courses` (`id`, `name`) VALUES (254, TRIM('SOFTWARE R PARA LA INVESTIGACIÓN'));
-
-INSERT INTO `courses` (`id`, `name`) VALUES
-(255, 'Sistema Operativo Windows'),
-(256, 'Microsoft Word'),
-(257, 'Microsoft Excel Básico'),
-(258, 'Microsoft PowerPoint y Canva');
-
-INSERT INTO `courses` (`id`, `name`) VALUES
-(259, 'Programación en R'),
-(260, 'Procesamiento de datos con SPSS'),
-(261, 'Microsoft Excel Avanzado'),
-(262, 'Programación Python');
-
-INSERT INTO `courses` (`id`, `name`) VALUES
-(263, 'Mantenimiento y Reparación de Hardware'),
-(264, 'Gestión de Bases de Datos (SQL)'),
-(265, 'Programación Web y Móvil'),
-(266, 'Redes de Computadoras');	
-
-INSERT INTO `courses` (`id`, `name`) VALUES
-(267, 'Autocad Básico'),
-(268, 'Sistemas de Información Geográfica (GIS)'),
-(269, 'Sistemas de Gestión Pública (SIGA-SIAF-SEACE)'),
-(270, 'Programación Python');
-
--- Insertar cursos en la tabla `courses`
-INSERT INTO `courses` (`id`, `name`) VALUES
-(271, 'Autocad Intermedio'),
-(272, 'GIS Avanzado (IoT)'),
-(273, 'Microsoft Project'),
-(274, 'Revit Architecture');
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (1, 'MS WINDOWS E INTERNET', 'A', 1, 0, 0, 0, NULL, 1, 1, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (2, 'MS WORD', 'B', 2, 0, 0, 0, NULL, 1, 1, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (3, 'MS EXCEL', 'C', 3, 0, 0, 0, NULL, 1, 1, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (4, 'MS POWER POINT Y ACCESS', 'D', 4, 0, 0, 0, NULL, 1, 1, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (9, 'VISUAL FOX PRO II', 'S/C', 5, 0, 0, 0, NULL, 1, 2, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (10, 'ENSAMBLAJE Y MANTENIMIENTO DE PCS', 'M', 8, 0, 0, 0, NULL, 1, 3, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (13, 'AUTOCAD BASICO', 'P', 1, 0, 0, 0, NULL, 1, 4, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (14, 'AUTOCAD INTERMEDIO', 'Q', 2, 0, 0, 0, NULL, 1, 4, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (15, 'AUTOCAD AVANZADO', 'R', 3, 0, 0, 0, NULL, 1, 4, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (16, 'PRINT ARTIST Y VISIO', 'S', 1, 0, 0, 0, NULL, 1, 5, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (17, 'COREL DRAW BASICO', 'T', 2, 0, 0, 0, NULL, 1, 5, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (18, 'COREL DRAW INTERMEDIO', 'U', 3, 0, 0, 0, NULL, 1, 5, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (19, 'MACROMEDIA FIREWORK Y FLASH BASICO', 'V', 1, 0, 0, 0, NULL, 1, 6, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (20, 'MACROMEDIA FLASH AVANZADO', 'W', 2, 0, 0, 0, NULL, 1, 6, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (21, 'MACROMEDIA DREAMWEAVER', 'X', 3, 0, 0, 0, NULL, 1, 6, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (22, 'MANEJO SOFTWARE EDUCATIVO NI', 'Y', 1, 0, 0, 0, NULL, 2, 7, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (23, 'MANEJO SOFTWARE EDUCATIVO JOVEN', 'Z', 2, 0, 0, 0, NULL, 2, 7, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (24, 'MANEJO SOFTWARE EDUCATIVO PROFESIONAL', 'EA', 3, 0, 0, 0, NULL, 2, 7, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (25, 'MS PROJECT', 'MP', 9, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (26, 'EDICION DE AUDIO Y VIDEO', 'EA', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (27, 'ARCGIS', 'AG', 7, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (28, 'SPSS', 'SP', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (29, 'GNU LINUX', 'GL', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (30, 'ARCHICAD', 'AC', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (31, 'MECANOGRAFIA', 'ME', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (32, 'AUTOCAD LAND', 'AL', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (33, 'EXCEL AVANZADO', 'EX', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (35, 'S-10 COSTOS Y PRESUPUESTOS', 'CP', 8, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (36, 'ETABS', 'ET', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (37, 'SEMINARIO OFIMATICA', 'SO', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (38, 'OFIMATICA', 'OF', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (39, 'HERRAMIENTAS Y RECURSOS TIC', 'HR', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (40, '3D ESTUDIO MAX I', 'EM', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (41, 'EXCEL APLICADO A PROYEC', 'AP', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (42, 'OFIMATICA ESPECIAL', 'OE', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (43, 'PROGRAMACION EN AUTOCAD', 'PA', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (44, 'CIVIL 3 DESING', 'CD', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (45, 'ENSAMB. MANTEN.', 'EN', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (180, 'STATA I', 'ST', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (181, 'TOPOGRAFIA DIGITAL', 'TD', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (182, 'DISEÑO GRAFICO', 'DG', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (183, 'MS VISIO', 'E', 5, 0, 0, 0, NULL, 1, 1, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (184, 'AUTOCAD I', 'PD', 4, 0, 0, 0, NULL, 1, 4, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (185, 'AUTOCAD II', 'QD', 5, 0, 0, 0, NULL, 1, 4, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (186, 'AUTOCAD III', 'RD', 6, 0, 0, 0, NULL, 1, 4, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (187, 'MAP INFO DISCOVER', 'MD', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (188, 'SAP 2000 BASICO', 'ZB', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (189, 'DISEÑO DE PAGINAS WEB', 'DP', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (190, 'SOFTWARE EDUCATIVO', 'SE', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (191, 'DISEÑO GRÁFICO COREL DRAW', 'DC', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (192, 'EXCEL BASICO', 'EB', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (193, 'WATERCAD', 'W', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (194, 'AUTOCAD CIVIL 3D BÁSICO', '3D', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (195, 'EXCEL CONTABLE', 'EC', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (196, 'DISEÑO GRÁFICO PHOTOSHOP', 'PS', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (197, 'CIVIL 3D BASICO', 'CB', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (198, 'AUTOCAD CIVIL 3D INTERMEDIO', 'CI', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (199, 'MECANOGRAFIA COMPUTARIZADA', 'MC', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (200, 'MECANOGRAFIA COMPUTARIZADA', 'MC', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (201, 'MS WINDOWS E INTERNET-', 'A6', 6, 0, 0, 0, NULL, 1, 1, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (202, 'CIVIL 3D AVANZADO', 'CA', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (203, 'SQL SERVER', 'SQ', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (204, 'MYSQL', 'MS', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (205, 'MICROSOFT ACCESS', 'AC', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (206, 'AUTOCAD II', 'QD', 7, 0, 0, 0, NULL, 1, 4, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (207, 'AUTOCAD II', 'QD', 8, 0, 0, 0, NULL, 1, 4, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (208, 'CIVIL 3D INTERMEDIO', 'I1', 4, 0, 0, 0, NULL, 2, 7, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (209, 'WORD', 'B2', 7, 0, 0, 0, NULL, 1, 1, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (210, 'INTRODUCCIÃ“N A LA INFORMATICA BASICA', 'IB', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (211, 'MODULO II INFORMÃTICA BÃSICA', 'IB', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (212, 'WORD', 'B3', 8, 0, 0, 0, NULL, 1, 1, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (213, 'MS WORD-POWERPOINT', 'WP', 9, 0, 0, 0, NULL, 1, 1, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (214, 'POWER POINT ACCESS', 'D6', 10, 0, 0, 0, NULL, 1, 1, 1, 0);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (215, 'SISTEMAS OPERATIVOS', 'S1', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (216, 'REVIT ARCHITECTURE I', 'J1', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (217, 'REVIT ARCHITECTURE II', 'HT', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (218, 'REDES Y CONECTIVIDAD', 'RR', 2, 0, 0, 0, NULL, 1, 3, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (219, 'VISUAL FOXPRO 9.0', 'FX', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (220, 'APLICACIÓN CLIENTE SERVIDOR', 'O', 3, 0, 0, 0, NULL, 1, 3, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (221, 'DELPHIN EXPRESS', 'DL', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (222, 'PROGRAMACIÓN EN JAVA I', 'PJ', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (223, 'PROGRAMACIÓN EN JAVA II', 'PO', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (224, 'GEOSTUDIO', 'GO', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (225, 'PROGRAMACIÓN DE OBRA CON MS PROJECT', 'PJ', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (226, 'SIGA BASICO', 'SM', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (227, 'REVIT ARCHITECTURE III', 'RV', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (228, 'PROTECCIÓN DE REDES ELÉCTRICAS', 'DL', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (229, 'LATEX', 'LX', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (230, 'FULL-STACK WEB DEVELOPMENT I', 'FS', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (231, 'DISEÑO DE REDES DE BAJA Y MEDIA TENSIÓN', 'DR', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (232, 'DISEÑO DE LÍNEAS DE TRANSMISIÓN', 'DT', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (233, 'EXCEL FINANCIERO', 'XF', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (234, 'SIAF BÁSICO', 'SF', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (235, 'SIAF INTERMEDIO', 'SI', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (236, 'EXCEL AVANZADO.', 'EI', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (237, 'SIAF AVANZADO', 'SA', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (238, 'ENDNOTE', 'EN', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (239, 'PROGRAMACIÓN EN R - I', 'PR', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (240, 'ANÁLISIS DE DATOS EN WEKA I', 'WK', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (241, 'STATA II', 'TA', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (242, 'WORKSHOP ETHICAL HACKING', 'HK', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (243, 'EXCEL INTERMEDIO', 'XI', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (244, 'DISEÑO Y ADMINISTRACIÓN DE REDES CON SERVIDOR MikroTik', 'MK', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (245, 'FUNDAMENTOS DE PROGRAMACION I', 'FP', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (246, 'SPSS AVANZADO', 'SI', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (247, 'MATLAB AVANZADO', 'MA', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (248, 'PYTHON AVANZADO', 'PY', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (249, 'LATEX AVANZADO', 'LA', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (250, 'INTELIGENCIA ARTIFICIAL GENERATIVA PARA DOCENCIA', 'IA', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (251, 'PROGRAMACIÓN VBA CON MICROSOFT EXCEL PARA LA DOCENCIA', 'PM', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (252, 'SOFTWARE ANTIPLAGIO PARA LA INVESTIGACIÓN', 'AD', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (253, 'SOFTWARE GESTOR BIBLIOGRÁFICO PARA LA INVESTIGACIÓN', 'SG', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
+INSERT INTO `courses` (`id`, `name`, `code`, `order`, `hours_practice`, `hours_theory`, `credits`, `pre_requisite_id`, `area_id`, `module_id`, `curriculum_id`, `is_enabled`) VALUES (254, 'SOFTWARE R PARA LA INVESTIGACIÓN', 'SR', 0, 0, 0, 0, NULL, 2, 8, 1, 1);
 
 
--- Extracurriculares
-INSERT INTO `courses` (`id`, `name`) VALUES
-(275, 'Autocad Avanzado'),
-(276, 'Software de Costos y Presupuestos'),
-(277, 'PMBOOK para Arquitectura e Ingenierías'),
-(278, 'Revit Structure'),
-(279, 'Programación en Python'),
-(280, 'Inteligencia Estadística'),
-(281, 'Gestión de Base de Datos SQL y NoSQL'),
-(282, 'Modelamiento de Dataset'),
-(283, 'Machine Learning – Deep Learning'),
-(284, 'Python para Data Science'),
-(285, 'Microsoft Excel Básico'),
-(286, 'Microsoft Excel Intermedio'),
-(287, 'Microsoft Excel Avanzado'),
-(288, 'Microsoft Excel con Power BI'),
-(289, 'Microsoft Excel con Python'),
-(290, 'Minería de Datos con Excel'),
-(291, 'Programación en PHP y MySQL'),
-(292, 'PHP Avanzado Orientado a Móviles'),
-(293, 'GIT, ITIL y DEVOPS'),
-(294, 'Laravel'),
-(295, 'Fundamentos de Ciberseguridad'),
-(296, 'Gestión de Riesgos y Protección de Datos'),
-(297, 'Ciberseguridad de Servidores'),
-(298, 'Ciberseguridad Forense');
-
-
--- Insertar cursos en la tabla `courses`
-INSERT INTO `courses` (`id`, `name`) VALUES
-(299, 'Inteligencia Artificial Generativa para Docencia'),
-(300, 'Programación VBA con Microsoft Excel para Docencia'),
-(301, 'Software Gestor Bibliográfico para la Investigación'),
-(302, 'Software Antiplagio para la Investigación'),
-(303, 'Programación R y RStudio'),
-(304, 'Software SPSS'),
-(305, 'Software STATA'),
-(306, 'Software Python'),
-(307, 'Arduino - Nivel Básico'),
-(308, 'Arduino - Nivel Intermedio'),
-(309, 'Arduino - Nivel Avanzado'),
-(310, 'Arduino - Nivel Experto');
-
-
-
--- Insertar cursos extracurriculares en la tabla `courses`
-INSERT INTO `courses` (`id`, `name`) VALUES
-(311, 'Bases de Datos y Lenguaje SQL'),
-(312, 'Programación R y RStudio avanzado'),
-(313, 'Programación Python básico'),
-(314, 'Power BI'),
-(315, 'Servidores en Linux básico'),
-(316, 'Servidores en Linux Avanzado'),
-(317, 'Servidores en Windows básico'),
-(318, 'Servidores en Windows avanzado'),
-(319, 'Corel Draw'),
-(320, 'Adobe Photoshop'),
-(321, 'Adobe Illustrator'),
-(322, 'Adobe After Effects'),
-(323, 'Adobe Premiere'),
-(324, 'Adobe InDesign'),
-(325, 'Matlab'),
-(326, 'Programación C#'),
-(327, 'Programación C++'),
-(328, 'Programación Java'),
-(329, 'Programación Python intermedio'),
-(330, 'Programación Python avanzado'),
-(331, 'Programación Laravel'),
-(332, 'Programación Google Colab'),
-(333, 'Programación Go'),
-(334, 'Programación Kotlin'),
-(335, 'Big Data'),
-(336, 'Statistics'),
-(337, 'Software Minitab'),
-(338, 'Software SAS'),
-(339, 'Software Epidat, Epinfo'),
-(340, 'Software Stata'),
-(341, 'Software Eviews'),
-(342, 'Cisco Packet Tracer básico'),
-(343, 'Cisco Packet Tracer avanzado'),
-(344, 'Internet de las cosas'),
-(345, 'Administración de Moodle I'),
-(346, 'Administración de Moodle II'),
-(347, 'Scratch'),
-(348, 'ArcGIS'),
-(349, 'Oracle'),
-(350, 'MariaDB'),
-(351, 'MongoDB'),
-(352, 'LaTeX');
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (255, 'Sistema Operativo Windows', 'Este curso introduce los conceptos básicos del sistema operativo Windows, su manejo y configuración. Los estudiantes aprenderán a navegar, gestionar archivos, y personalizar su entorno de trabajo.', 'IM011', 32, 16, 2, 1, 2, 3, 9, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (256, 'Microsoft Word', 'Este curso enseña a crear y editar documentos profesionales, aplicando herramientas de formato avanzado, tablas, imágenes, estilos y referencias.', 'IM012', 32, 16, 2, 2, 2, 3, 9, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (257, 'Microsoft Excel Básico', 'Curso introductorio para aprender a gestionar hojas de cálculo, crear fórmulas simples, gráficos básicos y aplicar funciones esenciales.', 'IM013', 32, 16, 2, 3, 2, 3, 9, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (258, 'Microsoft PowerPoint y Canva', 'En este curso, los estudiantes aprenderán a crear presentaciones atractivas con PowerPoint y Canva, integrando elementos visuales y animaciones.', 'IM014', 32, 16, 2, 4, 2, 3, 9, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (259, 'Programación en R', 'Curso orientado a la introducción del lenguaje R para análisis de datos y estadística. Los estudiantes aprenderán a manipular datos, realizar visualizaciones y aplicar modelos estadísticos básicos.', 'IM021', 36, 24, 3, 1, 2, 4, 10, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (260, 'Procesamiento de Datos con SPSS', 'Uso de SPSS para análisis de datos cuantitativos, pruebas estadísticas, creación de gráficos y elaboración de informes de resultados.', 'IM022', 28, 20, 2, 2, 2, 4, 10, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (261, 'Microsoft Excel Avanzado', 'Funciones avanzadas, tablas dinámicas, macros, análisis de escenarios y herramientas de análisis de datos en Excel.', 'IM023', 40, 20, 3, 3, 2, 4, 10, 2, 257, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (262, 'Programación Python', 'Fundamentos de programación con Python, estructuras de control, manipulación de datos, librerías para análisis y desarrollo de pequeños proyectos.', 'IM024', 36, 24, 3, 4, 2, 4, 10, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (263, 'Mantenimiento y Reparación de Hardware', 'Curso teórico-práctico sobre reparación de hardware, diagnóstico de fallos, ensamblaje de computadoras y mantenimiento preventivo y correctivo.', 'IM031', 32, 16, 2, 1, 2, 7, 11, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (264, 'Gestión de Bases de Datos (SQL)', 'Diseño, implementación y gestión de bases de datos relacionales con SQL. Incluye consultas avanzadas, optimización y seguridad de datos.', 'IM032', 32, 16, 2, 2, 2, 7, 11, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (265, 'Programación Web y Móvil', 'Desarrollo de aplicaciones web y móviles, usando tecnologías modernas como HTML, CSS, JavaScript, y frameworks para dispositivos móviles.', 'IM033', 32, 16, 2, 3, 2, 7, 11, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (266, 'Redes de Computadoras', 'Conceptos esenciales de redes de computadoras, configuración de dispositivos, protocolos de comunicación, y soluciones de conectividad.', 'IM034', 32, 16, 2, 4, 2, 7, 11, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (267, 'Autocad Básico', 'Curso teórico-práctico para aprender a crear y editar dibujos en 2D con AutoCAD, gestionar capas, anotaciones y organizar eficientemente el entorno de trabajo.', 'IM041', 32, 16, 2, 1, 2, 8, 12, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (268, 'Sistemas de Información Geográfica (GIS)', 'Introducción a los Sistemas de Información Geográfica para crear, analizar y representar mapas con información espacial, aplicados a proyectos de ingeniería y arquitectura.', 'IM042', 32, 16, 2, 2, 2, 8, 12, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (269, 'Sistemas de Gestión Pública (SIGA-SIAF-SEACE)', 'Capacitación en herramientas de gestión pública para administrar recursos, presupuestos y procesos administrativos en entornos gubernamentales.', 'IM043', 32, 16, 2, 3, 2, 8, 12, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (270, 'Programación Python', 'Curso introductorio de programación con Python, abordando estructuras básicas, control de flujo, manipulación de datos y desarrollo de pequeños proyectos.', 'IM024', 32, 16, 2, 4, 2, 8, 12, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (271, 'Autocad Intermedio', 'Curso intermedio de AutoCAD que abarca herramientas avanzadas de modelado 2D y 3D, gestión de capas y optimización de proyectos.', 'IM051', 32, 16, 2, 1, 2, 9, 13, 2, 267, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (272, 'GIS Avanzado (IoT)', 'Curso especializado en Sistemas de Información Geográfica aplicados a IoT, incluyendo análisis de datos geoespaciales y aplicaciones en ingeniería.', 'IM052', 32, 16, 2, 2, 2, 9, 13, 2, 268, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (273, 'Microsoft Project', 'Capacitación en Microsoft Project para planificación, seguimiento y control de proyectos de ingeniería y arquitectura.', 'IM053', 32, 16, 2, 3, 2, 9, 13, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (274, 'Revit Architecture', 'Uso de Revit Architecture para modelado de información en construcción (BIM), diseño de estructuras y documentación de proyectos.', 'IM054', 32, 16, 2, 4, 2, 9, 13, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (275, 'Autocad Avanzado', 'Curso avanzado de AutoCAD centrado en modelado 3D, renderizado, automatización de procesos y personalización de herramientas.', 'IM061', 32, 16, 2, 1, 2, 10, 14, 2, 271, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (276, 'Software de Costos y Presupuestos', 'Capacitación en software especializado para análisis de costos, presupuestos y control financiero en proyectos de construcción.', 'IM062', 32, 16, 2, 2, 2, 10, 14, 2, 273, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (277, 'PMBOOK para Arquitectura e Ingenierías', 'Aplicación de las metodologías del PMBOK para la gestión eficiente de proyectos en arquitectura e ingeniería.', 'IM063', 32, 16, 2, 3, 2, 10, 14, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (278, 'Revit Structure', 'Uso de Revit Structure para modelado estructural avanzado, análisis de cargas y documentación técnica de proyectos.', 'IM064', 32, 16, 2, 4, 2, 10, 14, 2, 274, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (279, 'Programación en Python', 'Curso de programación en Python orientado a ciencia de datos, cubriendo estructuras de control, manipulación de datos y creación de scripts para análisis.', 'IM024', 32, 16, 2, 1, 2, 11, 15, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (280, 'Inteligencia Estadística', 'Análisis estadístico avanzado con herramientas de Python, abarcando técnicas de inferencia, regresión y modelos probabilísticos.', 'IM071', 32, 16, 2, 2, 2, 11, 15, 2, 279, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (281, 'Gestión de Base de Datos SQL y NoSQL', 'Administración de bases de datos SQL y NoSQL, optimización de consultas, modelado de datos y gestión de información distribuida.', 'IM072', 32, 16, 2, 3, 2, 11, 15, 2, 280, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (282, 'Modelamiento de la Dataset', 'Técnicas de modelado de datos, limpieza, transformación y preparación de datasets para entrenar modelos de aprendizaje automático.', 'IM073', 32, 16, 2, 4, 2, 11, 15, 2, 281, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (283, 'Machine – Deep Learning', 'Implementación de modelos de aprendizaje profundo con librerías como TensorFlow y PyTorch, para tareas de clasificación, predicción y reconocimiento.', 'IM074', 32, 16, 2, 5, 2, 11, 15, 2, 282, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (284, 'Python para Data Science', 'Aplicación integral de Python en ciencia de datos, cubriendo bibliotecas especializadas, visualización, análisis exploratorio y proyectos prácticos.', 'IM075', 32, 16, 2, 6, 2, 11, 15, 2, 283, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (285, 'Microsoft Excel Básico', 'Curso teórico-práctico que introduce los conceptos básicos de Microsoft Excel, incluyendo fórmulas simples, gestión de hojas y creación de gráficos básicos.', 'IM081', 32, 16, 2, 1, 2, 12, 16, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (286, 'Microsoft Excel Intermedio', 'Análisis de datos, funciones avanzadas, tablas dinámicas y automatización de tareas con funciones más complejas de Excel.', 'IM082', 32, 16, 2, 2, 2, 12, 16, 2, 285, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (287, 'Microsoft Excel Avanzado', 'Uso avanzado de Excel con macros en VBA, personalización de herramientas, automatización de procesos y análisis de escenarios complejos.', 'IM083', 32, 16, 2, 3, 2, 12, 16, 2, 286, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (288, 'Microsoft Excel con Power BI', 'Integración de Excel con Power BI para crear dashboards interactivos, visualización de datos en tiempo real y generación de informes ejecutivos.', 'IM084', 32, 16, 2, 4, 2, 12, 16, 2, 287, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (289, 'Microsoft Excel con Python', 'Automatización de tareas y análisis de datos con Python en Excel, usando bibliotecas como pandas y openpyxl para manipulación avanzada de datos.', 'IM085', 32, 16, 2, 5, 2, 12, 16, 2, 288, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (290, 'Minería de Datos con Excel', 'Análisis de grandes conjuntos de datos, herramientas de predicción y segmentación, y técnicas de minería de datos utilizando las funciones avanzadas de Excel.', 'IM086', 32, 16, 2, 6, 2, 12, 16, 2, 289, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (291, 'Programación en PHP y MySQL', 'Curso introductorio sobre desarrollo web con PHP y MySQL. Los estudiantes aprenderán a crear aplicaciones dinámicas, manejar bases de datos y trabajar con formularios.', 'IM091', 32, 16, 2, 1, 2, 13, 17, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (292, 'PHP Avanzado Orientado a Móviles', 'Programación avanzada en PHP para aplicaciones móviles, incluyendo creación de APIs REST, seguridad y optimización de rendimiento.', 'IM092', 32, 16, 2, 2, 2, 13, 17, 2, 291, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (293, 'GIT, ITIL y DEVOPS', 'Gestión de versiones con GIT, conceptos de ITIL para gestión de servicios, y prácticas de CI/CD con herramientas DevOps.', 'IM093', 32, 16, 2, 3, 2, 13, 17, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (294, 'Laravel', 'Desarrollo de aplicaciones web modernas con Laravel, cubriendo arquitectura MVC, autenticación, validación y despliegue de proyectos.', 'IM094', 32, 16, 2, 4, 2, 13, 17, 2, 291, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (295, 'Fundamentos de Ciberseguridad', 'Curso esencial sobre los principios de la ciberseguridad, cubriendo amenazas comunes, medidas de protección y políticas de seguridad básicas.', 'IM101', 32, 16, 2, 1, 2, 14, 18, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (296, 'Gestión de Riesgos y Protección de Datos', 'Análisis y gestión de riesgos en sistemas informáticos, incluyendo técnicas de protección de datos y cumplimiento de normativas internacionales.', 'IM102', 32, 16, 2, 2, 2, 14, 18, 2, 295, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (297, 'Ciberseguridad de Servidores', 'Seguridad avanzada en servidores, con enfoque en configuración segura, gestión de incidentes y técnicas de respuesta ante ataques.', 'IM103', 32, 16, 2, 3, 2, 14, 18, 2, 296, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (298, 'Ciberseguridad Forense', 'Investigación forense digital, recolección y análisis de evidencias electrónicas, y procedimientos legales en casos de cibercrimen.', 'IM104', 32, 16, 2, 4, 2, 14, 18, 2, 297, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (299, 'Inteligencia Artificial Generativa para docencia', 'Uso de herramientas de IA para optimizar la enseñanza, creación de recursos educativos personalizados y automatización de tareas docentes.', 'IM111', 32, 16, 2, 1, 2, 15, 19, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (300, 'Programación VBA con Microsoft Excel para la Docencia', 'Automatización de procesos académicos con macros VBA en Excel, creando herramientas interactivas para la gestión de datos y evaluaciones.', 'IM112', 32, 16, 2, 2, 2, 15, 19, 2, 299, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (301, 'Software Gestor Bibliográfico para la Investigación', 'Gestión de referencias bibliográficas con Mendeley y Zotero, facilitando la organización y citación de fuentes en trabajos de investigación.', 'IM113', 32, 16, 2, 3, 2, 15, 19, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (302, 'Software Antiplagio para la investigación', 'Uso de herramientas antiplagio para garantizar la originalidad de los trabajos académicos, con análisis detallado de coincidencias y reportes de autenticidad.', 'IM114', 32, 16, 2, 4, 2, 15, 19, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (303, 'Programación R y RStudio', 'Análisis estadístico y visualización de datos con R y RStudio, aplicados a la investigación científica y procesamiento de datos complejos.', 'IM121', 32, 16, 2, 1, 2, 16, 20, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (304, 'Software SPSS', 'Manejo de SPSS para análisis estadístico avanzado, creación de modelos predictivos y generación de informes de resultados.', 'IM122', 32, 16, 2, 2, 2, 16, 20, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (305, 'Software STATA', 'Análisis de datos econométricos con STATA, incluyendo regresiones múltiples, series temporales y análisis de panel.', 'IM123', 32, 16, 2, 3, 2, 16, 20, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (306, 'Software PYTHON', 'Aplicación de Python para la investigación, automatizando tareas de análisis, procesamiento de datos y visualización avanzada.', 'IM124', 32, 16, 2, 4, 2, 16, 20, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (307, 'ARDUINO - Nivel Básico', 'Introducción a Arduino, programación básica y ensamblaje de circuitos simples para proyectos educativos y prototipos electrónicos.', 'IM131', 32, 16, 2, 1, 2, 17, 21, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (308, 'ARDUINO - Nivel Intermedio', 'Programación avanzada en Arduino, integración de sensores y actuadores, y desarrollo de proyectos interactivos más complejos.', 'IM132', 32, 16, 2, 2, 2, 17, 21, 2, 307, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (309, 'ARDUINO - Nivel Avanzado', 'Diseño de sistemas embebidos con Arduino, optimización del código y creación de soluciones electrónicas eficientes para automatización.', 'IM133', 32, 16, 2, 3, 2, 17, 21, 2, 308, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (310, 'ARDUINO - Nivel Experto', 'Desarrollo de proyectos complejos con Arduino, integración de múltiples módulos, comunicación inalámbrica y prototipado avanzado.', 'IM134', 32, 16, 2, 4, 2, 17, 21, 2, 309, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (311, 'Bases de Datos y Lenguaje SQL', 'Curso introductorio sobre diseño, gestión y optimización de bases de datos relacionales con SQL.', 'IML01', 32, 16, 2, 1, 2, 7, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (312, 'Programación R y RStudio avanzado', 'Análisis estadístico y visualización de datos con R y RStudio en un nivel avanzado.', 'IML02', 32, 16, 2, 2, 2, 13, 22, 2, 303, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (313, 'Programación Python básico', 'Fundamentos de programación con Python, incluyendo estructuras básicas y manipulación de datos.', 'IML03', 32, 16, 2, 3, 2, 13, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (314, 'Power BI', 'Creación de dashboards interactivos y visualización de datos con Power BI.', 'IML04', 32, 16, 2, 4, 2, 13, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (315, 'Servidores en Linux básico', 'Configuración y gestión básica de servidores Linux para redes y servicios web.', 'IML05', 32, 16, 2, 5, 2, 14, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (316, 'Servidores en Linux Avanzado', 'Administración avanzada de servidores Linux, con seguridad, redes y servicios automatizados.', 'IML06', 32, 16, 2, 6, 2, 14, 22, 2, 315, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (317, 'Servidores en Windows básico', 'Gestión de servidores Windows, configuración de usuarios, políticas y servicios básicos.', 'IML07', 32, 16, 2, 7, 2, 14, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (318, 'Servidores en Windows avanzado', 'Configuración avanzada y administración de redes y servicios en servidores Windows.', 'IML08', 32, 16, 2, 8, 2, 14, 22, 2, 317, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (319, 'Corel Draw', 'Diseño gráfico vectorial con Corel Draw, ideal para crear logotipos, ilustraciones y materiales publicitarios.', 'IML09', 32, 16, 2, 9, 2, 5, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (320, 'Adobe Photoshop', 'Edición y retoque fotográfico profesional con Adobe Photoshop, incluyendo composición de imágenes y efectos visuales.', 'IML10', 32, 16, 2, 10, 2, 5, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (321, 'Adobe Illustrator', 'Creación de ilustraciones vectoriales con Adobe Illustrator, explorando herramientas avanzadas para diseño gráfico.', 'IML11', 32, 16, 2, 11, 2, 5, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (322, 'Adobe After Effects', 'Edición de video y animaciones con Adobe After Effects, incluyendo efectos especiales y composición de escenas.', 'IML12', 32, 16, 2, 12, 2, 5, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (323, 'Adobe Premiere', 'Edición de video profesional con Adobe Premiere, abarcando montaje, colorización y producción de contenido audiovisual.', 'IML13', 32, 16, 2, 13, 2, 5, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (324, 'Adobe InDesign', 'Maquetación y diseño editorial con Adobe InDesign, ideal para libros, revistas y catálogos.', 'IML14', 32, 16, 2, 14, 2, 5, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (325, 'Matlab', 'Análisis numérico y visualización de datos con Matlab, aplicado a proyectos científicos e ingenieriles.', 'IML15', 32, 16, 2, 15, 2, 16, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (326, 'Programación C#', 'Desarrollo de aplicaciones con C#, explorando programación orientada a objetos y creación de interfaces gráficas.', 'IML16', 32, 16, 2, 16, 2, 13, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (327, 'Programación C++', 'Fundamentos y programación avanzada en C++, incluyendo estructuras de datos, algoritmos y memoria dinámica.', 'IML17', 32, 16, 2, 17, 2, 13, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (328, 'Programación Java', 'Desarrollo de software multiplataforma con Java, abarcando POO, excepciones y desarrollo de aplicaciones de escritorio.', 'IML18', 32, 16, 2, 18, 2, 13, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (329, 'Programación Python intermedio', 'Nivel intermedio de programación en Python, con enfoque en manipulación de archivos, módulos y librerías especializadas.', 'IML19', 32, 16, 2, 19, 2, 13, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (330, 'Programación Python avanzado', 'Programación avanzada en Python, incluyendo manejo de excepciones, concurrencia y desarrollo de aplicaciones de alto rendimiento.', 'IML20', 32, 16, 2, 20, 2, 13, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (331, 'Programación Laravel', 'Desarrollo web con Laravel, cubriendo arquitectura MVC, creación de APIs y despliegue de proyectos en producción.', 'IML21', 32, 16, 2, 21, 2, 13, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (332, 'Programación Google Colab', 'Uso de Google Colab para programación colaborativa en la nube, ideal para ciencia de datos y aprendizaje automático.', 'IML22', 32, 16, 2, 22, 2, 13, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (333, 'Programación Go', 'Desarrollo de aplicaciones eficientes y concurrentes con Go, explorando su modelo de goroutines y canales.', 'IML23', 32, 16, 2, 23, 2, 13, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (334, 'Programación Kotlin', 'Desarrollo de aplicaciones Android con Kotlin, aprovechando su sintaxis moderna y compatibilidad con Java.', 'IML24', 32, 16, 2, 24, 2, 13, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (335, 'Big Data', 'Introducción a Big Data, con herramientas como Hadoop y Spark para procesamiento masivo de datos.', 'IML25', 32, 16, 2, 25, 2, 7, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (336, 'Statistics', 'Análisis estadístico y probabilístico con herramientas avanzadas para estudios científicos e investigación.', 'IML26', 32, 16, 2, 26, 2, 16, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (337, 'Software Minitab', 'Uso de Minitab para análisis de datos, control de calidad y generación de informes estadísticos.', 'IML27', 32, 16, 2, 27, 2, 16, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (338, 'Software SAS', 'Análisis estadístico avanzado con SAS, ideal para grandes volúmenes de datos y modelado predictivo.', 'IML28', 32, 16, 2, 28, 2, 16, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (339, 'Software Epidat, Epinfo', 'Herramientas para análisis epidemiológico y salud pública, con funciones para cálculos estadísticos especializados.', 'IML29', 32, 16, 2, 29, 2, 16, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (340, 'Software Stata', 'Análisis de datos econométricos y sociales con Stata, incluyendo regresiones y análisis de panel.', 'IML30', 32, 16, 2, 30, 2, 16, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (341, 'Software Eviews', 'Análisis de series temporales y modelado econométrico con Eviews para investigaciones académicas y financieras.', 'IML31', 32, 16, 2, 31, 2, 16, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (342, 'Cisco Packet Tracer básico', 'Simulación de redes básicas con Cisco Packet Tracer, aprendiendo a configurar dispositivos y probar conectividad.', 'IML32', 32, 16, 2, 32, 2, 14, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (343, 'Cisco Packet Tracer avanzado', 'Configuración avanzada de redes con Cisco Packet Tracer, incluyendo VLANs, routing y protocolos de seguridad.', 'IML33', 32, 16, 2, 33, 2, 14, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (344, 'Internet de las cosas', 'Introducción a IoT, con diseño de dispositivos conectados, sensores y automatización de procesos con microcontroladores.', 'IML34', 32, 16, 2, 34, 2, 14, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (345, 'Administración de Moodle I', 'Gestión de plataformas educativas con Moodle, creación de cursos, usuarios y configuración de actividades.', 'IML35', 32, 16, 2, 35, 2, 15, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (346, 'Administración de Moodle II', 'Administración avanzada de Moodle, con personalización de temas, reportes de actividad y optimización del sistema.', 'IML36', 32, 16, 2, 36, 2, 15, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (347, 'Scratch', 'Programación visual con Scratch para crear proyectos interactivos, juegos y animaciones educativas.', 'IML37', 32, 16, 2, 37, 2, 13, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (348, 'ArcGIS', 'Sistemas de información geográfica con ArcGIS, análisis espacial, creación de mapas y gestión de datos geoespaciales.', 'IML38', 32, 16, 2, 38, 2, 8, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (349, 'Oracle', 'Gestión de bases de datos empresariales con Oracle, optimización de consultas SQL y administración de usuarios.', 'IML39', 32, 16, 2, 39, 2, 7, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (350, 'María DB', 'Administración de bases de datos con María DB, aprendiendo replicación, respaldo y alta disponibilidad.', 'IML40', 32, 16, 2, 40, 2, 7, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (351, 'Mongo DB', 'Bases de datos NoSQL con MongoDB, modelado de documentos, consultas avanzadas y gestión de colecciones.', 'IML41', 32, 16, 2, 41, 2, 7, 22, 2, NULL, 1, NULL, NULL);
+INSERT INTO `courses` (`id`, `name`, `description`, `code`, `hours_practice`, `hours_theory`, `credits`, `order`, `units`, `area_id`, `module_id`, `curriculum_id`, `pre_requisite_id`, `is_enabled`, `created_at`, `updated_at`) VALUES (352, 'LaTex', 'Creación de documentos científicos y académicos con LaTeX, incluyendo ecuaciones, bibliografías y formatos profesionales.', 'IML42', 32, 16, 2, 42, 2, 15, 22, 2, NULL, 1, NULL, NULL);

@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
+use Illuminate\Support\Str;
+
 class AreaUpdateRequest extends FormRequest
 {
     public function authorize()
@@ -17,8 +19,9 @@ class AreaUpdateRequest extends FormRequest
     {
         $id = $this->id;
         return [
-            'name' => 'required|string|max:50|unique:document_types,name,' . $id,
+            'name' => 'required|string|max:50|unique:areas,name,' . $id . ',id,curriculum_id,' . $this->curriculum_id,
             'description' => 'nullable|max:255',
+            'curriculum_id' => 'required|integer|exists:curriculums,id',
             'is_enabled' => 'required|boolean',
         ];
     }
@@ -37,13 +40,18 @@ class AreaUpdateRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
+            'curriculum_id' => $this->input('curriculumId', $this->curriculum_id),
             'is_enabled' => $this->input('isEnabled', $this->is_enabled),
         ]);
     }
 
     protected function failedValidation(Validator $validator)
     {
-        $errors = collect($validator->errors())->map(fn($messages) => $messages[0]);
+        $errors = collect($validator->errors())->mapWithKeys(function ($messages, $field) {
+            return [
+                Str::camel($field) => $messages[0]
+            ];
+        });
 
         throw new HttpResponseException(
             response()->json(['errors' => $errors], 422)

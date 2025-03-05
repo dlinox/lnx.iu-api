@@ -1,25 +1,25 @@
-INSERT INTO `modules` (`id`, `name`) VALUES (1, 'OFIMATICA');
-INSERT INTO `modules` (`id`, `name`) VALUES (2, 'PROGRAMACION VISUAL');
-INSERT INTO `modules` (`id`, `name`) VALUES (3, 'HARDWARE Y REDES');
-INSERT INTO `modules` (`id`, `name`) VALUES (4, 'AUTOCAD');
-INSERT INTO `modules` (`id`, `name`) VALUES (5, 'DISEÑO GRAFICO');
-INSERT INTO `modules` (`id`, `name`) VALUES (6, 'DISEÑO WEB');
-INSERT INTO `modules` (`id`, `name`) VALUES (7, 'CURSO VACACIONAL');
-INSERT INTO `modules` (`id`, `name`) VALUES (8, 'CURSO ESPECIAL');
+INSERT INTO `modules` (`id`, `name`, `code`, `curriculum_id`) VALUES
+(1, 'OFIMATICA', '', 1),
+(2, 'PROGRAMACION VISUAL', '', 1),
+(3, 'HARDWARE Y REDES', '', 1),
+(4, 'AUTOCAD', '', 1),
+(5, 'DISEÑO GRAFICO', '', 1),
+(6, 'DISEÑO WEB', '', 1),
+(7, 'CURSO VACACIONAL', '', 1),
+(8, 'CURSO ESPECIAL', '', 1);
 
-
-INSERT INTO `modules` (`id`, `name`) VALUES 
-(10, 'Software de oficina y diseño'),
-(11, 'Analítica y Programación'),
-(12, 'Base de Datos Distribuidas'),
-(13, 'Sistemas CAD Básico'),
-(14, 'Sistemas CAD Intermedio'),
-(15, 'Sistemas CAD Avanzado'),
-(16, 'Ciencia de Datos'),
-(17, 'Microsoft Excel'),
-(18, 'Desarrollo de Software'),
-(19, 'Ciberseguridad y Redes'),
-(20, 'Informática para docentes'),
-(21, 'Informática para investigación'),
-(22, 'Programación robótica'),
-(23, 'Extracurricular');
+INSERT INTO `modules` (`id`, `name`, `code`,`curriculum_id`) VALUES 
+(9, 'Software de oficina y diseño', 'IM01', 2),
+(10, 'Analítica y Programación', 'IM02', 2),
+(11, 'Base de Datos Distribuidas', 'IM03', 2),
+(12, 'Sistemas CAD Básico', 'IM04', 2),
+(13, 'Sistemas CAD Intermedio', 'IM05', 2),
+(14, 'Sistemas CAD Avanzado', 'IM06', 2),
+(15, 'Data Science', 'IM07', 2),
+(16, 'Microsoft Excel', 'IM08', 2),
+(17, 'Desarrollo de Software', 'IM09', 2),
+(18, 'Ciberseguridad y Redes', 'IM10', 2),
+(19, 'Informática para docentes', 'IM11', 2),
+(20, 'Informática para investigación', 'IM12', 2),
+(21, 'Programación Robótica', 'IM13', 2),
+(22, 'Cursos Extracurriculares', 'IML0', 2);

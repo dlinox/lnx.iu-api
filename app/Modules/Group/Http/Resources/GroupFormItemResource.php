@@ -15,9 +15,11 @@ class GroupFormItemResource extends JsonResource
             'teacherId' => $this->teacher_id,
             'laboratoryId' => $this->laboratory_id,
             'modality' => $this->modality,
-            'curriculumCourseId' => $this->curriculum_course_id,
+            'minStudents' => $this->min_students,
+            'maxStudents' => $this->max_students,
+            'courseId' => $this->course_id,
             'schedules' =>  ScheduleFormItemResource::collection($this->schedules),
-            'isEnabled' => $this->is_enabled,
+            'status' => $this->status,
         ];
         return parent::toArray($request);
     }

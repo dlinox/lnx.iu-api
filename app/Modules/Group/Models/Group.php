@@ -9,22 +9,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
-    use HasDataTable, HasEnabledState;
+    use HasDataTable;
 
     protected $fillable = [
         'name',
         'period_id',
         'teacher_id',
         'laboratory_id',
-        'curriculum_course_id',
+        'course_id',
         'status',
         'modality',
         'observation',
-        'is_enabled',
+        'min_students',
+        'max_students',
     ];
 
     protected $casts = [
-        'is_enabled' => 'boolean',
+        // 'is_enabled' => 'boolean',
     ];
 
     //has many schedules

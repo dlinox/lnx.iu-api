@@ -23,15 +23,16 @@ class GroupSaveRequest extends FormRequest
             'groups.*' => 'required|array',
             'groups.*.id' => 'nullable|int',
             'groups.*.name' => 'required|max:50',
-            'groups.*.modality' => 'required|in:PRESENCIAL,VIRTUAL,MIXTO',
-            'groups.*.is_enabled' => 'required|boolean',
+            'groups.*.min_students' => 'required|int',
+            'groups.*.max_students' => 'required|int',
+            'groups.*.modality' => 'required|in:PRESENCIAL,VIRTUAL',
             'groups.*.teacher_id' => 'nullable|exists:teachers,id',
             'groups.*.laboratory_id' => 'nullable|exists:laboratories,id',
             'groups.*.schedules' => 'array',
             'groups.*.schedules.*.day' => 'required|in:LUN,MAR,MIE,JUE,VIE,SAB,DOM',
             'groups.*.schedules.*.end_hour' => 'required',
             'groups.*.schedules.*.start_hour' => 'required',
-            'curriculum_course_id' => 'required|exists:curriculum_courses,id',
+            'course_id' => 'required|exists:courses,id',
             'period_id' => 'required|exists:periods,id',
         ];
     }
@@ -43,8 +44,10 @@ class GroupSaveRequest extends FormRequest
             'groups.*.name.max' => 'El nombre no debe ser mayor a 50 caracteres',
             'groups.*.modality.required' => 'La modalidad es requerida',
             'groups.*.modality.in' => 'La modalidad no es válida',
-            'groups.*.is_enabled.required' => 'El estado es requerido',
-            'groups.*.is_enabled.boolean' => 'El estado no es válido',
+            'groups.*.min_students.required' => 'El número mínimo de estudiantes es requerido',
+            'groups.*.min_students.int' => 'El número mínimo de estudiantes no es válido',
+            'groups.*.max_students.required' => 'El número máximo de estudiantes es requerido',
+            'groups.*.max_students.int' => 'El número máximo de estudiantes no es válido',
             'groups.*.teacher_id.exists' => 'El profesor no es válido',
             'groups.*.laboratory_id.exists' => 'El laboratorio no es válido',
             'groups.*.schedules.array' => 'Los horarios no son válidos',
@@ -52,8 +55,8 @@ class GroupSaveRequest extends FormRequest
             'groups.*.schedules.*.day.in' => 'El día no es válido',
             'groups.*.schedules.*.end_hour.required' => 'La hora de fin es requerida',
             'groups.*.schedules.*.start_hour.required' => 'La hora de inicio es requerida',
-            'curriculum_course_id.required' => 'El curso es requerido',
-            'curriculum_course_id.exists' => 'El curso no es válido',
+            'course_id.required' => 'El curso es requerido',
+            'course_id.exists' => 'El curso no es válido',
             'period_id.required' => 'El periodo es requerido',
             'period_id.exists' => 'El periodo no es válido',
         ];
@@ -62,8 +65,10 @@ class GroupSaveRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
+            'min_students' => $this->input('minStudents', $this->min_students ?? 0),
+            'max_students' => $this->input('maxStudents', $this->max_students ?? 0),
             'period_id' => $this->input('periodId', $this->period_id),
-            'curriculum_course_id' => $this->input('curriculumCourseId', $this->curriculum_course_id),
+            'course_id' => $this->input('courseId', $this->course_id),
             'groups' => $this->mapToSnakeCase($this->input('groups', $this->groups)),
         ]);
     }
@@ -99,7 +104,7 @@ class GroupSaveRequest extends FormRequest
             response()->json(
                 [
                     'errors' => $errors,
-                    'message' => 'Error al guardar los registros, verifique los datos ingresados'
+                    'message' => 'Error al guardar los registros, verifique los datos ingresados' . $errors
                 ],
                 422
             )

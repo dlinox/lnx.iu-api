@@ -9,12 +9,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('courses', function (Blueprint $table) {
+        Schema::create('modules', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 150);
+            $table->string('name', 100);
             $table->text('description')->nullable();
+            $table->char('code', 10);
+            $table->unsignedBigInteger('curriculum_id');
+            $table->boolean('is_extracurricular')->default(false);
             $table->boolean('is_enabled')->default(true);
             $table->timestamps();
+            $table->foreign('curriculum_id')->references('id')->on('curriculums')->onDelete('restrict');
+            $table->unique(['name', 'curriculum_id']);
         });
 
         $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
@@ -23,6 +28,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('courses');
+        Schema::dropIfExists('modules');
     }
 };

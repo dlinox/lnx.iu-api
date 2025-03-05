@@ -10,15 +10,24 @@ use App\Modules\Module\Http\Requests\ModuleStoreRequest;
 use App\Modules\Module\Http\Requests\ModuleUpdateRequest;
 use App\Modules\Module\Models\Module;
 use App\Modules\Module\Http\Resources\ModuleDataTableItemsResource;
-use App\Modules\Student\Models\Student;
-use Illuminate\Support\Facades\Auth;
 
 class ModuleController extends Controller
 {
     public function loadDataTable(Request $request)
     {
         try {
-            $items = Module::dataTable($request);
+            $items = Module::select(
+                'modules.id',
+                'modules.name',
+                'modules.code',
+                'curriculums.name as curriculum',
+                'modules.curriculum_id',
+                'modules.is_extracurricular',
+                'modules.is_enabled',
+            )
+                ->join('curriculums', 'modules.curriculum_id', '=', 'curriculums.id')
+                ->where('modules.curriculum_id', 'LIKE', '%' .   $request->filters['curriculumId'] . '%')
+                ->dataTable($request);
             ModuleDataTableItemsResource::collection($items);
             return ApiResponse::success($items);
         } catch (\Exception $e) {
@@ -63,7 +72,11 @@ class ModuleController extends Controller
     public function getItemsForSelect(Request $request)
     {
         try {
-            $item = Module::select('id as value', 'name as label')->enabled()->get();
+            $item = Module::select('id as value', 'name as label')
+                ->when($request->has('curriculumId'), function ($query) use ($request) {
+                    return $query->where('curriculum_id', $request->curriculumId);
+                })
+                ->enabled()->get();
             return ApiResponse::success($item);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());

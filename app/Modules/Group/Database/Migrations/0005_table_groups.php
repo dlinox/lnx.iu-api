@@ -9,8 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-
-
+        Schema::dropIfExists('groups');
         Schema::create('groups', function (Blueprint $table) {
 
             $table->id();
@@ -18,17 +17,18 @@ return new class extends Migration
             $table->unsignedBigInteger('period_id');
             $table->unsignedBigInteger('teacher_id')->nullable();
             $table->unsignedBigInteger('laboratory_id')->nullable();
-            $table->unsignedBigInteger('curriculum_course_id');
+            $table->unsignedBigInteger('course_id');
             $table->integer('min_students')->default(0);
-            $table->enum('modality', ['PRESENCIAL', 'VIRTUAL', 'MIXTO'])->default('PRESENCIAL');
+            $table->integer('max_students')->default(0);
+            $table->enum('modality', ['PRESENCIAL', 'VIRTUAL',])->default('PRESENCIAL');
             $table->string('observation', 255)->nullable();
-            $table->enum('status', ['PENDIENTE', 'APERTURADO', 'FINALIZADO', 'CANCELADO'])->default('FINALIZADO');
-            $table->boolean('is_enabled')->default(true);
+            $table->enum('status', ['ABIERTO', 'CERRADO', 'CANCELADO', 'FINALIZADO'])->default('FINALIZADO');
+            $table->timestamps();
+
             $table->foreign('period_id')->references('id')->on('periods');
             $table->foreign('teacher_id')->references('id')->on('teachers');
             $table->foreign('laboratory_id')->references('id')->on('laboratories');
-            $table->foreign('curriculum_course_id')->references('id')->on('curriculum_courses');
-            $table->timestamps();
+            $table->foreign('course_id')->references('id')->on('courses');
         });
 
         $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');

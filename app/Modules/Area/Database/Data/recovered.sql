@@ -1,16 +1,19 @@
 
-INSERT INTO `areas` (`id`, `name`) VALUES (1, 'CURSOS REGULARES');
-INSERT INTO `areas` (`id`, `name`) VALUES (2, 'CURSOS ESPECIALES');
-
-INSERT INTO `areas` (`id`, `name`) VALUES 
-(3, 'Base de Datos Distribuidas'),
-(4, 'Sistemas CAD Básico'),
-(5, 'Sistemas CAD Intermedio'),
-(6, 'Sistemas CAD Avanzado'),
-(7, 'Ciencia de Datos'),
-(8, 'Microsoft Excel'),
-(9, 'Desarrollo de Software'),
-(10, 'Ciberseguridad y Redes'),
-(11, 'Informática para docentes'),
-(12, 'Informática para investigación'),
-(13, 'Programación robótica');
+INSERT INTO `areas` (`id`, `name`, `curriculum_id`) VALUES (1, 'CURSOS REGULARES', 1);
+INSERT INTO `areas` (`id`, `name`, `curriculum_id`) VALUES (2, 'CURSOS ESPECIALES', 1);
+INSERT INTO `areas` (`id`, `name`, `curriculum_id`) VALUES 
+(3, 'Técnico en Computación e Informática', 2),
+(4, 'Técnico en Informática para Ingenierías', 2),
+(5, 'Software de Oficina y Diseño', 2),
+(6, 'Analítica y Programación', 2),
+(7, 'Base de Datos Distribuidas', 2),
+(8, 'Sistemas CAD Básico', 2),
+(9, 'Sistemas CAD Intermedio', 2),
+(10, 'Sistemas CAD Avanzado', 2),
+(11, 'Ciencia de Datos', 2),
+(12, 'Microsoft Excel', 2),
+(13, 'Desarrollo de Software', 2),
+(14, 'Ciberseguridad y Redes', 2),
+(15, 'Informática para Docentes', 2),
+(16, 'Informática para Investigación', 2),
+(17, 'Programación Robótica', 2);

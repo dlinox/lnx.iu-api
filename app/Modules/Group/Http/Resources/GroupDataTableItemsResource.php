@@ -14,6 +14,9 @@ class GroupDataTableItemsResource extends JsonResource
             'code' => $this->code,
             'area' => $this->area,
             'module' => $this->module,
+            'presentialPrice' => array_filter(explode(',', $this->presential_price)),
+            'virtualPrice' => array_filter(explode(',', $this->virtual_price)),
+            'modulePrice' => array_filter(explode(',', $this->module_price)),
             'countGroups' => $this->count_groups,
             'isEnabled' => $this->is_enabled,
         ];

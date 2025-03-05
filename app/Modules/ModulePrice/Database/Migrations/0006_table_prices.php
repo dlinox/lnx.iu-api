@@ -11,7 +11,6 @@ return new class extends Migration
     {
         Schema::create('module_prices', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('curriculum_id');
             $table->unsignedBigInteger('module_id');
             $table->unsignedBigInteger('student_type_id');
             $table->decimal('price', 10, 2);

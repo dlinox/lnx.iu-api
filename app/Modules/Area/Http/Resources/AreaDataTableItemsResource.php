@@ -11,8 +11,9 @@ class AreaDataTableItemsResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $this->description,
             'isEnabled' => $this->is_enabled,
+            'curriculumId' => $this->curriculum_id,
+            'curriculum' => $this->curriculum,
         ];
         return parent::toArray($request);
     }

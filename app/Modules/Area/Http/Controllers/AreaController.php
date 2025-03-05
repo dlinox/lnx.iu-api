@@ -15,7 +15,16 @@ class AreaController extends Controller
     public function loadDataTable(Request $request)
     {
         try {
-            $items = Area::dataTable($request);
+            $items = Area::select(
+                'areas.id',
+                'areas.name',
+                'areas.is_enabled',
+                'areas.curriculum_id',
+                'curriculums.name as curriculum'
+            )
+                ->join('curriculums', 'areas.curriculum_id', '=', 'curriculums.id')
+                ->where('areas.curriculum_id', 'LIKE', '%' . $request->filters['curriculumId'] . '%')
+                ->dataTable($request);
             AreaDataTableItemsResource::collection($items);
             return ApiResponse::success($items);
         } catch (\Exception $e) {
@@ -60,7 +69,11 @@ class AreaController extends Controller
     public function getItemsForSelect(Request $request)
     {
         try {
-            $item = Area::select('id as value', 'name as label')->enabled()->get();
+            $item = Area::select('id as value', 'name as label')
+                ->when($request->has('curriculumId'), function ($query) use ($request) {
+                    return $query->where('curriculum_id', $request->curriculumId);
+                })
+                ->enabled()->get();
             return ApiResponse::success($item);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());

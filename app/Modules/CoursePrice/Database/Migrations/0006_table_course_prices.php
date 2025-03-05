@@ -11,14 +11,12 @@ return new class extends Migration
     {
         Schema::create('course_prices', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('curriculum_id');
             $table->unsignedBigInteger('course_id');
             $table->unsignedBigInteger('student_type_id');
             $table->decimal('presential_price', 10, 2)->nullable();
             $table->decimal('virtual_price', 10, 2)->nullable();
             $table->boolean('is_enabled')->default(true);
             $table->timestamps();
-            $table->foreign('curriculum_id')->references('id')->on('curriculums');
             $table->foreign('course_id')->references('id')->on('courses');
             $table->foreign('student_type_id')->references('id')->on('student_types');
         });

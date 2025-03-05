@@ -13,6 +13,7 @@ class Area extends Model
     protected $fillable = [
         'name',
         'description',
+        'curriculum_id',
         'is_enabled',
     ];
 
@@ -21,6 +22,7 @@ class Area extends Model
     ];
 
     static $searchColumns = [
-        'name',
+        'areas.name',
+        'curriculums.name',
     ];
 }

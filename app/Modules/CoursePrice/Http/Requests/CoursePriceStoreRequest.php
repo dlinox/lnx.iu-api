@@ -19,7 +19,6 @@ class CoursePriceStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'curriculum_id' => 'required|integer',
             'course_id' => 'required|integer|unique:course_prices,course_id,NULL,id,student_type_id,' . $this->student_type_id . ',curriculum_id,' . $this->curriculum_id,
             'student_type_id' => 'required|integer',
             'presential_price' => 'required|numeric',
@@ -31,7 +30,6 @@ class CoursePriceStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'curriculum_id.required' => 'Obligatorio',
             'course_id.required' => 'Obligatorio',
             'course_id.integer' => 'Debe ser un número entero',
             'course_id.unique' => 'Ya existe un registro con estos datos',

@@ -10,11 +10,13 @@ Route::prefix('api/course')->group(function () {
     Route::delete('', [CourseController::class, 'destroy']);
 
     Route::get('items/for-select', [CourseController::class, 'getItemsForSelect']);
-    Route::get('prerequisite-by-curriculum/items/for-select/{curriculumId}', [CourseController::class, 'getPreRequisiteByCurriculumItemsForSelect']);
+    Route::get('get-item-by-id/{id}', [CourseController::class, 'getItemById']);
 
-    //getItemsbyCurriculumForSelect
+
+    //deprecated
+    Route::get('prerequisite-by-curriculum/items/for-select/{curriculumId}', [CourseController::class, 'getPreRequisiteByCurriculumItemsForSelect']);
+    //deprecated
     Route::get('items/for-select/curriculum/{id}', [CourseController::class, 'getItemsCurriculumForSelect']);
-    //student
-    // getCurriculumCourses
+    // deprecated
     Route::get('curriculum/{curriculumId}/module/{moduleId}', [CourseController::class, 'getCurriculumCourses']);
 });

@@ -5,7 +5,7 @@ namespace App\Modules\Group\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
-use App\Modules\CurriculumCourse\Models\CurriculumCourse;
+use App\Modules\Course\Models\Course;
 use App\Modules\Group\Http\Requests\GroupSaveRequest;
 use App\Modules\Group\Models\Group;
 use App\Modules\Group\Http\Resources\GroupDataTableItemsResource;
@@ -19,25 +19,32 @@ class GroupController extends Controller
     {
         try {
 
-            $items = CurriculumCourse::select(
-                'curriculum_courses.id',
-                'curriculum_courses.code',
+            $items = Course::select(
+                'courses.id',
+                'courses.code',
                 'courses.name as course',
                 'areas.name as area',
                 'modules.name as module',
-                'curriculum_courses.is_enabled',
-                DB::raw('COUNT(groups.id) as count_groups')
+                'courses.is_enabled',
+                DB::raw('GROUP_CONCAT(DISTINCT CONCAT( course_prices.presential_price," - ", student_types.name) SEPARATOR ",") as presential_price'),
+                DB::raw('GROUP_CONCAT(DISTINCT CONCAT( course_prices.virtual_price," - ", student_types.name) SEPARATOR ",") as virtual_price'),
+                DB::raw('GROUP_CONCAT(DISTINCT CONCAT_WS(" - ", module_prices.price, student_types_module.name) SEPARATOR ",") as module_price'),
+                DB::raw('COUNT(course_prices.id) as count_prices'),
+                DB::raw('COUNT(distinct groups.id) as count_groups')
             )
                 ->leftJoin('groups', function ($join) use ($request) {
-                    $join->on('curriculum_courses.id', '=', 'groups.curriculum_course_id')
+                    $join->on('courses.id', '=', 'groups.course_id')
                         ->where('groups.period_id', $request->filters['periodId']);
                 })
-                ->join('courses', 'courses.id', '=', 'curriculum_courses.course_id')
-                ->join('areas', 'areas.id', '=', 'curriculum_courses.area_id')
-                ->leftJoin('modules', 'modules.id', '=', 'curriculum_courses.module_id')
-                ->where('curriculum_courses.curriculum_id', $request->filters['curriculumId'])
-                ->groupBy('curriculum_courses.id')
-                ->dataTable($request);
+                ->join('areas', 'areas.id', '=', 'courses.area_id')
+                ->leftJoin('course_prices', 'courses.id', '=', 'course_prices.course_id')
+                ->leftJoin('modules', 'modules.id', '=', 'courses.module_id')
+                ->leftJoin('student_types', 'student_types.id', '=', 'course_prices.student_type_id')
+                ->leftJoin('module_prices', 'module_prices.module_id', '=', 'modules.id')
+                ->leftJoin('student_types as student_types_module', 'student_types_module.id', '=', 'module_prices.student_type_id')
+                ->where('courses.curriculum_id', $request->filters['curriculumId'])
+                ->groupBy('courses.id')
+                ->dataTable($request, ['courses.name', 'areas.name', 'modules.name']);
             GroupDataTableItemsResource::collection($items);
             return ApiResponse::success($items);
         } catch (\Exception $e) {
@@ -53,11 +60,13 @@ class GroupController extends Controller
                 'groups.name',
                 'groups.teacher_id',
                 'groups.laboratory_id',
+                'groups.min_students',
+                'groups.max_students',
                 'groups.modality',
-                'groups.curriculum_course_id',
-                'groups.is_enabled',
+                'groups.course_id',
+                'groups.status',
             )
-                ->where('groups.curriculum_course_id', $request->id)
+                ->where('groups.course_id', $request->id)
                 ->where('groups.period_id', $request->periodId)
                 ->with('schedules')
                 ->get();
@@ -76,7 +85,8 @@ class GroupController extends Controller
             $groups = $data['groups'];
             foreach ($groups as $group) {
                 $group['period_id'] = $request->periodId;
-                $group['curriculum_course_id'] = $request->curriculumCourseId;
+                $group['course_id'] = $request->courseId;
+                $group['status'] = 'ABIERTO';
                 $groupModel = Group::updateOrCreate(
                     ['id' => $group['id']],
                     $group

@@ -11,7 +11,10 @@ class ModuleDataTableItemsResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $this->description,
+            'code' => $this->code,
+            'curriculum' => $this->curriculum,
+            'curriculumId' => $this->curriculum_id,
+            'isExtracurricular' => $this->is_extracurricular,
             'isEnabled' => $this->is_enabled,
         ];
         return parent::toArray($request);

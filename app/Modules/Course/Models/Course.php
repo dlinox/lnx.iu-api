@@ -12,6 +12,15 @@ class Course extends Model
 
     protected $fillable = [
         'name',
+        'code',
+        'hours_practice',
+        'hours_theory',
+        'credits',
+        'area_id',
+        'module_id',
+        'curriculum_id',
+        'pre_requisite_id',
+        'order',
         'description',
         'is_enabled',
     ];
@@ -21,7 +30,11 @@ class Course extends Model
     ];
 
     static $searchColumns = [
-        'name',
+        'courses.name',
+        'courses.code',
+        'areas.name',
+        'modules.name',
+        'curriculums.name',
     ];
 
     public static function getItemsForSelect($curriculumId)

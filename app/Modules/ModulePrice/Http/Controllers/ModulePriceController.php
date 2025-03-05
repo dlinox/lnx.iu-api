@@ -25,11 +25,11 @@ class ModulePriceController extends Controller
                 'student_types.name as student_type',
                 'module_prices.price',
                 'module_prices.is_enabled',
-                'module_prices.curriculum_id'
+                'modules.curriculum_id'
             )
                 ->join('modules', 'modules.id', '=', 'module_prices.module_id')
                 ->join('student_types', 'student_types.id', '=', 'module_prices.student_type_id')
-                ->where('module_prices.curriculum_id', $request->filters['curriculumId'])
+                ->where('modules.curriculum_id', $request->filters['curriculumId'])
                 ->orderBy('modules.name')
                 ->orderBy('student_types.name')
                 ->dataTable($request);
