@@ -12,8 +12,7 @@ class PeriodDataTableItemsResource extends JsonResource
             'id' => $this->id,
             'year' => $this->year,
             'month' => $this->month,
-            'isEnabled' => $this->is_enabled,
-            'enrollmentEnabled' => $this->enrollment_enabled,
+            'status' => $this->status,
         ];
         return parent::toArray($request);
     }

@@ -18,13 +18,27 @@ class PeriodStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'year' => 'required|integer|digits:4',
+            'year' => [
+                'required',
+                'integer',
+                'digits:4',
+            ],
             'month' => [
                 'required',
                 'between:1,12',
                 Rule::unique('periods', 'month')->where(function ($query) {
                     return $query->where('year', $this->year);
                 }),
+            ],
+            'status' => [
+                'required',
+                Rule::in([
+                    "PENDIENTE",
+                    "MATRICULA",
+                    "EN CURSO",
+                    "FINALIZADO",
+                    "CANCELADO",
+                ]),
             ],
         ];
     }
@@ -38,14 +52,14 @@ class PeriodStoreRequest extends FormRequest
             'month.required' => 'Obligatorio',
             'month.between' => 'No es un mes válido',
             'month.unique' => 'El periodo ya existe',
+            'status.required' => 'Obligatorio',
+            'status.in' => 'No es un estado válido',
         ];
     }
 
     public function prepareForValidation()
     {
-        $this->merge([
-            'is_enabled' => $this->input('isEnabled', $this->is_enabled),
-        ]);
+        $this->merge([]);
     }
 
     protected function failedValidation(Validator $validator)

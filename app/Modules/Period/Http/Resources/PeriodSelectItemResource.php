@@ -3,16 +3,15 @@
 namespace App\Modules\Period\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-//MONTH CONSTANTS
 use App\Constants\MonthConstants;
 
-class PeriodDataTableItemsResource extends JsonResource
+class PeriodSelectItemResource extends JsonResource
 {
     public function toArray($request)
     {
         return [
             'value' => $this->id,
-            'label' => $this->year . ' - ' . MonthConstants::label($this->month) . ' - ' . ($this->is_enabled ? 'ACTIVO' : 'INACTIVO'),
+            'label' => $this->year . ' - ' . MonthConstants::label($this->month),
         ];
         return parent::toArray($request);
     }

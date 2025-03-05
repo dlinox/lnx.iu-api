@@ -13,12 +13,10 @@ return new class extends Migration
             $table->id();
             $table->integer('year');
             $table->integer('month');
-            $table->boolean('enrollment_enabled')->default(false);
-            $table->boolean('is_enabled')->default(false);
+            $table->enum('status', ["MATRICULA", "EN CURSO", "FINALIZADO", "CANCELADO", "PENDIENTE"])->default("FINALIZADO");
             $table->unique(['year', 'month']);
             $table->timestamps();
         });
-
         $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
         DB::unprepared($sql);
     }

@@ -6,16 +6,17 @@ use App\Traits\HasDataTable;
 use App\Traits\HasEnabledState;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Period extends Model
 {
-    use HasDataTable, HasEnabledState;
+    use HasDataTable, HasEnabledState, LogsActivity;
 
     protected $fillable = [
         'year',
         'month',
-        'enrollment_enabled',
-        'is_enabled',
+        'status',
     ];
 
     protected $casts = [
@@ -28,7 +29,28 @@ class Period extends Model
     static $searchColumns = [
         'periods.year',
         'periods.month',
+        'view_month_constants.label',
+        'periods.status',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['status', 'year', 'month'])
+            ->logOnlyDirty()
+            ->useLogName('periodo');
+    }
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        $eventNameSpanish = [
+            'created' => 'creado',
+            'updated' => 'actualizado',
+            'deleted' => 'eliminado',
+        ];
+        $ip = request()->ip();
+        return "{$ip}: El período ha sido {$eventNameSpanish[$eventName]}";
+    }
 
     public static function current()
     {
@@ -36,7 +58,7 @@ class Period extends Model
             'periods.id as id',
             DB::raw('CONCAT(year, "-", view_month_constants.label) as name'),
         )->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
-            ->where('is_enabled', true)
+            ->where('status', 'EN CURSO')
             ->first();
 
         return $period ? $period : null;
@@ -48,26 +70,9 @@ class Period extends Model
             'periods.id as id',
             DB::raw('CONCAT(year, "-", view_month_constants.label) as name'),
         )->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
-            ->where('enrollment_enabled', true)
+            ->where('status', 'MATRICULA')
             ->first();
 
         return $period ? $period : null;
-    }
-
-    //activar periodo
-    public function enableCurrent()
-    {
-        //desactivar todos los periodos
-        self::where('is_enabled', true)->update(['is_enabled' => false]);
-        $this->is_enabled = true;
-        $this->save();
-    }
-    //activar periodo de inscripcion
-    public function enableEnrollment()
-    {
-        //desactivar todos los periodos de inscripcion
-        self::where('enrollment_enabled', true)->update(['enrollment_enabled' => false]);
-        $this->enrollment_enabled = true;
-        $this->save();
     }
 }

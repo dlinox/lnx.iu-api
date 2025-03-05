@@ -14,9 +14,4 @@ Route::prefix('api/period')->group(function () {
     Route::get('current', [PeriodController::class, 'getCurrent']);
     //getEnrollmentPeriod
     Route::get('enrollment-period', [PeriodController::class, 'getEnrollmentPeriod']);
-
-    //enableCurrent
-    Route::put('enable/current/{id?}', [PeriodController::class, 'enableCurrent']);
-    //enableEnrollmentPeriod
-    Route::put('enable/enrollment-period/{id?}', [PeriodController::class, 'enableEnrollment']);
 });

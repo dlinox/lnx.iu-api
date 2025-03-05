@@ -16,7 +16,9 @@ class PeriodController extends Controller
     public function loadDataTable(Request $request)
     {
         try {
-            $items = Period::orderBy('year', 'desc')
+            $items = Period::select('periods.*')
+                ->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
+                ->orderBy('year', 'desc')
                 ->orderBy('month', 'desc')
                 ->dataTable($request);
             PeriodDataTableItemsResource::collection($items);
@@ -102,36 +104,6 @@ class PeriodController extends Controller
             return ApiResponse::success($item);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), 'Error al obtener el periodo de matrícula');
-        }
-    }
-
-    public function enableCurrent(Request $request)
-    {
-        try {
-            if ($request->id == 0) {
-                Period::where('is_enabled', true)->update(['is_enabled' => false]);
-            } else {
-                $item = Period::find($request->id);
-                $item->enableCurrent();
-            }
-            return ApiResponse::success(null, 'Periodo activado correctamente');
-        } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage(), 'Error al activar el periodo');
-        }
-    }
-
-    public function enableEnrollment(Request $request)
-    {
-        try {
-            if ($request->id == 0) {
-                Period::where('enrollment_enabled', true)->update(['enrollment_enabled' => false]);
-            } else {
-                $item = Period::find($request->id);
-                $item->enableEnrollment();
-            }
-            return ApiResponse::success(null, 'Periodo de matrícula activado correctamente');
-        } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage(), 'Error al activar el periodo de matrícula');
         }
     }
 }
