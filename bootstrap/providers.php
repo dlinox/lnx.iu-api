@@ -27,6 +27,8 @@ return [
     App\Modules\EnrollmentGroup\Providers\EnrollmentGroupServiceProvider::class,
     App\Modules\EnrollmentGrade\Providers\EnrollmentGradeServiceProvider::class,
     
+    //EnrollmentUnitGradeServiceProvider
+    App\Modules\EnrollmentUnitGrade\Providers\EnrollmentUnitGradeServiceProvider::class,
 
     //DEPRECATED
     // App\Modules\CurriculumCourse\Providers\CurriculumCourseServiceProvider::class,
