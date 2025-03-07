@@ -5,6 +5,7 @@ namespace App\Modules\Student\Models;
 use App\Traits\HasDataTable;
 use App\Traits\HasEnabledState;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Student extends Model
 {
@@ -56,6 +57,25 @@ class Student extends Model
             'is_enabled' => $data['is_enabled'],
             'student_type_id' => $data['student_type_id'],
         ]);
+
+        return $item;
+    }
+    public static function getInfoById($id)
+    {
+        $item = self::select(
+            'students.id',
+            'student_types.name as studentType',
+            'students.is_enabled as isEnabled',
+            DB::raw('CONCAT_WS(" ", people.name, people.last_name_father, people.last_name_mother) as fullName'),
+            'people.code',
+            'people.document_number as documentNumber',
+            'people.email',
+            'people.phone',
+        )
+            ->join('people', 'people.id', '=', 'students.person_id')
+            ->join('student_types', 'student_types.id', '=', 'students.student_type_id')
+            ->where('students.id', $id)
+            ->first();
 
         return $item;
     }

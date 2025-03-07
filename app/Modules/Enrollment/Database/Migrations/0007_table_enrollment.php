@@ -13,15 +13,15 @@ return new class extends Migration
 
         Schema::create('enrollments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('curriculum_id');
+            // $table->unsignedBigInteger('curriculum_id');
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('module_id');
-            $table->unsignedBigInteger('payment_id')->nullable();
+            // $table->unsignedBigInteger('payment_id')->nullable();
             $table->timestamps();
-            $table->foreign('curriculum_id')->references('id')->on('curriculums');
+            // $table->foreign('curriculum_id')->references('id')->on('curriculums');
             $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('module_id')->references('id')->on('modules');
-            $table->foreign('payment_id')->references('id')->on('payments');
+            // $table->foreign('payment_id')->references('id')->on('payments');
         });
 
 

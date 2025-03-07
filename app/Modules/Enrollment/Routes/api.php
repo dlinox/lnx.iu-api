@@ -14,9 +14,10 @@ Route::prefix('api/enrollment')->middleware('auth:sanctum')->group(function () {
     //enrollmentGroupStore
     Route::post('group-store', [EnrollmentController::class, 'enrollmentGroupStore']);
 
-    //downloadEnrollmentRecord
-    // Route::post('download-enrollment-record', [EnrollmentController::class, 'downloadEnrollmentRecord']);
+    //downloadEnrollmentPDF
+    Route::post('download-enrollment-pdf', [EnrollmentController::class, 'downloadEnrollmentPDF']);
 
+    //DEPRECATED
     //STUDENT
     //storeStudentEnrollment
     Route::post('store-student-enrollment', [EnrollmentController::class, 'storeStudentEnrollment']);

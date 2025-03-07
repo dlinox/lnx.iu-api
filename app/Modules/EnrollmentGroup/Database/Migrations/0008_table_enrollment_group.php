@@ -15,13 +15,13 @@ return new class extends Migration
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('group_id');
             $table->unsignedBigInteger('period_id');
-            $table->unsignedBigInteger('payment_id');
-            $table->enum('status', ['APERTURADO', 'CANCELADO', 'RETIRADO'])->default('APERTURADO');
+            // $table->unsignedBigInteger('payment_id');
+            $table->enum('status', ['ABIERTO', 'CERRADO', 'CANCELADO', 'FINALIZADO'])->default('FINALIZADO');
             $table->timestamps();
             $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('group_id')->references('id')->on('groups');
             $table->foreign('period_id')->references('id')->on('periods');
-            $table->foreign('payment_id')->references('id')->on('payments');
+            // $table->foreign('payment_id')->references('id')->on('payments');
         });
 
 

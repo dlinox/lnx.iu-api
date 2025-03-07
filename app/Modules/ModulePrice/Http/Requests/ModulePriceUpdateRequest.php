@@ -18,8 +18,7 @@ class ModulePriceUpdateRequest extends FormRequest
     {
         $id = $this->id;
         return [
-            'curriculum_id' => 'required|integer',
-            'module_id' => 'required|integer|unique:module_prices,module_id,' . $id . ',id,student_type_id,' . $this->student_type_id . ',curriculum_id,' . $this->curriculum_id,
+            'module_id' => 'required|integer|unique:module_prices,module_id,' . $id . ',id,student_type_id,' . $this->student_type_id,
             'student_type_id' => 'required|integer',
             'price' => 'required|numeric',
             'is_enabled' => 'required|boolean',
@@ -29,7 +28,6 @@ class ModulePriceUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'curriculum_id.required' => 'Obligatorio',
             'module_id.required' => 'Obligatorio',
             'module_id.integer' => 'Debe ser un número entero',
             'module_id.unique' => 'Ya existe un registro con este módulo y tipo de estudiante',
@@ -44,7 +42,6 @@ class ModulePriceUpdateRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'curriculum_id' => $this->input('curriculumId', $this->curriculum_id),
             'module_id' => $this->input('moduleId', $this->module_id),
             'student_type_id' => $this->input('studentTypeId', $this->student_type_id),
             'is_enabled' => $this->input('isEnabled', $this->is_enabled),

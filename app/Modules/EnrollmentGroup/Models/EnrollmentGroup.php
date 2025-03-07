@@ -14,6 +14,6 @@ class EnrollmentGroup extends Model
         'student_id',
         'group_id',
         'period_id',
-        'payment_id',
+        // 'payment_id',
     ];
 }

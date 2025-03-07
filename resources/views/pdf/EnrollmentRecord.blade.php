@@ -36,7 +36,7 @@
         }
 
         .title {
-            background-color: #0000AA44;
+            background-color: rgba(11, 40, 230, 0.27);
             margin: 1rem 0;
             width: 100vw;
             padding: .5rem;
@@ -88,48 +88,49 @@
         <div class="title">
             FICHA DE MATRÍCULA
         </div>
+
         <table width="100%" style="border-collapse: collapse;">
             <tr>
                 <td width="50%" style="vertical-align: top; padding: 2px; ">
 
                     <p>
-                        <strong>Estudiante:</strong> YHON KENYO WILLIAM PARI JARECCA
+                        <strong>Estudiante:</strong> {{$enrollment['student']}}
                     </p>
                     <p>
-                        <strong>Modulo:</strong> AUTOCAD
+                        <strong>Modulo:</strong> {{$enrollment['module']}}
                     </p>
                     <p>
-                        <strong>Grupo:</strong> PD3
+                        <strong>Grupo:</strong> {{$enrollment['group']}} - {{$enrollment['modality']}}
                     </p>
                     <p>
-                        <strong>Tipo de Comprobante:</strong> BANCO.NACION
+                        <strong>Tipo de Comprobante:</strong> {{$enrollment['paymentType']}}
                     </p>
                     <p>
-                        <strong>Costo Matrícula:</strong>
+                        <strong>Costo Matrícula:</strong> {{$enrollment['modulePrice']}}
                     </p>
                     <p>
-                        <strong>Mes:</strong>
+                        <strong>Mes:</strong> {{$enrollment['period']}}
                     </p>
                 </td>
                 <td width="50%" style="vertical-align: top; padding: 2px; ">
 
                     <p>
-                        <strong>Código:</strong> YHON KENYO WILLIAM PARI JARECCA
+                        <strong>Código:</strong> {{$enrollment['studentCode']}}
                     </p>
                     <p>
-                        <strong>Curso:</strong> AUTOCAD
+                        <strong>Curso:</strong> {{$enrollment['course']}}
                     </p>
                     <p>
-                        <strong>Horario:</strong> PD3
+                        <strong>Horario:</strong>
                     </p>
                     <p>
-                        <strong>Nro Comprobante:</strong> BANCO.NACION
+                        <strong>Nro Comprobante:</strong> {{$enrollment['paymentSequence']}}
                     </p>
                     <p>
-                        <strong>Costo Mensualidad::</strong>
+                        <strong>Costo Mensualidad:</strong> {{$enrollment['paymentAmount']}}
                     </p>
                     <p>
-                        <strong>Tipo Estu.:</strong>
+                        <strong>Tipo Estu.:</strong> {{$enrollment['studentType']}}
                     </p>
                 </td>
             </tr>
@@ -141,7 +142,7 @@
                     <div class="signal">
                         Firma del estudiante
                         <br>
-                        DNI: 75865034
+                        DNI: {{$enrollment['documentNumber']}}
                     </div>
 
                 </td>
@@ -168,7 +169,7 @@
             </table>
         </div>
     </div>
-    <div class="record">
+    <div class="record" style="border-bottom: 1px dashed #999;">
         <div class="header-record">
             <span style="text-align: center; width: 100%;">
                 <strong>
@@ -181,48 +182,49 @@
         <div class="title">
             FICHA DE MATRÍCULA
         </div>
+
         <table width="100%" style="border-collapse: collapse;">
             <tr>
                 <td width="50%" style="vertical-align: top; padding: 2px; ">
 
                     <p>
-                        <strong>Estudiante:</strong> YHON KENYO WILLIAM PARI JARECCA
+                        <strong>Estudiante:</strong> {{$enrollment['student']}}
                     </p>
                     <p>
-                        <strong>Modulo:</strong> AUTOCAD
+                        <strong>Modulo:</strong> {{$enrollment['module']}}
                     </p>
                     <p>
-                        <strong>Grupo:</strong> PD3
+                        <strong>Grupo:</strong> {{$enrollment['group']}} - {{$enrollment['modality']}}
                     </p>
                     <p>
-                        <strong>Tipo de Comprobante:</strong> BANCO.NACION
+                        <strong>Tipo de Comprobante:</strong> {{$enrollment['paymentType']}}
                     </p>
                     <p>
-                        <strong>Costo Matrícula:</strong>
+                        <strong>Costo Matrícula:</strong> {{$enrollment['modulePrice']}}
                     </p>
                     <p>
-                        <strong>Mes:</strong>
+                        <strong>Mes:</strong> {{$enrollment['period']}}
                     </p>
                 </td>
                 <td width="50%" style="vertical-align: top; padding: 2px; ">
 
                     <p>
-                        <strong>Código:</strong> YHON KENYO WILLIAM PARI JARECCA
+                        <strong>Código:</strong> {{$enrollment['studentCode']}}
                     </p>
                     <p>
-                        <strong>Curso:</strong> AUTOCAD
+                        <strong>Curso:</strong> {{$enrollment['course']}}
                     </p>
                     <p>
-                        <strong>Horario:</strong> PD3
+                        <strong>Horario:</strong>
                     </p>
                     <p>
-                        <strong>Nro Comprobante:</strong> BANCO.NACION
+                        <strong>Nro Comprobante:</strong> {{$enrollment['paymentSequence']}}
                     </p>
                     <p>
-                        <strong>Costo Mensualidad::</strong>
+                        <strong>Costo Mensualidad:</strong> {{$enrollment['paymentAmount']}}
                     </p>
                     <p>
-                        <strong>Tipo Estu.:</strong>
+                        <strong>Tipo Estu.:</strong> {{$enrollment['studentType']}}
                     </p>
                 </td>
             </tr>
@@ -234,7 +236,7 @@
                     <div class="signal">
                         Firma del estudiante
                         <br>
-                        DNI: 75865034
+                        DNI: {{$enrollment['documentNumber']}}
                     </div>
 
                 </td>

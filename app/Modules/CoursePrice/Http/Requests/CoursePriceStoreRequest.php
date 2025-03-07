@@ -19,7 +19,7 @@ class CoursePriceStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'course_id' => 'required|integer|unique:course_prices,course_id,NULL,id,student_type_id,' . $this->student_type_id . ',curriculum_id,' . $this->curriculum_id,
+            'course_id' => 'required|integer|unique:course_prices,course_id,NULL,id,student_type_id,' . $this->student_type_id,
             'student_type_id' => 'required|integer',
             'presential_price' => 'required|numeric',
             'virtual_price' => 'required|numeric',
@@ -46,7 +46,6 @@ class CoursePriceStoreRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'curriculum_id' => $this->input('curriculumId', $this->curriculum_id),
             'course_id' => $this->input('courseId', $this->course_id),
             'student_type_id' => $this->input('studentTypeId', $this->student_type_id),
             'presential_price' => $this->input('presentialPrice', $this->presential_price),

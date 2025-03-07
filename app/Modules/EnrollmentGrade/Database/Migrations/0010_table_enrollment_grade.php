@@ -12,10 +12,10 @@ return new class extends Migration
         Schema::dropIfExists('enrollment_grades');
         Schema::create('enrollment_grades', function (Blueprint $table) {
             $table->id();
-            $table->decimal('final_grade', 5, 2)->default(0);
-            $table->decimal('capacity_average', 5, 2)->default(0);
-            $table->enum('attitude_grade', ['A', 'B', 'C'])->default('A');
+            $table->decimal('grade', 5, 2)->default(0);
             $table->unsignedBigInteger('enrollment_group_id');
+            //si ya no se puede modificar la nota
+            $table->boolean('is_locked')->default(true);
             $table->foreign('enrollment_group_id')->references('id')->on('enrollment_groups');
             $table->timestamps();
         });

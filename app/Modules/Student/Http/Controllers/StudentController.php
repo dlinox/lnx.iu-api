@@ -47,7 +47,7 @@ class StudentController extends Controller
         }
     }
 
-    public function getById(Request $request)
+    public function loadForm(Request $request)
     {
         try {
             $item = Student::select(
@@ -192,6 +192,16 @@ class StudentController extends Controller
             return ApiResponse::success($items);
         } catch (\Exception $e) {
 
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+
+    public function getInfoById(Request $request)
+    {
+        try {
+            $item = Student::getInfoById($request->id);
+            return ApiResponse::success($item);
+        } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
         }
     }

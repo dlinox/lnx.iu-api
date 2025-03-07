@@ -9,8 +9,12 @@ Route::prefix('api/student')->group(function () {
     Route::put('', [StudentController::class, 'update']);
     Route::delete('', [StudentController::class, 'destroy']);
 
-    Route::get('item/by-id/{id}', [StudentController::class, 'getById']);
+    Route::get('item/load-form/{id}', [StudentController::class, 'loadForm']);
+
     Route::post('search/list', [StudentController::class, 'searchList']);
-    //getItemsForSelect
+
     Route::get('items/for-select', [StudentController::class, 'getItemsForSelect']);
+
+    //getInfoById
+    Route::get('info/{id}', [StudentController::class, 'getInfoById']);
 });

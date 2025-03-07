@@ -18,8 +18,7 @@ class CoursePriceUpdateRequest extends FormRequest
     {
         $id = $this->id;
         return [
-            'curriculum_id' => 'required|integer',
-            'module_id' => 'required|integer|unique:course_prices,course_id,' . $id . ',id,student_type_id,' . $this->student_type_id . ',curriculum_id,' . $this->curriculum_id,
+            'course_id' => 'required|integer|unique:course_prices,course_id,' . $id . ',id,student_type_id,' . $this->student_type_id,
             'student_type_id' => 'required|integer',
             'presential_price' => 'required|numeric',
             'virtual_price' => 'required|numeric',
@@ -30,10 +29,9 @@ class CoursePriceUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'curriculum_id.required' => 'Obligatorio',
-            'module_id.required' => 'Obligatorio',
-            'module_id.integer' => 'Debe ser un número entero',
-            'module_id.unique' => 'Ya existe un registro con estos datos',
+            'course_id.required' => 'Obligatorio',
+            'course_id.integer' => 'Debe ser un número entero',
+            'course_id.unique' => 'Ya existe un registro con estos datos',
             'student_type_id.required' => 'Obligatorio',
             'student_type_id.integer' => 'Debe ser un número entero',
             'presential_price.required' => 'Obligatorio',
@@ -47,7 +45,6 @@ class CoursePriceUpdateRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'curriculum_id' => $this->input('curriculumId', $this->curriculum_id),
             'course_id' => $this->input('courseId', $this->course_id),
             'student_type_id' => $this->input('studentTypeId', $this->student_type_id),
             'presential_price' => $this->input('presentialPrice', $this->presential_price),

@@ -11,9 +11,9 @@ class Enrollment extends Model
     use HasDataTable, HasEnabledState;
 
     protected $fillable = [ 
-        'curriculum_id',
+        // 'curriculum_id',
         'student_id',
         'module_id',
-        'payment_id',
+        // 'payment_id',
     ];
 }

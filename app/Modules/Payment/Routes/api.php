@@ -1,5 +1,9 @@
 <?php
 
+use App\Modules\Payment\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('api/schedule')->group(function () {});
+Route::prefix('api/payment')->group(function () {
+//payment/validate post
+    Route::post('validate', [PaymentController::class, 'validate']);
+});

@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('observation', 255)->nullable();
             $table->enum('status', ['ABIERTO', 'CERRADO', 'CANCELADO', 'FINALIZADO'])->default('FINALIZADO');
             $table->timestamps();
-
             $table->foreign('period_id')->references('id')->on('periods');
             $table->foreign('teacher_id')->references('id')->on('teachers');
             $table->foreign('laboratory_id')->references('id')->on('laboratories');

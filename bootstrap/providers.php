@@ -2,7 +2,6 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-
     App\Modules\Role\Providers\RoleServiceProvider::class,
     App\Modules\User\Providers\UserServiceProvider::class,
     App\Modules\Period\Providers\PeriodServiceProvider::class,
@@ -20,11 +19,15 @@ return [
     App\Modules\Teacher\Providers\TeacherServiceProvider::class,
     App\Modules\Group\Providers\GroupServiceProvider::class,
     App\Modules\Schedule\Providers\ScheduleServiceProvider::class,
+    App\Modules\Student\Providers\StudentServiceProvider::class,
 
-    // App\Modules\Student\Providers\StudentServiceProvider::class,
+    //-- 
+    App\Modules\Payment\Providers\PaymentServiceProvider::class,
+    App\Modules\Enrollment\Providers\EnrollmentServiceProvider::class,
+    App\Modules\EnrollmentGroup\Providers\EnrollmentGroupServiceProvider::class,
+    App\Modules\EnrollmentGrade\Providers\EnrollmentGradeServiceProvider::class,
+    
+
+    //DEPRECATED
     // App\Modules\CurriculumCourse\Providers\CurriculumCourseServiceProvider::class,
-    // App\Modules\Payment\Providers\PaymentServiceProvider::class,
-    // App\Modules\Enrollment\Providers\EnrollmentServiceProvider::class,
-    // App\Modules\EnrollmentGroup\Providers\EnrollmentGroupServiceProvider::class,
-    // App\Modules\EnrollmentGrade\Providers\EnrollmentGradeServiceProvider::class,
 ];
