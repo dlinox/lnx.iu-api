@@ -8,6 +8,7 @@ use App\Http\Responses\ApiResponse;
 use App\Modules\Course\Models\Course;
 use App\Modules\CoursePrice\Models\CoursePrice;
 use App\Modules\Enrollment\Http\Requests\ModuleStoreRequest;
+use App\Modules\Enrollment\Http\Resources\EnrollmentDataTableItemResource;
 use App\Modules\Enrollment\Models\Enrollment;
 use App\Modules\EnrollmentGroup\Models\EnrollmentGroup;
 use App\Modules\Group\Models\Group;
@@ -22,6 +23,45 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class EnrollmentController extends Controller
 {
+
+
+    public function loadDataTable(Request $request)
+    {
+        try {
+
+            $items = EnrollmentGroup::select(
+                'enrollment_groups.id as id',
+                'modules.name as module',
+                'enrollment_groups.status as enrollmentStatus',
+                'groups.id as groupId',
+                'groups.name as group',
+                'groups.modality as modality',
+                'laboratories.name as laboratory',
+                DB::raw('CONCAT_WS(" ", people.name, people.last_name_father, people.last_name_mother) as student'),
+                DB::raw('CONCAT_WS("-", periods.year, view_month_constants.label) as period'),
+                DB::raw('CONCAT_WS("- ", courses.code, courses.name) as course'),
+
+            )
+                ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
+                ->join('students', 'enrollment_groups.student_id', '=', 'students.id')
+                ->join('people', 'students.person_id', '=', 'people.id')
+                ->join('courses', 'groups.course_id', '=', 'courses.id')
+                ->join('modules', 'courses.module_id', '=', 'modules.id')
+                ->join('areas', 'courses.area_id', '=', 'areas.id')
+                ->join('periods', 'enrollment_groups.period_id', '=', 'periods.id')
+                ->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
+                ->leftJoin('laboratories', 'groups.laboratory_id', '=', 'laboratories.id')
+                ->whereNotNull('enrollment_groups.created_by')
+                ->orderBy('periods.year', 'desc')
+                ->orderBy('periods.month', 'desc')
+                ->dataTable($request);
+
+            EnrollmentDataTableItemResource::collection($items);
+            return ApiResponse::success($items);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
+        }
+    }
 
     public function enrollmentModuleStore(ModuleStoreRequest $request)
     {
@@ -307,7 +347,7 @@ class EnrollmentController extends Controller
             ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
             ->join('courses', 'groups.course_id', '=', 'courses.id')
             ->join('modules', 'courses.module_id', '=', 'modules.id')
-            ->join('module_prices', function ($join) {
+            ->leftJoin('module_prices', function ($join) {
                 $join->on('module_prices.module_id', '=', 'modules.id')
                     ->on('module_prices.student_type_id', '=', 'students.student_type_id');
             })
@@ -339,163 +379,6 @@ class EnrollmentController extends Controller
         return $pdf->output();
         // return ApiResponse::success($enrollment);
     }
+    //NEWS
 
-    //STUDENT ENROLLMENT
-    // public function storeStudentEnrollment(Request $request)
-    // {
-    //     try {
-    //         //bucar estudiante 
-    //         $user = Auth::user();
-
-    //         $student = Student::select('students.id')
-    //             ->join('people', 'students.person_id', '=', 'people.id')
-    //             ->where('people.document_number', $user->username)
-    //             ->first();
-
-    //         if (!$student) {
-    //             return ApiResponse::error('No se encontró el estudiante', 'No se encontró el estudiante');
-    //         }
-
-    //         //validar pago
-    //         $paymentData = [
-    //             'studentId' => $student->id,
-    //             'amount' => (float) $request->paymentAmount,
-    //             'date' => $request->paymentDate,
-    //             'sequenceNumber' => $request->paymentSequence,
-    //             'paymentTypeId' => $request->paymentMethod,
-    //         ];
-
-    //         $payment = $this->validatePayment($paymentData);
-    //         $payment = Crypt::decrypt($payment);
-
-    //         //marcar como utilizado el pago 
-    //         $payment = Payment::find($payment);
-    //         $payment->is_enabled = true;
-    //         $payment->save();
-
-    //         $data = [
-    //             'student_id' => $student->id,
-    //             'module_id' => $request->moduleId,
-    //             'curriculum_id' => $request->curriculumId,
-    //             'payment_id' => $payment->id,
-    //         ];
-
-    //         Enrollment::create($data);
-
-    //         return ApiResponse::success(null, 'Matricula exitosa');
-    //     } catch (\Exception $e) {
-    //         return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
-    //     }
-    // }
-    // //get enalble groups by user authenticated
-
-    // public function enabledGroupsEnrollment(Request $request)
-    // {
-    //     try {
-
-    //         $user = Auth::user();
-
-    //         $student = Student::select(
-    //             'students.id',
-    //             'student_type_id',
-    //         )
-    //             ->join('people', 'students.person_id', '=', 'people.id')
-    //             ->where('people.document_number', $user->username)
-    //             ->first();
-
-    //         $period = Period::where('is_enabled', true)->first();
-
-    //         $enrollmentGroups = Group::select(
-    //             'groups.id',
-    //             'groups.name as group',
-    //             'groups.modality as modality',
-    //             DB::raw('IF(groups.modality = "PRESENCIAL", course_prices.presential_price, course_prices.virtual_price) as price'),
-    //             'laboratories.name as laboratory',
-    //             DB::raw('CONCAT(people.name, " ", people.last_name_father, " ", people.last_name_mother) as teacher'),
-    //         )
-    //             ->join('periods', 'groups.period_id', '=', 'periods.id')
-    //             ->join('curriculum_courses', 'groups.curriculum_course_id', '=', 'curriculum_courses.id')
-    //             ->join('course_prices', 'course_prices.course_id', '=', 'curriculum_courses.course_id')
-    //             ->leftJoin('laboratories', 'groups.laboratory_id', '=', 'laboratories.id')
-    //             ->leftJoin('teachers', 'groups.teacher_id', '=', 'teachers.id')
-    //             ->leftJoin('people', 'teachers.person_id', '=', 'people.id')
-    //             ->where('course_prices.student_type_id', $student->student_type_id)
-    //             ->where('curriculum_courses.id', $request->curriculumCourseId)
-    //             ->where('periods.id', $period->id)
-    //             ->where('groups.is_enabled', true)
-    //             ->get()
-    //             ->map(function ($group) use ($request) {
-    //                 $group['schedules'] = Schedule::select(
-    //                     'schedules.day as day',
-    //                     'schedules.start_hour as startHour',
-    //                     'schedules.end_hour as endHour',
-    //                 )
-    //                     ->where('schedules.group_id', $group->id)
-    //                     ->get();
-    //                 return $group;
-    //             });
-
-    //         return ApiResponse::success($enrollmentGroups, 'Registros cargados correctamente');
-    //     } catch (\Exception $e) {
-    //         return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
-    //     }
-    // }
-    // public function storeGroupEnrollment(Request $request)
-    // {
-    //     try {
-
-    //         DB::beginTransaction();
-
-    //         $user = Auth::user();
-
-    //         $student = Student::select('students.id')
-    //             ->join('people', 'students.person_id', '=', 'people.id')
-    //             ->where('people.document_number', $user->username)
-    //             ->first();
-
-    //         if (!$student) {
-    //             return ApiResponse::error('No se encontró el estudiante', 'No se encontró un estudiante asociado a su usuario');
-    //         }
-
-    //         //validar pago
-    //         $paymentData = [
-    //             'studentId' => $student->id,
-    //             'amount' => (float) $request->paymentAmount,
-    //             'date' => $request->paymentDate,
-    //             'sequenceNumber' => $request->paymentSequence,
-    //             'paymentTypeId' => $request->paymentMethod,
-    //         ];
-
-    //         $payment = $this->validatePayment($paymentData);
-    //         $payment = Crypt::decrypt($payment);
-
-    //         //marcar como utilizado el pago 
-    //         $payment = Payment::find($payment);
-    //         $payment->is_enabled = true;
-    //         $payment->save();
-
-    //         $period = Period::where('is_enabled', true)
-    //             ->where('enrollment_enabled', true)
-    //             ->first();
-
-    //         if (!$period) {
-    //             return ApiResponse::error('No se encontró el periodo de matrícula', 'No se encontró el periodo de matrícula');
-    //         }
-
-    //         $data = [
-    //             'student_id' => $student->id,
-    //             'group_id' => $request->groupId,
-    //             'period_id' => $period->id,
-    //             'payment_id' => $payment->id,
-    //         ];
-
-    //         EnrollmentGroup::create($data);
-
-    //         DB::commit();
-    //         return ApiResponse::success(null, 'Matricula exitosa');
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
-    //         return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
-    //     }
-    // }
 }

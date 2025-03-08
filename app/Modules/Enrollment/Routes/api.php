@@ -4,6 +4,10 @@ use App\Modules\Enrollment\Http\Controllers\EnrollmentController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('api/enrollment')->middleware('auth:sanctum')->group(function () {
+
+    //loadDataTable
+    Route::post('load-data-table', [EnrollmentController::class, 'loadDataTable']);
+
     Route::post('student-enrollment-avaliable', [EnrollmentController::class, 'getStudentEnrollmentAvaliable']);
     Route::post('{studentId}/student/{curriculumId}/curriculum', [EnrollmentController::class, 'getModulesEnrollment']);
     Route::post('validate-payment', [EnrollmentController::class, 'validatePaymentEnrollment']);
