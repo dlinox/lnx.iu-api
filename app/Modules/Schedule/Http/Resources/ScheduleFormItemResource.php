@@ -11,8 +11,8 @@ class ScheduleFormItemResource extends JsonResource
     {
         return [
             'day' => $this->day,
-            'startHour' =>  Carbon::today()->setTimeFromTimeString($this->start_hour)->timestamp * 1000,
-            'endHour' => Carbon::today()->setTimeFromTimeString($this->end_hour)->timestamp * 1000,
+            'startHour' =>  $this->start_hour,
+            'endHour' => $this->end_hour,
         ];
         return parent::toArray($request);
     }

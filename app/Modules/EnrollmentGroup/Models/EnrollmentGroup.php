@@ -16,4 +16,11 @@ class EnrollmentGroup extends Model
         'period_id',
         // 'payment_id',
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
+    
 }

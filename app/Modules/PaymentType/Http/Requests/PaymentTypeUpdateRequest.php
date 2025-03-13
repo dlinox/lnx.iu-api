@@ -18,6 +18,7 @@ class PaymentTypeUpdateRequest extends FormRequest
         $id = $this->id;
         return [
             'name' => 'required|string|max:50|unique:document_types,name,' . $id,
+            'commission' => 'required|numeric',
             'is_enabled' => 'required|boolean',
         ];
     }
@@ -28,6 +29,8 @@ class PaymentTypeUpdateRequest extends FormRequest
             'name.required' => 'Obligatorio',
             'name.max' => 'Máximo de 50 caracteres',
             'name.unique' => 'Ya existe un registro con este nombre',
+            'commission.required' => 'Obligatorio',
+            'commission.numeric' => 'Debe ser un número',
             'is_enabled.required' => 'Obligatorio',
         ];
     }

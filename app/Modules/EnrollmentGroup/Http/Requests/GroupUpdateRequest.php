@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Modules\PaymentType\Http\Requests;
+namespace App\Modules\Group\Http\Requests;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class PaymentTypeStoreRequest extends FormRequest
+class GroupUpdateRequest extends FormRequest
 {
     public function authorize()
     {
@@ -16,9 +15,10 @@ class PaymentTypeStoreRequest extends FormRequest
 
     public function rules()
     {
+        $id = $this->id;
         return [
-            'name' => 'required|string|max:50|unique:document_types',
-            'commission' => 'required|numeric',
+            'name' => 'required|string|max:50|unique:document_types,name,' . $id,
+            'description' => 'nullable|max:255',
             'is_enabled' => 'required|boolean',
         ];
     }
@@ -29,8 +29,7 @@ class PaymentTypeStoreRequest extends FormRequest
             'name.required' => 'Obligatorio',
             'name.max' => 'Máximo de 50 caracteres',
             'name.unique' => 'Ya existe un registro con este nombre',
-            'commission.required' => 'Obligatorio',
-            'commission.numeric' => 'Debe ser un número',
+            'description.max' => 'Máximo de 255 caracteres',
             'is_enabled.required' => 'Obligatorio',
         ];
     }

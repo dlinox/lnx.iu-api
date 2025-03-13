@@ -29,8 +29,10 @@ class EnrollmentDataTableItemResource extends JsonResource
             'group' => $this->group,
             'modality' => $this->modality,
             'laboratory' => $this->laboratory,
+            'studentId' => $this->studentId,
             'student' => $this->student,
             'period' => $this->period,
+            'courseId' => $this->courseId,
             'course' => $this->course,
         ];
     }

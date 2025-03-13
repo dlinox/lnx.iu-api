@@ -12,15 +12,17 @@ class PaymentType extends Model
 
     protected $fillable = [
         'name',
+        'commission',
         'is_enabled',
     ];
 
     protected $casts = [
+        'commission' => 'decimal:2',
         'is_enabled' => 'boolean',
     ];
 
     static $searchColumns = [
-        'name',
+        'payment_types.name',
     ];
 
     public $timestamps = false;

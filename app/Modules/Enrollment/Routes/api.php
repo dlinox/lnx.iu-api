@@ -17,6 +17,19 @@ Route::prefix('api/enrollment')->middleware('auth:sanctum')->group(function () {
     Route::post('enabled-groups', [EnrollmentController::class, 'enabledGroups']);
     //enrollmentGroupStore
     Route::post('group-store', [EnrollmentController::class, 'enrollmentGroupStore']);
+    //enrollmentGroupUpdate
+    Route::post('group-update', [EnrollmentController::class, 'enrollmentGroupUpdate']);
+    //enrollmentGroupReserved
+    Route::post('group-reserved', [EnrollmentController::class, 'enrollmentGroupReserved']);
+    //enrollmentGroupCancel
+    Route::post('group-cancel', [EnrollmentController::class, 'enrollmentGroupCancel']);
+    //getEnrollmentGroupPayments
+    Route::post('get-enrollment-group-payments', [EnrollmentController::class, 'getEnrollmentGroupPayments']);
+
+    // //`/enrollment/student-enrollment-avaliable-special`, getStudentEnrollmentAvaliableSpacial
+    Route::post('student-enrollment-avaliable-special', [EnrollmentController::class, 'getStudentEnrollmentAvaliableSpacial']);
+
+
 
     //downloadEnrollmentPDF
     Route::post('download-enrollment-pdf', [EnrollmentController::class, 'downloadEnrollmentPDF']);

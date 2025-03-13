@@ -92,11 +92,12 @@ class GroupController extends Controller
                     $group
                 );
                 $groupModel->schedules()->delete();
-                foreach ($group['schedules'] as $schedule) {
+
+                foreach ($group['schedule']['days'] as $key => $day) {
                     $groupModel->schedules()->create([
-                        'day' => $schedule['day'],
-                        'start_hour' => Carbon::createFromTimestampMs($schedule['start_hour'])->format('H:i:s'),
-                        'end_hour' => Carbon::createFromTimestampMs($schedule['end_hour'])->format('H:i:s'),
+                        'day' => $day,
+                        'start_hour' => $group['schedule']['startHour'],
+                        'end_hour' => $group['schedule']['endHour'],
                     ]);
                 }
             }

@@ -29,7 +29,7 @@ class PaymentController extends Controller
             $validate = $this->paymentService::validatePaymentBank($data);
 
             if (!$validate) {
-                throw new \Exception('El pago no es válido, verifique los datos y asegúrese de la fecha de pago sea con un día de antisipación');
+                return ApiResponse::error(null, 'El pago no es válido, verifique los datos y asegúrese de la fecha de pago sea con un día de antisipación');
             }
             $payment = Payment::where('amount', $data['amount'])
                 ->where('date', $data['date'])
@@ -39,8 +39,8 @@ class PaymentController extends Controller
                 ->first();
 
             if ($payment) {
-                if ($payment->student_id != $data['studentId']) throw new \Exception('El pago ya fue registrado por otro estudiante');
-                if ($payment->is_used == true) throw new \Exception('El pago ya fue utilizado');
+                if ($payment->student_id != $data['studentId']) return ApiResponse::error(null, 'El pago ya fue registrado por otro estudiante');
+                if ($payment->is_used == true) return ApiResponse::error(null, 'El pago ya fue utilizado');
             } else {
                 $payment = Payment::registerItem($data);
             }
