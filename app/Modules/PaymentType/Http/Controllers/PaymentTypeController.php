@@ -3,11 +3,10 @@
 namespace App\Modules\PaymentType\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
-use App\Modules\PaymentType\Http\Requests\PaymentTypeStoreRequest;
-use App\Modules\PaymentType\Http\Requests\PaymentTypeUpdateRequest;
+use App\Http\Controllers\Controller;
 use App\Modules\PaymentType\Models\PaymentType;
+use App\Modules\PaymentType\Http\Requests\SaveRequest;
 use App\Modules\PaymentType\Http\Resources\PaymentTypeDataTableItemsResource;
 
 class PaymentTypeController extends Controller
@@ -23,29 +22,17 @@ class PaymentTypeController extends Controller
         }
     }
 
-    public function store(PaymentTypeStoreRequest $request)
+    public function save(SaveRequest $request)
     {
         try {
             $data =  $request->validated();
-            $documentType = PaymentType::create($data);
-            return ApiResponse::success($documentType, 'Registro creado correctamente', 201);
+            PaymentType::updateOrCreate(['id' => $request->id], $data);
+            return ApiResponse::success(null, $request->id ? 'Registro actualizado correctamente' : 'Registro creado correctamente', 200);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
         }
     }
-    
-    public function update(PaymentTypeUpdateRequest $request)
-    {
-        try {
-            $data = $request->validated();
-            $documentType = PaymentType::find($request->id);
-            $documentType->update($data);
-            return ApiResponse::success($request->all(), 'Registro actualizado correctamente', 200);
-        } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage());
-        }
-    }
-    
+
     public function destroy(Request $request)
     {
         try {

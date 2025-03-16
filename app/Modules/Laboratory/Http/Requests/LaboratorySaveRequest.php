@@ -2,20 +2,14 @@
 
 namespace App\Modules\Laboratory\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Http\Requests\BaseRequest;
 
-class LaboratoryUpdateRequest extends FormRequest
+class LaboratorySaveRequest extends BaseRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
 
     public function rules()
     {
-        $id = $this->id;
+        $id = $this->id ? $this->id : null;
         return [
             'name' => 'required|string|max:50|unique:laboratories,name,' . $id,
             'device_count' => 'required|integer',
@@ -43,14 +37,5 @@ class LaboratoryUpdateRequest extends FormRequest
             'device_count' => $this->input('deviceCount', $this->device_count),
             'device_detail' => $this->input('deviceDetail', $this->device_detail),
         ]);
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = collect($validator->errors())->map(fn($messages) => $messages[0]);
-
-        throw new HttpResponseException(
-            response()->json(['errors' => $errors], 422)
-        );
     }
 }

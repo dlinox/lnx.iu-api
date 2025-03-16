@@ -10,7 +10,8 @@ trait HasDataTable
 
         $query->where(function ($query) use ($search, $columns) {
             foreach ($columns as $column) {
-                $query->orWhere($column, 'LIKE', "%$search%");
+                // $query->orWhereRaw($column, ' LIKE ', "%$search%");
+                $query->orWhereRaw($column . ' LIKE ?', ["%$search%"]);
             }
         });
 

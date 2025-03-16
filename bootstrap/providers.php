@@ -30,6 +30,6 @@ return [
     //EnrollmentUnitGradeServiceProvider
     App\Modules\EnrollmentUnitGrade\Providers\EnrollmentUnitGradeServiceProvider::class,
 
-    //DEPRECATED
-    // App\Modules\CurriculumCourse\Providers\CurriculumCourseServiceProvider::class,
+    //EnrollmentDeadlineServiceProvider
+    App\Modules\EnrollmentDeadline\Providers\EnrollmentDeadlineServiceProvider::class,
 ];

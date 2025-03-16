@@ -5,9 +5,8 @@ namespace App\Modules\Laboratory\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
-use App\Modules\Laboratory\Http\Requests\LaboratoryStoreRequest;
-use App\Modules\Laboratory\Http\Requests\LaboratoryUpdateRequest;
 use App\Modules\Laboratory\Models\Laboratory;
+use App\Modules\Laboratory\Http\Requests\LaboratorySaveRequest;
 use App\Modules\Laboratory\Http\Resources\LaboratoryDataTableItemsResource;
 
 class LaboratoryController extends Controller
@@ -23,24 +22,12 @@ class LaboratoryController extends Controller
         }
     }
 
-    public function store(LaboratoryStoreRequest $request)
+    public function save(LaboratorySaveRequest $request)
     {
         try {
             $data =  $request->validated();
-            $item = Laboratory::create($data);
-            return ApiResponse::success($item, 'Registro creado correctamente', 201);
-        } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage());
-        }
-    }
-
-    public function update(LaboratoryUpdateRequest $request)
-    {
-        try {
-            $data = $request->validated();
-            $item = Laboratory::find($request->id);
-            $item->update($data);
-            return ApiResponse::success($request->all(), 'Registro actualizado correctamente', 200);
+            $item = Laboratory::updateOrCreate(['id' => $request->id], $data);
+            return ApiResponse::success(null, $request->id ? 'Registro actualizado correctamente' : 'Registro creado correctamente', 200);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
         }
