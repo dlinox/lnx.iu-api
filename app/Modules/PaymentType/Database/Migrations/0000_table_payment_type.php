@@ -13,9 +13,7 @@ return new class extends Migration
         Schema::create('payment_types', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50)->unique();
-            $table->decimal('commission', 5, 2)->default(1.00);
             $table->boolean('is_enabled')->default(true);
-            // $table->timestamps();
         });
 
         $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');

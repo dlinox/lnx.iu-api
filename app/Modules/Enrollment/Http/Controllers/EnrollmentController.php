@@ -569,9 +569,6 @@ class EnrollmentController extends Controller
         return $pdf->output();
         // return ApiResponse::success($enrollment);
     }
-
-    //`/enrollment/student-enrollment-avaliable-special`,
-
     public function getStudentEnrollmentAvaliableSpacial(Request $request)
     {
         try {

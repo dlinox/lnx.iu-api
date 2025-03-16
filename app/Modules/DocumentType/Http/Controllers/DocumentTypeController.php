@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Modules\DocumentType\Http\Requests\DocumentTypeStoreRequest;
-use App\Modules\DocumentType\Http\Requests\DocumentTypeUpdateRequest;
+use App\Modules\DocumentType\Http\Requests\SaveRequest;
 use App\Modules\DocumentType\Models\DocumentType;
 use App\Modules\DocumentType\Http\Resources\DocumentTypeDataTableItemsResource;
 
@@ -23,26 +23,14 @@ class DocumentTypeController extends Controller
         }
     }
 
-    public function store(DocumentTypeStoreRequest $request)
-    {
-        try {
-            $data =  $request->validated();
-            $documentType = DocumentType::create($data);
-            return ApiResponse::success($documentType, 'Registro creado correctamente', 201);
-        } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage(), 'Error al crear el registro');
-        }
-    }
-
-    public function update(DocumentTypeUpdateRequest $request)
+    public function save(SaveRequest $request)
     {
         try {
             $data = $request->validated();
-            $documentType = DocumentType::find($request->id);
-            $documentType->update($data);
-            return ApiResponse::success($request->all(), 'Registro actualizado correctamente', 200);
+            DocumentType::updateOrCreate(['id' => $request->id], $data);
+            return ApiResponse::success(null, $request->id ? 'Registro actualizado correctamente' : 'Registro creado correctamente');
         } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage());
+            return ApiResponse::error($e->getMessage(), $request->id ? 'Error al actualizar el registro' : 'Error al crear el registro');
         }
     }
 
@@ -57,7 +45,7 @@ class DocumentTypeController extends Controller
         }
     }
 
-    public function getItemsForSelect(Request $request)
+    public function getItemsForSelect()
     {
         try {
             $documentTypes = DocumentType::select('id as value', 'name as label')->enabled()->get();

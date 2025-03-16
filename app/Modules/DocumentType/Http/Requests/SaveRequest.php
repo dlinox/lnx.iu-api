@@ -1,23 +1,15 @@
 <?php
 
 namespace App\Modules\DocumentType\Http\Requests;
-
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
-
-use Illuminate\Foundation\Http\FormRequest;
-
-class DocumentTypeStoreRequest extends FormRequest
+use App\Http\Requests\BaseRequest;
+class SaveRequest extends BaseRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
 
     public function rules()
     {
+        $id = $this->id ? $this->id : null;
         return [
-            'name' => 'required|string|max:50|unique:document_types',
+            'name' => 'required|string|max:50|unique:document_types,name,' . $id,
             'is_enabled' => 'required|boolean',
         ];
     }
@@ -39,12 +31,4 @@ class DocumentTypeStoreRequest extends FormRequest
         ]);
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = collect($validator->errors())->map(fn($messages) => $messages[0]);
-
-        throw new HttpResponseException(
-            response()->json(['errors' => $errors], 422)
-        );
-    }
 }

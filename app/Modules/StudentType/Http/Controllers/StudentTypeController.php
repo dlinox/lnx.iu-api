@@ -5,8 +5,7 @@ namespace App\Modules\StudentType\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
-use App\Modules\StudentType\Http\Requests\StudentTypeStoreRequest;
-use App\Modules\StudentType\Http\Requests\StudentTypeUpdateRequest;
+use App\Modules\StudentType\Http\Requests\SaveRequest;
 use App\Modules\StudentType\Models\StudentType;
 use App\Modules\StudentType\Http\Resources\StudentTypeDataTableItemsResource;
 
@@ -23,29 +22,17 @@ class StudentTypeController extends Controller
         }
     }
 
-    public function store(StudentTypeStoreRequest $request)
+    public function save(SaveRequest $request)
     {
         try {
             $data =  $request->validated();
-            $documentType = StudentType::create($data);
-            return ApiResponse::success($documentType, 'Registro creado correctamente', 201);
+            StudentType::updateOrCreate(['id' => $request->id], $data);
+            return ApiResponse::success(null, $request->id ? 'Registro actualizado correctamente' : 'Registro creado correctamente');
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
         }
     }
-    
-    public function update(StudentTypeUpdateRequest $request)
-    {
-        try {
-            $data = $request->validated();
-            $documentType = StudentType::find($request->id);
-            $documentType->update($data);
-            return ApiResponse::success($request->all(), 'Registro actualizado correctamente', 200);
-        } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage());
-        }
-    }
-    
+
     public function destroy(Request $request)
     {
         try {

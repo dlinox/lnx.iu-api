@@ -2,22 +2,16 @@
 
 namespace App\Modules\StudentType\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Http\Requests\BaseRequest;
 
-use Illuminate\Foundation\Http\FormRequest;
 
-class StudentTypeStoreRequest extends FormRequest
+class SaveRequest extends BaseRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     public function rules()
     {
+        $id = $this->id ? $this->id : null;
         return [
-            'name' => 'required|string|max:50|unique:document_types',
+            'name' => 'required|string|max:50|unique:student_types,name,' . $this->id,
             'is_enabled' => 'required|boolean',
         ];
     }
@@ -37,14 +31,5 @@ class StudentTypeStoreRequest extends FormRequest
         $this->merge([
             'is_enabled' => $this->input('isEnabled', $this->is_enabled),
         ]);
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = collect($validator->errors())->map(fn($messages) => $messages[0]);
-
-        throw new HttpResponseException(
-            response()->json(['errors' => $errors], 422)
-        );
     }
 }

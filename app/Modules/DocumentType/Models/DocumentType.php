@@ -4,11 +4,13 @@ namespace App\Modules\DocumentType\Models;
 
 use App\Traits\HasDataTable;
 use App\Traits\HasEnabledState;
+use App\Traits\HasLogs;
 use Illuminate\Database\Eloquent\Model;
+
 
 class DocumentType extends Model
 {
-    use HasDataTable, HasEnabledState;
+    use HasDataTable, HasEnabledState, HasLogs;
 
     protected $fillable = [
         'name',
@@ -24,4 +26,7 @@ class DocumentType extends Model
     ];
 
     public $timestamps = false;
+
+    protected $logAttributes = ['name', 'is_enabled'];
+    protected $logName = 'Tipo de documento';
 }

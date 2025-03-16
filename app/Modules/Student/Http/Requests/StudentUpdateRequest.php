@@ -2,22 +2,13 @@
 
 namespace App\Modules\Student\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Str;
+use App\Http\Requests\BaseRequest;
 
-class StudentUpdateRequest extends FormRequest
+class StudentUpdateRequest extends BaseRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
 
     public function rules()
     {
-
-        // $id = $this->id;
         $personId = $this->person_id;
 
         return [
@@ -79,18 +70,5 @@ class StudentUpdateRequest extends FormRequest
             'date_of_birth' => $this->input('dateOfBirth', $this->date_of_birth),
             'is_enabled' => $this->input('isEnabled', $this->is_enabled),
         ]);
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = collect($validator->errors())->mapWithKeys(function ($messages, $field) {
-            return [
-                Str::camel($field) => $messages[0]
-            ];
-        });
-
-        throw new HttpResponseException(
-            response()->json(['errors' => $errors], 422)
-        );
     }
 }
