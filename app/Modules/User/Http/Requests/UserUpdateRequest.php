@@ -24,7 +24,7 @@ class UserUpdateRequest extends FormRequest
             'required',
             'exists:students,id',
             Rule::unique('users')->ignore($id)->where(function ($query) use ($level) {
-                return $query->where('account_level', $level);
+                return $query->where('model_type', $level);
             }),
         ];
 
@@ -32,7 +32,7 @@ class UserUpdateRequest extends FormRequest
             'required',
             'exists:teachers,id',
             Rule::unique('users')->ignore($id)->where(function ($query) use ($level) {
-                return $query->where('account_level', $level);
+                return $query->where('model_type', $level);
             }),
         ];
 

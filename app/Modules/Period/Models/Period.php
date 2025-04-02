@@ -16,7 +16,6 @@ class Period extends Model
     protected $fillable = [
         'year',
         'month',
-        'status',
     ];
 
     protected $casts = [
@@ -30,13 +29,12 @@ class Period extends Model
         'periods.year',
         'periods.month',
         'view_month_constants.label',
-        'periods.status',
     ];
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['status', 'year', 'month'])
+            ->logOnly(['year', 'month'])
             ->logOnlyDirty()
             ->useLogName('periodo');
     }
@@ -50,29 +48,5 @@ class Period extends Model
         ];
         $ip = request()->ip();
         return "{$ip}: El período ha sido {$eventNameSpanish[$eventName]}";
-    }
-
-    public static function current()
-    {
-        $period = self::select(
-            'periods.id as id',
-            DB::raw('CONCAT(year, "-", view_month_constants.label) as name'),
-        )->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
-            ->where('status', 'EN CURSO')
-            ->first();
-
-        return $period ? $period : null;
-    }
-
-    public static function enrollmentPeriod()
-    {
-        $period = self::select(
-            'periods.id as id',
-            DB::raw('CONCAT(year, "-", view_month_constants.label) as name'),
-        )->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
-            ->where('status', 'MATRICULA')
-            ->first();
-
-        return $period ? $period : null;
     }
 }

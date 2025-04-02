@@ -6,6 +6,7 @@ use App\Traits\HasDataTable;
 use App\Traits\HasEnabledState;
 use App\Traits\HasLogs;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class EnrollmentDeadline extends Model
 {
@@ -18,6 +19,7 @@ class EnrollmentDeadline extends Model
         'reference_id',
         'observations',
         'period_id',
+        'virtual',
     ];
 
     protected $hidden = [
@@ -26,10 +28,14 @@ class EnrollmentDeadline extends Model
     ];
 
     static $searchColumns = [
-        'enrollment_periods.start_date',
-        'enrollment_periods.end_date',
-        'enrollment_periods.type',
+        'enrollment_deadlines.start_date',
+        'enrollment_deadlines.end_date',
+        'enrollment_deadlines.type',
         'CONCAT( periods.year, "-",view_month_constants.label)',
+    ];
+
+    protected $casts = [
+        'virtual' => 'boolean',
     ];
 
     protected $logAttributes = [
@@ -54,5 +60,24 @@ class EnrollmentDeadline extends Model
         $data['reference_id'] = $id;
         $data['id'] = null;
         return self::create($data);
+    }
+
+    public static function activeEnrollmentPeriod()
+    {
+        $period = self::select(
+            'enrollment_deadlines.period_id as periodId',
+            'enrollment_deadlines.type',
+            'enrollment_deadlines.start_date as startDate',
+            'enrollment_deadlines.end_date as endDate',
+            'enrollment_deadlines.virtual',
+            DB::raw('CONCAT(periods.year, "-", view_month_constants.label) as period')
+        )
+            ->join('periods', 'enrollment_deadlines.period_id', '=', 'periods.id')
+            ->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
+            ->where('enrollment_deadlines.start_date', '<=', now())  // Verifica que el período ya inició
+            ->where('enrollment_deadlines.end_date', '>=', now())   // Verifica que el período no haya terminado
+            ->first();
+
+        return $period ? $period->toArray() : null;
     }
 }

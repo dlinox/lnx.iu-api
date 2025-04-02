@@ -49,12 +49,7 @@ class Person extends Model
 
     public static function registerItem($data)
     {
-
-        if (isset($data['code'])) {
-            $code = $data['code'];
-        } else {
-            $code = self::generateCode();
-        }
+        $code = self::generateCode();
 
         $item =  self::create([
             'code' => $code,
@@ -77,7 +72,7 @@ class Person extends Model
     {
         $item =  self::find($data['person_id']);
         $item->update([
-            'code' => $data['code'],
+            // 'code' => $data['code'],
             'document_type_id' => $data['document_type_id'],
             'document_number' => $data['document_number'],
             'name' => $data['name'],

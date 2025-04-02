@@ -20,7 +20,6 @@ return new class extends Migration
             $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('group_id')->references('id')->on('groups');
             $table->foreign('period_id')->references('id')->on('periods');
-            // $table->foreign('payment_id')->references('id')->on('payments');
         });
 
 

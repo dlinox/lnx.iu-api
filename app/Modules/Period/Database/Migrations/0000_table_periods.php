@@ -13,9 +13,10 @@ return new class extends Migration
             $table->id();
             $table->integer('year');
             $table->integer('month');
-            $table->enum('status', ["MATRICULA", "EN CURSO", "FINALIZADO", "CANCELADO", "PENDIENTE"])->default("FINALIZADO");
-            $table->unique(['year', 'month']);
             $table->timestamps();
+            $table->index(['year', 'month'], 'periods_year_month_index');
+            $table->index('year');
+            $table->index('month');
         });
         $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
         DB::unprepared($sql);

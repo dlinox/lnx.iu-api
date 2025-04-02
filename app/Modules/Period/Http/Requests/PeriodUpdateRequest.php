@@ -2,17 +2,14 @@
 
 namespace App\Modules\Period\Http\Requests;
 
+use App\Http\Requests\BaseRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
-class PeriodUpdateRequest extends FormRequest
+class PeriodUpdateRequest extends BaseRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
 
     public function rules()
     {
@@ -31,16 +28,6 @@ class PeriodUpdateRequest extends FormRequest
                     return $query->where('year', $this->year)->where('id', '!=', $id);
                 }),
             ],
-            'status' => [
-                'required',
-                Rule::in([
-                    "PENDIENTE",
-                    "MATRICULA",
-                    "EN CURSO",
-                    "FINALIZADO",
-                    "CANCELADO",
-                ]),
-            ],
         ];
     }
 
@@ -53,22 +40,11 @@ class PeriodUpdateRequest extends FormRequest
             'month.required' => 'Obligatorio',
             'month.between' => 'No es un mes válido',
             'month.unique' => 'El periodo ya existe',
-            'status.required' => 'Obligatorio',
-            'status.in' => 'No es un estado válido',
         ];
     }
 
     public function prepareForValidation()
     {
         $this->merge([]);
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = collect($validator->errors())->map(fn($messages) => $messages[0]);
-
-        throw new HttpResponseException(
-            response()->json(['errors' => $errors], 422)
-        );
     }
 }

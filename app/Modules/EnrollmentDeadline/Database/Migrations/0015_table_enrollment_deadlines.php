@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -16,6 +15,7 @@ return new class extends Migration
             $table->dateTime('end_date');
             $table->text('observations')->nullable();
             $table->enum('type', ['REGULAR', 'AMPLIACION'])->default('REGULAR');
+            $table->boolean('virtual')->default(true);
             $table->unsignedBigInteger('reference_id')->nullable();
             $table->unsignedBigInteger('period_id');
             $table->timestamps();

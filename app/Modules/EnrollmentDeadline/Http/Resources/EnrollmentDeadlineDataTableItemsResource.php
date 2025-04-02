@@ -17,6 +17,7 @@ class EnrollmentDeadlineDataTableItemsResource extends JsonResource
             'observations' => $this->observations,
             'periodId' => $this->period_id,
             'period' => $this->period,
+            'virtual' => $this->virtual,
             'lastDate' => EnrollmentDeadline::where(function ($query) {
                 $query
                     ->where('id', $this->id)

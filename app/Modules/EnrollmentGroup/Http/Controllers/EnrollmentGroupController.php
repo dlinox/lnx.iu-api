@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Modules\EnrollmentGroup\Http\Resources\EnrollmentGroupDataTableItemsResource;
-use App\Modules\EnrollmentGroup\Models\EnrollmentGroup;
 use App\Modules\Group\Models\Group;
-use Illuminate\Support\Facades\DB;
 
 class EnrollmentGroupController extends Controller
 {
@@ -30,7 +28,17 @@ class EnrollmentGroupController extends Controller
                 ->join('courses', 'courses.id', '=', 'groups.course_id')
                 ->join('areas', 'areas.id', '=', 'courses.area_id')
                 ->join('modules', 'modules.id', '=', 'courses.module_id')
-                ->dataTable($request, []);
+                ->where('groups.period_id', $request->filters['periodId'])
+                ->orderBy('groups.period_id', 'desc')
+                ->orderBy('groups.status', 'asc')
+                ->dataTable($request, [
+                    'groups.name',
+                    'groups.modality',
+                    'groups.status',
+                    'modules.name',
+                    'areas.name',
+                    'courses.name'
+                ]);
             EnrollmentGroupDataTableItemsResource::collection($items);
             return ApiResponse::success($items);
         } catch (\Exception $e) {

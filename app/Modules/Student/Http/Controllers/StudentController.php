@@ -5,6 +5,7 @@ namespace App\Modules\Student\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Mail\SendCredentialsMail;
 use App\Modules\Person\Models\Person;
 use App\Modules\Student\Models\Student;
 use App\Modules\Student\Http\Requests\StudentStoreRequest;
@@ -12,7 +13,9 @@ use App\Modules\Student\Http\Requests\StudentUpdateRequest;
 
 use App\Modules\Student\Http\Resources\StudentDataTableItemsResource;
 use App\Modules\Student\Http\Resources\StudentItemResource;
+use App\Modules\User\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class StudentController extends Controller
 {
@@ -84,7 +87,12 @@ class StudentController extends Controller
             $data =  $request->validated();
             $person = Person::registerItem($data);
             $data['person_id'] = $person->id;
-            Student::registerItem($data);
+            $student = Student::registerItem($data);
+            $user = User::createAccountStudent($person, $student->id);
+
+            // SendCredentialsMail
+            Mail::to($person->email)->send(new SendCredentialsMail($user));
+
             DB::commit();
             return ApiResponse::success(null, 'Registro creado correctamente', 201);
         } catch (\Exception $e) {

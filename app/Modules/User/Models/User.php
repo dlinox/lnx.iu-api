@@ -16,11 +16,11 @@ class User extends Authenticatable
         'name',
         'username',
         'email',
-        'password',
-        'account_level',
-        'email_verified_at',
-        'is_enabled',
         'model_id',
+        'model_type',
+        'email_verified_at',
+        'password',
+        'is_enabled',
     ];
 
     protected $hidden = [
@@ -41,4 +41,25 @@ class User extends Authenticatable
         'users.username',
         'users.email',
     ];
+
+    public static function createAccountStudent($person, $studentId)
+    {
+        $password = rand(10000000, 99999999);
+        $item =  self::create([
+            'name' => $person['name'] . ' ' . $person['last_name_father'] . ' ' . $person['last_name_mother'],
+            'username' => $person['document_number'],
+            'email' => $person['email'],
+            'password' => $password,
+            'model_id' => $studentId,
+            'is_enabled' => true,
+            'model_type' => 'student',
+        ]);
+
+        $item->syncRoles(['estudiante']);
+
+        return [
+            'password' => $password,
+            'username' => $person['document_number'],
+        ];
+    }
 }

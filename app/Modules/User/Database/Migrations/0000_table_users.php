@@ -14,27 +14,17 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->enum('account_level', ['admin', 'teacher', 'student']);
+            $table->enum('model_type', ['admin', 'teacher', 'student']);
+            $table->unsignedBigInteger('model_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger('model_id')->nullable();
             $table->boolean('is_enabled')->default(true);
             $table->timestamps();
         });
-
-        // Schema::create('sessions', function (Blueprint $table) {
-        //     $table->string('id')->primary();
-        //     $table->foreignId('user_id')->nullable()->index();
-        //     $table->string('ip_address', 45)->nullable();
-        //     $table->text('user_agent')->nullable();
-        //     $table->longText('payload');
-        //     $table->integer('last_activity')->index();
-        // });
     }
 
     public function down(): void
     {
         Schema::dropIfExists('users');
-        // Schema::dropIfExists('sessions');
     }
 };

@@ -13,8 +13,6 @@ class EnrollmentGroupDataTableItemsResource extends JsonResource
         $studentEnrolled = EnrollmentGroup::where('group_id', $this->id)->where('status', 'MATRICULADO')->count();
         $studentReserved = EnrollmentGroup::where('group_id', $this->id)->where('status', 'RESERVADO')->count();
         $percentageOpening = $this->minStudents > 0 ? $studentEnrolled / $this->minStudents * 100 : 0;
-
-        //percentageOpening  max 2 decimal
         $percentageOpening = number_format($percentageOpening, 1);
 
         return [

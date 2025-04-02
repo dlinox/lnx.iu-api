@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StudentStoreRequest extends FormRequest
 {
@@ -17,14 +18,19 @@ class StudentStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|max:8|unique:people',
             'document_type_id' => 'required|exists:document_types,id',
             'document_number' => 'required|max:15|unique:people',
             'name' => 'required|max:50',
             'last_name_father' => 'nullable|max:50',
             'last_name_mother' => 'nullable|max:50',
             'gender' => 'nullable|in:1,2,0',
-            'email' => 'nullable|email|max:80',
+            'email' => [
+                'required',
+                'email',
+                'max:80',
+                Rule::unique('people', 'email'), // Asegura que el email no exista en `people`
+                Rule::unique('users', 'email'),
+            ],
             'phone' => 'nullable|max:15',
             'address' => 'nullable|max:100',
             'student_type_id' => 'required|exists:student_types,id',
@@ -36,9 +42,6 @@ class StudentStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'code.required' => 'Obligatorio',
-            'code.max' => 'Máximo de 8 caracteres',
-            'code.unique' => 'Ya existe un registro con este código',
             'document_type_id.required' => 'Obligatorio',
             'document_type_id.exists' => 'No existe un registro con este identificador',
             'document_number.required' => 'Obligatorio',
@@ -51,6 +54,7 @@ class StudentStoreRequest extends FormRequest
             'gender.in' => 'Valor no permitido',
             'email.email' => 'Formato de correo no válido',
             'email.max' => 'Máximo de 80 caracteres',
+            'email.unique' => 'Ya existe un registro con este correo',
             'phone.max' => 'Máximo de 15 caracteres',
             'address.max' => 'Máximo de 100 caracteres',
             'student_type_id.required' => 'Obligatorio',

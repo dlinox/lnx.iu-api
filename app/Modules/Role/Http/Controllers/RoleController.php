@@ -23,7 +23,7 @@ class RoleController extends Controller
                 'roles.name',
                 'roles.is_enabled',
             )
-                ->where('roles.account_level', $request->filters['level'])
+                ->where('roles.model_type', $request->filters['level'])
                 ->dataTable($request);
             RoleDataTableItemsResource::collection($items);
             return ApiResponse::success($items);
@@ -38,7 +38,7 @@ class RoleController extends Controller
             DB::beginTransaction();
             $data =  $request->validated();
             $data['guard_name'] = 'sanctum';
-            $data['account_level'] = $request->level;
+            $data['model_type'] = $request->level;
             $item = Role::create($data);
             $role = SpatieRole::find($item->id);
             $role->syncPermissions($request->permissions);
@@ -90,7 +90,7 @@ class RoleController extends Controller
                 'roles.name as label'
             )
                 ->where('roles.is_enabled', true)
-                ->where('roles.account_level', $request->level)
+                ->where('roles.model_type', $request->level)
                 ->get();
 
             return ApiResponse::success($item);
@@ -107,7 +107,7 @@ class RoleController extends Controller
                 'permissions.name as label'
             )
                 ->where('permissions.is_enabled', true)
-                ->where('permissions.account_level', $request->level)
+                ->where('permissions.model_type', $request->level)
                 ->get();
             return ApiResponse::success($item);
         } catch (\Exception $e) {

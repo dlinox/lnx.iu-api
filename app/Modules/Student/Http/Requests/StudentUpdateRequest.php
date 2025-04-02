@@ -3,6 +3,7 @@
 namespace App\Modules\Student\Http\Requests;
 
 use App\Http\Requests\BaseRequest;
+use Illuminate\Validation\Rule;
 
 class StudentUpdateRequest extends BaseRequest
 {
@@ -12,7 +13,7 @@ class StudentUpdateRequest extends BaseRequest
         $personId = $this->person_id;
 
         return [
-            'code' => 'required|max:8|unique:people,code,' . $personId,
+            'id' => 'required',
             'person_id' => 'required|exists:people,id',
             'document_type_id' => 'required|exists:document_types,id',
             'document_number' => 'required|max:15|unique:people,document_number,' . $personId,
@@ -20,7 +21,13 @@ class StudentUpdateRequest extends BaseRequest
             'last_name_father' => 'nullable|max:50',
             'last_name_mother' => 'nullable|max:50',
             'gender' => 'nullable|in:1,2,0',
-            'email' => 'nullable|email|max:80',
+            // 'email' => 'required|email|max:80|unique:people,email,' . $personId,
+            'email' => [
+                'required',
+                'email',
+                'max:80',
+                Rule::unique('people', 'email')->ignore($this->personId),
+            ],
             'phone' => 'nullable|max:15',
             'address' => 'nullable|max:100',
             'student_type_id' => 'required|exists:student_types,id',
@@ -33,9 +40,6 @@ class StudentUpdateRequest extends BaseRequest
     {
         return [
             'id.required' => 'Obligatorio',
-            'code.required' => 'Obligatorio',
-            'code.max' => 'Máximo de 8 caracteres',
-            'code.unique' => 'Ya existe un registro con este código',
             'document_type_id.required' => 'Obligatorio',
             'document_type_id.exists' => 'No existe un registro con este identificador',
             'document_number.required' => 'Obligatorio',
@@ -46,8 +50,10 @@ class StudentUpdateRequest extends BaseRequest
             'last_name_father.max' => 'Máximo de 50 caracteres',
             'last_name_mother.max' => 'Máximo de 50 caracteres',
             'gender.in' => 'Valor no permitido',
+            'email.required' => 'Obligatorio',
             'email.email' => 'Formato de correo no válido',
             'email.max' => 'Máximo de 80 caracteres',
+            'email.unique' => 'Ya existe un registro con este correo',
             'phone.max' => 'Máximo de 15 caracteres',
             'address.max' => 'Máximo de 100 caracteres',
             'student_type_id.required' => 'Obligatorio',

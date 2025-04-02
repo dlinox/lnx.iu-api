@@ -14,6 +14,7 @@ class Schedule extends Model
         'day',
         'start_hour',
         'end_hour',
+        'group_id',
     ];
     public $timestamps = false;
 }

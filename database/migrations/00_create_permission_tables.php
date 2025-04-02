@@ -29,8 +29,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('display_name')->nullable();
             $table->string('group')->nullable();
-            $table->enum('account_level', ['admin', 'teacher', 'student']);
-            $table->string('guard_name'); 
+            $table->enum('model_type', ['admin', 'teacher', 'student']);
+            $table->string('guard_name')->default('sanctum');
             $table->timestamps();
             $table->unique(['name', 'guard_name']);
         });
@@ -43,10 +43,9 @@ return new class extends Migration
                 $table->index($columnNames['team_foreign_key'], 'roles_team_foreign_key_index');
             }
             $table->string('name');       // For MyISAM use string('name', 225); // (or 166 for InnoDB with Redundant/Compact row format)
-            // account_level
-            $table->enum('account_level', ['admin', 'teacher', 'student']);
+            $table->enum('model_type', ['admin', 'teacher', 'student']);
+            $table->string('guard_name')->default('sanctum');
             $table->boolean('is_enabled')->default(true);
-            $table->string('guard_name'); // For MyISAM use string('guard_name', 25);
             $table->timestamps();
             if ($teams || config('permission.testing')) {
                 $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name']);

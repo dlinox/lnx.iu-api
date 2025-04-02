@@ -3,157 +3,62 @@
 namespace App\Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Responses\ApiResponse;
-use App\Modules\Auth\Http\Requests\SignUpRequest;
-use App\Modules\Person\Models\Person;
-use App\Modules\Student\Models\Student;
-use App\Modules\User\Models\User;
+use App\Modules\Auth\Http\Requests\SignInRequest;
+use App\Modules\Auth\Services\AuthenticateService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
+use App\Http\Responses\ApiResponse;
+use App\Modules\Auth\Services\ResetPasswordService;
 
 class AuthController extends Controller
 {
-    protected $user;
+    protected $authenticateService;
+    protected $resetPasswordService;
 
-    public function __construct(User $user)
+    public function __construct(AuthenticateService $authenticateService, ResetPasswordService $resetPasswordService)
     {
-        $this->user = $user;
+        $this->authenticateService = $authenticateService;
+        $this->resetPasswordService = $resetPasswordService;
     }
 
-    public function signIn(Request $request)
-    {
-        $user = $this->user->select(
-            'users.*',
-        )
-            ->where(function ($query) use ($request) {
-                $query->where('username', $request->username)
-                    ->orWhere('email', $request->username);
-            })
-            ->where('users.account_level', 'admin')
-            ->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return ApiResponse::error('', 'Credenciales incorrectas');
-        }
-
-        if ($user->is_enabled == 0) {
-            return ApiResponse::error('', 'Usuario inactivo',);
-        }
-
-        return ApiResponse::success($this->userState($user));
-    }
-
-    public function signInStudent(Request $request)
-    {
-        $user = $this->user->select(
-            'users.*',
-        )
-            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->where(function ($query) use ($request) {
-                $query->where('username', $request->username)
-                    ->orWhere('email', $request->username);
-            })
-            ->where('roles.name', 'estudiante')
-            ->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return ApiResponse::error('', 'Credenciales incorrectas');
-        }
-
-        if ($user->is_enabled == 0) {
-            return ApiResponse::error('', 'Usuario inactivo',);
-        }
-
-        return ApiResponse::success($this->userState($user));
-    }
-
-    public function signUp(SignUpRequest $request)
+    public function signIn(SignInRequest $request)
     {
         try {
-            DB::beginTransaction();
-            $data = $request->all();
-
-            $person = Person::registerItem($data);
-            $data['person_id'] = $person->id;
-
-            Student::registerItem($data);
-
-            $user = User::create([
-                'name' => $person->name . ' ' . $person->last_name_father . ' ' . $person->last_name_mother,
-                'username' => $person->document_number,
-                'email' => $data['email'],
-                'password' => $person->document_number,
-                'is_enabled' => 1,
-            ]);
-
-            $user->syncRoles(['estudiante']);
-
-            DB::commit();
-            return ApiResponse::success(null, 'Registro creado correctamente', 201);
+            $user =  $this->authenticateService->signIn($request);
+            return ApiResponse::success($user);
+        } catch (\App\Exceptions\AuthException $e) {
+            return ApiResponse::error('Error de autenticación', $e->getMessage(), $e->getCode());
         } catch (\Exception $e) {
-            DB::rollBack();
-            return ApiResponse::error($e->getMessage());
+            return ApiResponse::error($e->getMessage(), 'Error al iniciar sesión');
         }
     }
 
+    public function resetPassword(Request $request)
+    {
+        try {
+            $this->resetPasswordService->resetPassword($request);
+            return ApiResponse::success('Correo enviado');
+        } catch (\App\Exceptions\AuthException $e) {
+            return ApiResponse::error('Error de autenticación', $e->getMessage(), $e->getCode());
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 'Error al restablecer la contraseña');
+        }
+    }
+
+    public function user(Request $request)
+    {
+        try {
+            $user = $this->authenticateService->currentUser($request);
+            return ApiResponse::success($user);
+        } catch (\App\Exceptions\AuthException $e) {
+            return ApiResponse::error('Error de autenticación', $e->getMessage(), $e->getCode());
+        } catch (\Exception $e) {
+            return ApiResponse::error('', 'Error al obtener el usuario actual');
+        }
+    }
 
     public function signOut(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
         return ApiResponse::success('Sesión cerrada, hasta luego');
-    }
-
-    public function user(Request $request)
-    {
-        $user =  $request->user();
-        $userState = $this->userState($user);
-        return ApiResponse::success($userState);
-    }
-
-    private function userState($user)
-    {
-        $role = $this->getUserRole($user);
-        $currentUser = User::find($user->id);
-
-        return [
-            'token' => $this->getUserToken($currentUser),
-            'user' => [
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $role->name,
-                'redirectTo' => "/",
-            ],
-            'permissions' => implode('|', $user->getAllPermissions()->pluck('name')->toArray()),
-        ];
-    }
-
-    private function getUserToken($user)
-    {
-
-        $token = request()->bearerToken();
-
-        if ($token) {
-            return $token;
-        }
-
-        return $user->createToken('admin-access-token')->plainTextToken;
-    }
-
-    private function getUserRole($user)
-    {
-        try {
-
-            $role = Role::where('name', $user->getRoleNames()[0])->first();
-            if (!$role) {
-                return ApiResponse::error('El usuario no tiene un rol asignado', 401);
-            }
-            return $role;
-        } catch (\Exception $e) {
-            throw new \Exception('Error al obtener el rol del usuario');
-        }
     }
 }

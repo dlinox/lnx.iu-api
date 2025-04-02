@@ -2,34 +2,27 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
 use App\Modules\User\Models\User;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        User::create([
+        $admin = User::create([
             'name' => 'Admin',
-            'email' => 'admin@gmail.com',
+            'email' => 'admin@test.com',
             'username' => 'admin',
             'password' => 'admin',
-            'account_level' => 'admin',
+            'email_verified_at' => now(),
+            'model_type' => 'admin',
             'is_enabled' => true,
         ]);
 
-
-        $role = Role::create(['name' => 'admin']);
-        Role::create(['name' => 'estudiante']);
-        Role::create(['name' => 'docente']);
-        $user = User::find(1);
-        $user->assignRole($role);
+        $role = Role::create(['name' => 'admin', 'guard_name' => 'web', 'model_type' => 'admin']);
+        Role::create(['name' => 'estudiante', 'model_type' => 'student']);
+        Role::create(['name' => 'docente', 'model_type' => 'teacher']);
+        $admin->assignRole($role);
     }
 }

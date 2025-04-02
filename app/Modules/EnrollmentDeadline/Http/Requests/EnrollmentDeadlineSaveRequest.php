@@ -13,6 +13,7 @@ class EnrollmentDeadlineSaveRequest extends BaseRequest
         return [
             'start_date' => 'required|date|before:end_date',
             'end_date' => 'required|date|after:start_date',
+            'virtual' => 'required|boolean',
             'observations' => 'nullable|string',
             'period_id' => 'required|exists:periods,id',
         ];
@@ -27,6 +28,8 @@ class EnrollmentDeadlineSaveRequest extends BaseRequest
             'end_date.required' => 'Obligatorio',
             'end_date.after' => 'Debe ser posterior a la fecha de inicio',
             'end_date.date' => 'Fecha inválida',
+            'virtual.required' => 'Obligatorio',
+            'virtual.boolean' => 'Debe ser un valor booleano',
             'observations.string' => 'Debe ser una cadena de texto',
             'period_id.required' => 'Obligatorio',
             'period_id.exists' => 'El periodo no existe',

@@ -80,30 +80,4 @@ class PeriodController extends Controller
             return ApiResponse::error($e->getMessage());
         }
     }
-
-    public function getCurrent()
-    {
-        try {
-            $item = Period::current();
-            if ($item == null) {
-                return ApiResponse::warning(null, 'No se encontró un periodo activo');
-            }
-            return ApiResponse::success($item);
-        } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage(), 'Error al obtener el periodo actual');
-        }
-    }
-
-    public function getEnrollmentPeriod()
-    {
-        try {
-            $item = Period::enrollmentPeriod();
-            if ($item == null) {
-                return ApiResponse::warning(null, 'No se encontró un periodo de matrícula activo');
-            }
-            return ApiResponse::success($item);
-        } catch (\Exception $e) {
-            return ApiResponse::error($e->getMessage(), 'Error al obtener el periodo de matrícula');
-        }
-    }
 }

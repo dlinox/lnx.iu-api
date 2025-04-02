@@ -11,9 +11,9 @@ class Role extends Model
 
     protected $fillable = [
         'name',
-        'account_level',
-        'is_enabled',
+        'model_type',
         'guard_name',
+        'is_enabled',
     ];
 
     protected $hidden = [
@@ -26,5 +26,12 @@ class Role extends Model
         return [
             'is_enabled' => 'boolean',
         ];
+    }
+
+    public static function getByName($name)
+    {
+        $item = self::where('name', $name)->first();
+        
+        return $item ? $item : null;
     }
 }

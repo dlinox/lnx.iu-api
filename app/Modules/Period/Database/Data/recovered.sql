@@ -1,9 +1,15 @@
+INSERT INTO periods (year, month)
+SELECT DISTINCT a.NombreAnioMatricula, gru.id_MesMatricula
+FROM siga200.tagrupo gru
+JOIN siga200.taaniomatricula a ON a.id_AnioMatricula = gru.id_AnioMatricula
+ORDER BY a.NombreAnioMatricula, gru.id_MesMatricula;
+
 /*
 SELECT DISTINCT a.NombreAnioMatricula, gru.id_MesMatricula
 FROM tagrupo gru
 JOIN taaniomatricula a ON a.id_AnioMatricula = gru.id_AnioMatricula
 ORDER BY a.NombreAnioMatricula, gru.id_MesMatricula;
-*/
+
 INSERT INTO `periods` (`year`, `month`) VALUES ('2010', '2');
 INSERT INTO `periods` (`year`, `month`) VALUES ('2010', '3');
 INSERT INTO `periods` (`year`, `month`) VALUES ('2010', '4');
@@ -174,3 +180,4 @@ INSERT INTO `periods` (`year`, `month`) VALUES ('2025', '2');
 INSERT INTO `periods` (`year`, `month`) VALUES ('2025', '3');
 INSERT INTO `periods` (`year`, `month`) VALUES ('2025', '4');
 INSERT INTO `periods` (`year`, `month`) VALUES ('2025', '5');
+*/

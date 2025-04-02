@@ -9,6 +9,7 @@ use App\Modules\User\Http\Requests\UserStoreRequest;
 use App\Modules\User\Http\Requests\UserUpdateRequest;
 use App\Modules\User\Models\User;
 use App\Modules\User\Http\Resources\UserDataTableItemsResource;
+use App\Modules\User\Services\ProfileService;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 
@@ -25,7 +26,7 @@ class UserController extends Controller
                 'users.is_enabled',
                 'users.model_id',
             )
-                ->where('users.account_level', $request->filters['level'])
+                ->where('users.model_type', $request->filters['level'])
                 ->dataTable($request);
             UserDataTableItemsResource::collection($items);
             return ApiResponse::success($items);
@@ -40,7 +41,8 @@ class UserController extends Controller
             DB::beginTransaction();
             $data =  $request->validated();
             $data['guard_name'] = 'sanctum';
-            $data['account_level'] = $request->level;
+            $data['model_id'] = $request->modelId ?? null;
+            $data['model_type'] = $request->level;
             $item = User::create($data);
             $item->syncRoles($request->role);
             DB::commit();
@@ -86,7 +88,7 @@ class UserController extends Controller
                 'Users.name as label'
             )
                 ->where('Users.is_enabled', true)
-                ->where('Users.account_level', $request->level)
+                ->where('Users.model_type', $request->level)
                 ->get();
 
             return ApiResponse::success($item);
@@ -103,7 +105,7 @@ class UserController extends Controller
                 'permissions.name as label'
             )
                 ->where('permissions.is_enabled', true)
-                ->where('permissions.account_level', $request->level)
+                ->where('permissions.model_type', $request->level)
                 ->get();
             return ApiResponse::success($item);
         } catch (\Exception $e) {

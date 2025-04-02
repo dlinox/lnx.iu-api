@@ -10,6 +10,8 @@ use App\Modules\Group\Http\Requests\GroupSaveRequest;
 use App\Modules\Group\Models\Group;
 use App\Modules\Group\Http\Resources\GroupDataTableItemsResource;
 use App\Modules\Group\Http\Resources\GroupFormItemResource;
+use App\Modules\Period\Models\Period;
+use App\Modules\Schedule\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -106,6 +108,69 @@ class GroupController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return ApiResponse::error($e->getMessage(), 'Error al guardar los registros, verifique los datos ingresados');
+        }
+    }
+
+    //clone
+    public function clone(Request $request)
+    {
+        try {
+            $enrollments = Group::where('groups.period_id', $request->periodId)
+                ->join('courses', 'courses.id', '=', 'groups.course_id')
+                ->join('enrollment_groups', 'enrollment_groups.group_id', '=', 'groups.id')
+                ->where('courses.curriculum_id', $request->curriculumId)
+                ->exists();
+
+            if ($enrollments) {
+                return ApiResponse::error(null, 'No se puede clonar los registros, ya que existen matriculas asociadas a los grupos');
+            }
+
+            $groupIds = Group::where('period_id', $request->periodId)
+                ->join('courses', 'courses.id', '=', 'groups.course_id')
+                ->where('courses.curriculum_id', $request->curriculumId)
+                ->pluck('groups.id')
+                ->toArray();
+
+
+            DB::beginTransaction();
+
+            Schedule::whereIn('group_id', $groupIds)->delete();
+            Group::whereIn('id', $groupIds)->delete();
+
+            $groups = Group::select('groups.*')
+                ->where('period_id', $request->periodReferenceId)
+                ->join('courses', 'courses.id', '=', 'groups.course_id')
+                ->where('courses.curriculum_id', $request->curriculumId)
+                ->get();
+
+            foreach ($groups as $group) {
+                $clone = Group::create([
+                    'name' => $group->name,
+                    'teacher_id' => null,
+                    'laboratory_id' => $group->laboratory_id,
+                    'min_students' => $group->min_students,
+                    'max_students' => $group->max_students,
+                    'modality' => $group->modality,
+                    'course_id' => $group->course_id,
+                    'status' => 'ABIERTO',
+                    'period_id' => $request->periodId,
+                ]);
+
+                $schedules = Schedule::where('group_id', $group->id)->get();
+                foreach ($schedules as $schedule) {
+                    Schedule::create([
+                        'group_id' => $clone->id,
+                        'day' => $schedule->day,
+                        'start_hour' => $schedule->start_hour,
+                        'end_hour' => $schedule->end_hour,
+                    ]);
+                }
+            }
+            DB::commit();
+            return ApiResponse::success($groupIds, 'Registros clonados correctamente', 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ApiResponse::error($e->getMessage(), 'Error al clonar los registros');
         }
     }
 

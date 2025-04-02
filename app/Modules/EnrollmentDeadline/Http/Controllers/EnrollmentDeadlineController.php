@@ -15,14 +15,14 @@ class EnrollmentDeadlineController extends Controller
     public function loadDataTable(Request $request)
     {
         try {
-            $items = EnrollmentDeadline::join('periods', 'enrollment_periods.period_id', '=', 'periods.id')
+            $items = EnrollmentDeadline::join('periods', 'enrollment_deadlines.period_id', '=', 'periods.id')
                 ->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
                 ->select(
-                    'enrollment_periods.*',
+                    'enrollment_deadlines.*',
                     DB::raw('CONCAT( periods.year, "-",view_month_constants.label) as period')
                 )
                 ->orderBy('periods.month', 'desc')
-                ->orderBy('enrollment_periods.id', 'desc')
+                ->orderBy('enrollment_deadlines.id', 'desc')
                 ->dataTable($request);
             EnrollmentDeadlineDataTableItemsResource::collection($items);
             return ApiResponse::success($items);
@@ -38,12 +38,29 @@ class EnrollmentDeadlineController extends Controller
             if ($request->id) {
                 EnrollmentDeadline::createExtension($data, $request->id);
             } else {
-
+                $period = EnrollmentDeadline::where('period_id', $data['period_id'])->where('type', 'REGULAR')->exists();
+                if ($period) return ApiResponse::error(null, 'Ya existe un periodo de matrícula regular para este periodo');
                 EnrollmentDeadline::createRegular($data);
             }
             return ApiResponse::success(null, 'Registro creado correctamente', 201);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
+        }
+    }
+
+    //activeEnrollmentPeriod
+
+
+    public function getActiveEnrollmentPeriod()
+    {
+        try {
+            $period = EnrollmentDeadline::activeEnrollmentPeriod();
+            if (!$period) {
+                return ApiResponse::warning(null, 'No existe un periodo de matrícula activo');
+            }
+            return ApiResponse::success($period);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 'Ocurrió un error al obtener el periodo de matrícula activo');
         }
     }
 }
