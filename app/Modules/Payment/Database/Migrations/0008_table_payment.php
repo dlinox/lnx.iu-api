@@ -36,7 +36,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        DB::statement("ALTER TABLE payments DROP CONSTRAINT check_amount_used");
+        // DB::statement("ALTER TABLE payments DROP CONSTRAINT check_amount_used");
         Schema::dropIfExists('payments');
     }
 };

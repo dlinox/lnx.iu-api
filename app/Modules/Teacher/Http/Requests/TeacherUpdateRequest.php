@@ -17,14 +17,11 @@ class TeacherUpdateRequest extends FormRequest
     public function rules()
     {
 
-        // $id = $this->id;
-        $personId = $this->person_id;
+        $id = $this->id;
 
         return [
-            'code' => 'required|max:8|unique:people,code,' . $personId,
-            'person_id' => 'required|exists:people,id',
             'document_type_id' => 'required|exists:document_types,id',
-            'document_number' => 'required|max:15|unique:people,document_number,' . $personId,
+            'document_number' => 'required|max:15|unique:teachers,document_number,' . $id,
             'name' => 'required|max:50',
             'last_name_father' => 'nullable|max:50',
             'last_name_mother' => 'nullable|max:50',
@@ -41,9 +38,6 @@ class TeacherUpdateRequest extends FormRequest
     {
         return [
             'id.required' => 'Obligatorio',
-            'code.required' => 'Obligatorio',
-            'code.max' => 'Máximo de 8 caracteres',
-            'code.unique' => 'Ya existe un registro con este código',
             'document_type_id.required' => 'Obligatorio',
             'document_type_id.exists' => 'No existe un registro con este identificador',
             'document_number.required' => 'Obligatorio',
@@ -67,7 +61,6 @@ class TeacherUpdateRequest extends FormRequest
         $this->merge([
             'id' => $this->id,
             'address' => isset($this->address) ? $this->address : null,
-            'person_id' => $this->input('personId', $this->person_id),
             'document_type_id' => $this->input('documentTypeId', $this->document_type_id),
             'document_number' => $this->input('documentNumber', $this->document_number),
             'last_name_father' => $this->input('lastNameFather', $this->last_name_father),

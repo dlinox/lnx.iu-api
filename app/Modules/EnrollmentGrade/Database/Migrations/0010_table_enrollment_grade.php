@@ -14,13 +14,10 @@ return new class extends Migration
             $table->id();
             $table->decimal('grade', 5, 2)->default(0);
             $table->unsignedBigInteger('enrollment_group_id');
-            //si ya no se puede modificar la nota
-            $table->boolean('is_locked')->default(true);
+            $table->boolean('is_locked')->default(false);
             $table->foreign('enrollment_group_id')->references('id')->on('enrollment_groups');
             $table->timestamps();
         });
-        $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
-        DB::unprepared($sql);
     }
 
     public function down(): void

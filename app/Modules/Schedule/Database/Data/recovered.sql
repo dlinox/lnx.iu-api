@@ -35,6 +35,12 @@
 -- JOIN vista_horarios ho ON ho.id =  gr.id_Horarios
 -- ORDER BY id_Grupo;
 
+-- CREATE VIEW vista_horas AS 
+-- SELECT 
+-- ho.id_Hora AS id,
+-- TIME(STR_TO_DATE(ho.HoraInicio, '%h:%i %p')) AS 'start_hour',
+-- TIME(STR_TO_DATE(ho.HoraFinal, '%h:%i %p')) AS 'end_hour'
+-- FROM tahora ho;
 
 -- -- Actualizar '12:00 am.' a '12:00 pm.' en la columna HoraInicio
 -- UPDATE `tahora`
@@ -46,12 +52,7 @@
 -- SET `HoraFinal` = '12:00 pm.'
 -- WHERE `HoraFinal` = '12:00 am.';
 
--- CREATE VIEW vista_horas AS 
--- SELECT 
--- ho.id_Hora AS id,
--- TIME(STR_TO_DATE(ho.HoraInicio, '%h:%i %p')) AS 'start_hour',
--- TIME(STR_TO_DATE(ho.HoraFinal, '%h:%i %p')) AS 'end_hour'
--- FROM tahora ho;
+
 
 INSERT INTO `schedules` (`group_id`, `day`, `start_hour`, `end_hour`) VALUES (1, 'LUN', '08:00:00', '10:00:00');
 INSERT INTO `schedules` (`group_id`, `day`, `start_hour`, `end_hour`) VALUES (1, 'MIE', '08:00:00', '10:00:00');

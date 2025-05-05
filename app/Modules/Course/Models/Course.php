@@ -5,6 +5,7 @@ namespace App\Modules\Course\Models;
 use App\Traits\HasDataTable;
 use App\Traits\HasEnabledState;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Course extends Model
 {
@@ -37,6 +38,7 @@ class Course extends Model
         'curriculums.name',
     ];
 
+    //DEPRECATED
     public static function getItemsForSelect($curriculumId)
     {
         $courses = self::select(
@@ -49,9 +51,7 @@ class Course extends Model
 
         return $courses;
     }
-
-    //get course by curriculum 2 and module
-
+    //get course by curriculum 2 and module  DEPRECATED
     public static function geCurriculumCourses($curriculum_id, $module_id)
     {
         $courses = self::select(
@@ -70,6 +70,19 @@ class Course extends Model
             ->join('areas', 'curriculum_courses.area_id', '=', 'areas.id')
             ->where('curriculum_courses.curriculum_id', $curriculum_id)
             ->where('curriculum_courses.module_id', $module_id)
+            ->get();
+
+        return $courses;
+    }
+
+    public static function getItemsByModuleForSelect($moduleId)
+    {
+        $courses = self::select(
+            'courses.id as value',
+            DB::raw("CONCAT_WS(' ', courses.code, courses.name) as label"),
+        )
+            ->where('courses.module_id', $moduleId)
+            ->where('courses.is_enabled', true)
             ->get();
 
         return $courses;

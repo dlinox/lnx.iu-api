@@ -12,14 +12,23 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('username')->unique();
-            $table->string('email')->unique();
+            $table->string('username');
+            $table->string('email');
             $table->enum('model_type', ['admin', 'teacher', 'student']);
             $table->unsignedBigInteger('model_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_enabled')->default(true);
             $table->timestamps();
+            //indexes
+            $table->unique(['username', 'model_type']);
+            $table->unique(['email', 'model_type']);
+            $table->index('model_type');
+            $table->index('model_id');
+            $table->index('name');
+            $table->index('username');
+            $table->index('email');
+            //fulltext indexes name
         });
     }
 

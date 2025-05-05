@@ -11,14 +11,40 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('person_id');
-            $table->foreign('person_id')->references('id')->on('people');
+            $table->char('code', 8)->unique();
+            $table->unsignedBigInteger('document_type_id')->nullable();
+            $table->string('document_number', 20)->nullable();
+            $table->string('name', 50)->nullable();
+            $table->string('last_name_father', 50)->nullable();
+            $table->string('last_name_mother', 50)->nullable();
+            $table->unsignedBigInteger('gender_id')->nullable();
+            $table->string('phone', 20)->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->string('address', 100)->nullable();
+            $table->string('email', 100)->nullable();
+            $table->unsignedBigInteger('location_id')->nullable();
+            $table->unsignedBigInteger('country_id')->nullable();
             $table->boolean('is_enabled')->default(true);
             $table->timestamps();
+            //references
+            $table->foreign('document_type_id')->references('id')->on('document_types');
+            $table->foreign('gender_id')->references('id')->on('genders');
+            // $table->foreign('location_id')->references('id')->on('locations');
+            // $table->foreign('country_id')->references('id')->on('countries');
+            //indexes
+            $table->index('code');
+            $table->index('document_number');
+            $table->index('name');
+            $table->index('email');
+            $table->index('phone');
+            $table->index('last_name_father');
+            $table->index('last_name_mother');
+            //fulltext indexes name
+            $table->index(['name', 'last_name_father', 'last_name_mother']);
         });
 
-        $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
-        DB::unprepared($sql);
+        // $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
+        // DB::unprepared($sql);
     }
 
     public function down(): void

@@ -36,27 +36,29 @@ class EnrollmentController extends Controller
                 'groups.id as groupId',
                 'groups.name as group',
                 'groups.modality as modality',
-                'laboratories.name as laboratory',
                 'students.id as studentId',
                 'courses.id as courseId',
                 'courses.curriculum_id as curriculumId'
             )
-                ->selectRaw('CONCAT_WS(" ", people.name, people.last_name_father, people.last_name_mother) as student')
-                ->selectRaw('CONCAT_WS("-", periods.year, months.name) as period')
+                ->selectRaw('CONCAT_WS(" ", students.name, students.last_name_father, students.last_name_mother) as student')
+                ->selectRaw('CONCAT_WS("-", periods.year, upper(months.name)) as period')
                 ->selectRaw('CONCAT_WS("- ", courses.code, courses.name) as course')
                 ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
                 ->join('students', 'enrollment_groups.student_id', '=', 'students.id')
-                ->join('people', 'students.person_id', '=', 'people.id')
                 ->join('courses', 'groups.course_id', '=', 'courses.id')
                 ->join('modules', 'courses.module_id', '=', 'modules.id')
                 ->join('periods', 'enrollment_groups.period_id', '=', 'periods.id')
                 ->join('months', 'periods.month', '=', 'months.id')
-                ->leftJoin('laboratories', 'groups.laboratory_id', '=', 'laboratories.id')
+                ->when($request->filters['periodId'], function ($query) use ($request) {
+                    $query->where('enrollment_groups.period_id', $request->filters['periodId']);
+                })
                 ->orderBy('enrollment_groups.id', 'desc')
                 ->dataTable($request, [
                     'courses.name',
                     'modules.name',
-                    'people.name',
+                    'students.document_number',
+                    'students.code',
+                    'students.name',
                 ]);
 
             EnrollmentDataTableItemResource::collection($items);
@@ -69,36 +71,102 @@ class EnrollmentController extends Controller
     {
         try {
 
+            $user = Auth::user();
+
+            $enrollmentPeriod = EnrollmentDeadline::activeEnrollmentPeriod();
+            if (!$enrollmentPeriod)  ApiResponse::error(null, 'No se encontró el periodo de matrícula');
+
+
             $paymentsIds = array_map(function ($payment) {
                 return Crypt::decrypt($payment);
             }, $request->payments);
+
+            $student = Student::select('student_type_id')
+                ->where('id', $request->studentId)
+                ->first();
+
+            if (!$student) return ApiResponse::error(null, 'No se encontró el estudiante');
 
             $totalPayment = Payment::whereIn('id', array_unique($paymentsIds))
                 ->where('student_id', $request->studentId)
                 ->where('is_used', false)
                 ->sum('amount');
 
-            $student = Student::select('student_type_id')
-                ->where('id', $request->studentId)
-                ->first();
 
             $modulePrice = Module::join('module_prices', 'module_prices.module_id', '=', 'modules.id')
                 ->where('modules.id', $request->moduleId)
                 ->where('module_prices.student_type_id', $student->student_type_id)
                 ->first();
 
-            if ($totalPayment < $modulePrice->price) {
-                ApiResponse::error(null, 'El monto de los pagos no cubre el precio del módulo');
+            if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
+
+            $group = Group::select(
+                'groups.id',
+                'groups.course_id',
+                'groups.modality',
+                'course_prices.presential_price',
+                'course_prices.virtual_price'
+            )
+                ->join('courses', 'courses.id', '=', 'groups.course_id')
+                ->join('course_prices', 'course_prices.course_id', '=', 'courses.id')
+                ->where('groups.id', $request->groupId)
+                ->where('course_prices.student_type_id', $student->student_type_id)
+                ->first();
+
+            if (!$group) return ApiResponse::error(null, 'No se encontró el grupo');
+
+            $groupPrice = $group->modality == 'PRESENCIAL' ? $group->presential_price : $group->virtual_price;
+
+            if ($totalPayment < ($modulePrice->price + $groupPrice)) {
+                return ApiResponse::error(null, 'El monto de los pagos no cubre el precio del módulo');
+            }
+
+            $shedules = Schedule::where('group_id', $group->id)->get();
+
+            if ($shedules->count() == 0) return ApiResponse::error(null, 'El grupo no tiene horarios asignados');
+
+            $enrolledSchedules = Schedule::select('schedules.id', 'schedules.start_hour', 'schedules.end_hour', 'schedules.day')
+                ->join('groups', 'schedules.group_id', '=', 'groups.id')
+                ->join('enrollment_groups', 'groups.id', '=', 'enrollment_groups.group_id')
+                ->where('enrollment_groups.student_id', $student->id)
+                ->where('enrollment_groups.period_id', $enrollmentPeriod['periodId'])
+                ->where('enrollment_groups.status', 'MATRICULADO')
+                ->get();
+
+
+            foreach ($shedules as $shedule) {
+                foreach ($enrolledSchedules as $enrolledShedule) {
+                    if ($shedule->day == $enrolledShedule->day) {
+                        $startHour = strtotime($shedule->start_hour);
+                        $endHour = strtotime($shedule->end_hour);
+                        $enrolledStartHour = strtotime($enrolledShedule->start_hour);
+                        $enrolledEndHour = strtotime($enrolledShedule->end_hour);
+                        if (($startHour >= $enrolledStartHour && $startHour <= $enrolledEndHour) || ($endHour >= $enrolledStartHour && $endHour <= $enrolledEndHour)) {
+                            return ApiResponse::error(null, 'El grupo tiene cruce de horarios con otro grupo en el que ya está inscrito');
+                        }
+                    }
+                }
             }
 
             $data = $request->validated();
 
             DB::beginTransaction();
-            $enrollment = Enrollment::create($data);
+
+            Enrollment::create($data);
+
+            $enrollmentGroup = EnrollmentGroup::create([
+                'student_id' => $request->studentId,
+                'group_id' => $request->groupId,
+                'period_id' => $enrollmentPeriod['periodId'],
+                'status' => 'MATRICULADO',
+                'created_by' => $user->id,
+                'enrollment_modality' => 'PRESENCIAL',
+            ]);
+
             foreach ($paymentsIds as $paymentId) {
                 $payment = Payment::find($paymentId);
-                $payment->enrollment_type = 'M';
-                $payment->enrollment_id = $enrollment->id;
+                $payment->enrollment_type = 'G';
+                $payment->enrollment_id = $enrollmentGroup->id;
                 $payment->is_used = true;
                 $payment->save();
             }
@@ -139,10 +207,6 @@ class EnrollmentController extends Controller
                 ->where('id', $request->studentId)
                 ->first();
 
-            // $group = Group::select('course_id', 'modality')
-            //     ->where('id', $request->groupId)
-            //     ->first();
-            //vericar cruces de horarios
             $group = Group::find($request->groupId);
             $shedules = Schedule::where('group_id', $group->id)->get();
             if ($shedules->count() == 0) {
@@ -430,12 +494,12 @@ class EnrollmentController extends Controller
                                 'groups.status as groupStatus',
                                 'groups.modality as groupModality',
                                 'enrollment_grades.grade as grade',
-                                DB::raw('CONCAT(periods.year,"-",view_month_constants.label) as period'),
+                                DB::raw('CONCAT(periods.year,"-",upper(months.name)) as period'),
                             )
                                 ->leftJoin('enrollment_grades', 'enrollment_groups.id', '=', 'enrollment_grades.enrollment_group_id')
                                 ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
                                 ->join('periods', 'groups.period_id', '=', 'periods.id')
-                                ->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
+                                ->join('months', 'periods.month', '=', 'months.id')
                                 ->where('groups.course_id', $course->id)
 
                                 ->where('enrollment_groups.student_id', $request->studentId)
@@ -507,7 +571,7 @@ class EnrollmentController extends Controller
                 'groups.modality as modality',
                 DB::raw('IF(groups.modality = "PRESENCIAL", course_prices.presential_price, course_prices.virtual_price) as price'),
                 'laboratories.name as laboratory',
-                DB::raw('CONCAT(people.name, " ", people.last_name_father, " ", people.last_name_mother) as teacher'),
+                DB::raw('CONCAT(teachers.name, " ", teachers.last_name_father, " ", teachers.last_name_mother) as teacher'),
                 'max_students as maxStudents',
                 'min_students as minStudents',
                 'groups.status as status',
@@ -518,7 +582,6 @@ class EnrollmentController extends Controller
                 ->join('course_prices', 'course_prices.course_id', '=', 'courses.id')
                 ->leftJoin('laboratories', 'groups.laboratory_id', '=', 'laboratories.id')
                 ->leftJoin('teachers', 'groups.teacher_id', '=', 'teachers.id')
-                ->leftJoin('people', 'teachers.person_id', '=', 'people.id')
                 ->where('course_prices.student_type_id', $student->student_type_id)
                 ->where('courses.id', $request->courseId)
                 ->where('periods.id', $enrollmentPeriod['periodId'])
@@ -530,24 +593,20 @@ class EnrollmentController extends Controller
                         ->where('status', 'MATRICULADO')
                         ->count();
 
-                    $reservedStudents = EnrollmentGroup::where('enrollment_groups.group_id', $group->id)
-                        ->where('status', 'RESERVADO')
+                    $reservedStudents = EnrollmentGroup::join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
+                        ->where('groups.course_id', $request->courseId)
+                        ->where('enrollment_groups.status', 'RESERVADO')
                         ->count();
 
                     $group['enrolledStudents'] = $enrolledStudents;
                     $group['reservedStudents'] = $reservedStudents;
 
-                    $group['schedules'] = Schedule::select(
-                        'schedules.day as day',
-                        'schedules.start_hour as startHour',
-                        'schedules.end_hour as endHour',
-                    )
-                        ->where('schedules.group_id', $group->id)
-                        ->get();
+                    $group['schedules'] = Schedule::byGroup($group->id);
+
                     return $group;
                 });
 
-            return ApiResponse::success($enrollmentGroups, 'Registros cargados correctamente');
+            return ApiResponse::success($enrollmentGroups, null);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
         }
@@ -557,10 +616,10 @@ class EnrollmentController extends Controller
     {
         $enrollment = EnrollmentGroup::select(
             'enrollment_groups.id',
-            'people.document_number as documentNumber',
-            DB::raw('CONCAT_WS(" ", people.name, people.last_name_father, people.last_name_mother) as student'),
+            'students.document_number as documentNumber',
+            DB::raw('CONCAT_WS(" ", students.name, students.last_name_father, students.last_name_mother) as student'),
             'student_types.name as studentType',
-            'people.code as studentCode',
+            'students.code as studentCode',
             'modules.name as module',
             'module_prices.price as modulePrice',
             'courses.name as course',
@@ -569,10 +628,9 @@ class EnrollmentController extends Controller
             DB::raw('GROUP_CONCAT(DISTINCT payment_types.name SEPARATOR ", ") as paymentType'),
             DB::raw('SUM(payments.amount) as paymentAmount'),
             DB::raw('GROUP_CONCAT(payments.sequence_number SEPARATOR ",") as paymentSequence'),
-            DB::raw('CONCAT(view_month_constants.label, " ", periods.year) as period')
+            DB::raw('CONCAT(upper(months.name), " ", periods.year) as period')
         )
             ->join('students', 'enrollment_groups.student_id', '=', 'students.id')
-            ->join('people', 'students.person_id', '=', 'people.id')
             ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
             ->join('courses', 'groups.course_id', '=', 'courses.id')
             ->join('modules', 'courses.module_id', '=', 'modules.id')
@@ -581,7 +639,7 @@ class EnrollmentController extends Controller
                     ->on('module_prices.student_type_id', '=', 'students.student_type_id');
             })
             ->join('periods', 'groups.period_id', '=', 'periods.id')
-            ->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
+            ->join('months', 'periods.month', '=', 'months.id')
             ->join('payments', 'payments.enrollment_id', '=', 'enrollment_groups.id')
             ->join('payment_types', 'payments.payment_type_id', '=', 'payment_types.id')
             ->join('student_types', 'students.student_type_id', '=', 'student_types.id')
@@ -589,17 +647,17 @@ class EnrollmentController extends Controller
             // Agrupar por los datos principales (excluyendo los de "payments")
             ->groupBy(
                 'enrollment_groups.id',
-                'people.name',
-                'people.last_name_father',
-                'people.last_name_mother',
+                'students.name',
+                'students.last_name_father',
+                'students.last_name_mother',
                 'student_types.name',
-                'people.code',
+                'students.code',
                 'modules.name',
                 'courses.name',
                 'groups.name',
                 'groups.modality',
                 'module_prices.price',
-                'view_month_constants.label',
+                'months.name',
                 'periods.year'
             )
             ->first();
@@ -620,9 +678,17 @@ class EnrollmentController extends Controller
                 'modules.is_extracurricular',
             )
                 ->distinct()
-                // ->join('modules', 'enrollments.module_id', '=', 'modules.id')
+                ->join('courses', function ($join) {
+                    $join->on('modules.id', '=', 'courses.module_id')
+                        ->where('courses.is_enabled', true);
+                })
                 ->where('modules.curriculum_id', $request->curriculumId)
                 ->where('modules.is_extracurricular', false)
+                ->whereNotIn('modules.id', function ($query) use ($request) {
+                    $query->select('enrollments.module_id')
+                        ->from('enrollments')
+                        ->where('enrollments.student_id', $request->studentId);
+                })
                 ->orderBy('modules.name', 'asc')
                 ->get()->map(function ($enrollment) use ($request) {
                     $courses = Course::select(
@@ -643,12 +709,12 @@ class EnrollmentController extends Controller
                                 'groups.status as groupStatus',
                                 'groups.modality as groupModality',
                                 'enrollment_grades.grade as grade',
-                                DB::raw('CONCAT(periods.year,"-",view_month_constants.label) as period'),
+                                DB::raw('CONCAT(periods.year,"-",upper(months.name)) as period'),
                             )
                                 ->leftJoin('enrollment_grades', 'enrollment_groups.id', '=', 'enrollment_grades.enrollment_group_id')
                                 ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
                                 ->join('periods', 'groups.period_id', '=', 'periods.id')
-                                ->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
+                                ->join('months', 'periods.month', '=', 'months.id')
                                 ->where('groups.course_id', $course->id)
 
                                 ->where('enrollment_groups.student_id', $request->studentId)

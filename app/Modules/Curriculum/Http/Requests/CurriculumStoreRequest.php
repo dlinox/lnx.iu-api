@@ -2,22 +2,15 @@
 
 namespace App\Modules\Curriculum\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Http\Requests\BaseRequest;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class CurriculumStoreRequest extends FormRequest
+class CurriculumStoreRequest extends BaseRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     public function rules()
     {
         return [
             'name' => 'required|string|max:50|unique:curriculums',
+            'grading_model' => 'required|in:1,2',
             'is_enabled' => 'required|boolean',
         ];
     }
@@ -28,6 +21,8 @@ class CurriculumStoreRequest extends FormRequest
             'name.required' => 'Obligatorio',
             'name.max' => 'Máximo de 50 caracteres',
             'name.unique' => 'Ya existe un registro con este nombre',
+            'grading_model.required' => 'Obligatorio',
+            'grading_model.in' => 'El modelo de calificación no es válido',
             'is_enabled.required' => 'Obligatorio',
         ];
     }
@@ -35,16 +30,8 @@ class CurriculumStoreRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
+            'grading_model' => $this->input('gradingModel', $this->grading_model),
             'is_enabled' => $this->input('isEnabled', $this->is_enabled),
         ]);
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = collect($validator->errors())->map(fn($messages) => $messages[0]);
-
-        throw new HttpResponseException(
-            response()->json(['errors' => $errors], 422)
-        );
     }
 }

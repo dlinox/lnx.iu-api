@@ -30,8 +30,8 @@ return new class extends Migration
             $table->foreign('course_id')->references('id')->on('courses');
         });
 
-        $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
-        DB::unprepared($sql);
+        // $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
+        // DB::unprepared($sql);
     }
 
     public function down(): void

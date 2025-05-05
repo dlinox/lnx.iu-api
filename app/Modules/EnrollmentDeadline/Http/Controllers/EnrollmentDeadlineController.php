@@ -16,10 +16,10 @@ class EnrollmentDeadlineController extends Controller
     {
         try {
             $items = EnrollmentDeadline::join('periods', 'enrollment_deadlines.period_id', '=', 'periods.id')
-                ->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
+                ->join('months', 'periods.month', '=', 'months.id')
                 ->select(
                     'enrollment_deadlines.*',
-                    DB::raw('CONCAT( periods.year, "-",view_month_constants.label) as period')
+                    DB::raw('CONCAT( periods.year, "-", upper(months.name)) as period')
                 )
                 ->orderBy('periods.month', 'desc')
                 ->orderBy('enrollment_deadlines.id', 'desc')

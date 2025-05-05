@@ -11,7 +11,6 @@ class StudentItemResource extends JsonResource
         return [
             'id' => $this->id,
             'code' => $this->code,
-            'personId' => $this->person_id,
             'documentTypeId' => $this->document_type_id,
             'documentNumber' => $this->document_number,
             'name' => $this->name,

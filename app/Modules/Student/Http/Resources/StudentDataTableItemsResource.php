@@ -12,7 +12,6 @@ class StudentDataTableItemsResource extends JsonResource
         return [
             'id' => $this->id,
             'code' => $this->code,
-            'personId' => $this->person_id,
             'documentType' => $this->document_type,
             'documentNumber' => $this->document_number,
             'name' => $this->name,
@@ -22,6 +21,7 @@ class StudentDataTableItemsResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'studentType' => $this->student_type,
+            'userId' => $this->user_id,
             'isEnabled' => $this->is_enabled
         ];
         return parent::toArray($request);

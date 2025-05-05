@@ -15,6 +15,8 @@ return new class extends Migration
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('group_id');
             $table->unsignedBigInteger('period_id');
+            $table->unsignedBigInteger('created_by')->nullable(); // ID del usuario que creó la matrícula
+            $table->enum('enrollment_modality', ['PRESENCIAL', 'VIRTUAL'])->default('PRESENCIAL'); // Modalidad del grupo
             $table->enum('status', ['MATRICULADO','RESERVADO','RETIRADO','EXPULSADO','CANCELADO'])->default('MATRICULADO');
             $table->timestamps();
             $table->foreign('student_id')->references('id')->on('students');
@@ -23,8 +25,8 @@ return new class extends Migration
         });
 
 
-        $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
-        DB::unprepared($sql);
+        // $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
+        // DB::unprepared($sql);
     }
 
     public function down(): void

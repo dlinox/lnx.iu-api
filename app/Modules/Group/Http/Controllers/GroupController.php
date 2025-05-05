@@ -10,8 +10,10 @@ use App\Modules\Group\Http\Requests\GroupSaveRequest;
 use App\Modules\Group\Models\Group;
 use App\Modules\Group\Http\Resources\GroupDataTableItemsResource;
 use App\Modules\Group\Http\Resources\GroupFormItemResource;
+use App\Modules\Laboratory\Models\Laboratory;
 use App\Modules\Period\Models\Period;
 use App\Modules\Schedule\Models\Schedule;
+use App\Modules\Teacher\Models\Teacher;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -46,6 +48,8 @@ class GroupController extends Controller
                 ->leftJoin('student_types as student_types_module', 'student_types_module.id', '=', 'module_prices.student_type_id')
                 ->where('courses.curriculum_id', $request->filters['curriculumId'])
                 ->groupBy('courses.id')
+                ->orderBy('modules.id', 'asc')
+                ->orderBy('courses.name', 'asc')
                 ->dataTable($request, ['courses.name', 'areas.name', 'modules.name']);
             GroupDataTableItemsResource::collection($items);
             return ApiResponse::success($items);
@@ -88,7 +92,8 @@ class GroupController extends Controller
             foreach ($groups as $group) {
                 $group['period_id'] = $request->periodId;
                 $group['course_id'] = $request->courseId;
-                $group['status'] = 'ABIERTO';
+                if ($group['id'] == null) $group['status'] = 'ABIERTO';
+
                 $groupModel = Group::updateOrCreate(
                     ['id' => $group['id']],
                     $group
@@ -98,8 +103,8 @@ class GroupController extends Controller
                 foreach ($group['schedule']['days'] as $key => $day) {
                     $groupModel->schedules()->create([
                         'day' => $day,
-                        'start_hour' => $group['schedule']['startHour'],
-                        'end_hour' => $group['schedule']['endHour'],
+                        'start_hour' => $group['schedule']['start_hour'],
+                        'end_hour' => $group['schedule']['end_hour'],
                     ]);
                 }
             }
@@ -192,6 +197,78 @@ class GroupController extends Controller
         try {
             $item = Group::select('id as value', 'name as label')->enabled()->get();
             return ApiResponse::success($item);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+
+    // getTeachers
+    public function getTeachers(Request $request)
+    {
+        try {
+            $teachers = Teacher::select(
+                'teachers.id as value',
+                DB::raw('CONCAT(teachers.name, " ", teachers.last_name_father, " ", teachers.last_name_mother) as label'),
+            )
+                ->where('teachers.is_enabled', true)
+                ->get();
+            return ApiResponse::success($teachers);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
+        }
+    }
+
+    //getLaboratories
+    public function getLaboratories(Request $request)
+    {
+        try {
+            $laboratories = Laboratory::select(
+                'laboratories.id as value',
+                DB::raw('CONCAT(laboratories.type, "-", laboratories.name) as label'),
+            )
+                ->where('laboratories.is_enabled', true)
+                ->get();
+            return ApiResponse::success($laboratories);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
+        }
+    }
+
+    //group/save-status
+    public function saveStatus(Request $request)
+    {
+        try {
+            $group = Group::find($request->id);
+            if (!$group) return ApiResponse::error(null, 'No se encontró el registro');
+
+            $group->teacher_id = $request->teacherId;
+            $group->laboratory_id = $request->laboratoryId;
+            $group->status = $request->status;
+
+            $group->save();
+            return ApiResponse::success(null, 'Estado actualizado correctamente');
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 'Error al actualizar el estado');
+        }
+    }
+
+    public function getByModuleAndPeriod(Request $request)
+    {
+        try {
+            $items = Group::select(
+                'groups.id',
+                'groups.name',
+                'courses.name as course',
+                'groups.status'
+            )
+                ->join('courses', 'courses.id', '=', 'groups.course_id')
+                ->where('courses.module_id', $request->moduleId)
+                ->where('groups.period_id', $request->periodId)
+                ->get()->map(function ($item) {
+                    $item->schedule = Schedule::byGroup($item->id);
+                    return $item;
+                });
+            return ApiResponse::success($items);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
         }

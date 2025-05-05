@@ -15,6 +15,9 @@ Route::prefix('api/student')->group(function () {
 
     Route::get('items/for-select', [StudentController::class, 'getItemsForSelect']);
 
+    //createUser
+    Route::post('create-user', [StudentController::class, 'createUser']);
+
     //getInfoById
     Route::get('info/{id}', [StudentController::class, 'getInfoById']);
 });

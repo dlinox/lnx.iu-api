@@ -10,7 +10,6 @@ use App\Modules\Course\Http\Requests\CourseUpdateRequest;
 use App\Modules\Course\Models\Course;
 use App\Modules\Course\Http\Resources\CourseDataTableItemsResource;
 use App\Modules\Course\Http\Resources\CourseItemResource;
-// use App\Modules\CurriculumModule\Models\CurriculumModule;
 use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
@@ -147,6 +146,17 @@ class CourseController extends Controller
     {
         try {
             $item = Course::getItemsForSelect($request->id);
+            return ApiResponse::success($item);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+
+    //getItemsByModuelForSelect
+    public function getItemsByModuleForSelect(Request $request)
+    {
+        try {
+            $item = Course::getItemsByModuleForSelect($request->moduleId);
             return ApiResponse::success($item);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());

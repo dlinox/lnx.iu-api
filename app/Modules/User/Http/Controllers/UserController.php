@@ -5,6 +5,8 @@ namespace App\Modules\User\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Modules\Student\Models\Student;
+use App\Modules\Teacher\Models\Teacher;
 use App\Modules\User\Http\Requests\UserStoreRequest;
 use App\Modules\User\Http\Requests\UserUpdateRequest;
 use App\Modules\User\Models\User;
@@ -47,6 +49,73 @@ class UserController extends Controller
             $item->syncRoles($request->role);
             DB::commit();
             return ApiResponse::success($item, 'Registro creado correctamente', 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+
+    public function storeAccount(Request $request)
+    {
+        try {
+
+            if ($request->level == 'student') {
+                $item = Student::find($request->modelId);
+                if (!$item) return ApiResponse::error(null, 'El estudiante no existe', 404);
+                if (!$item->document_number) return ApiResponse::error(null, 'El estudiante no tiene un numero de documento', 422);
+                if (!filter_var($item->email, FILTER_VALIDATE_EMAIL)) return ApiResponse::error(null, 'El estudiante no tiene un correo electronico valido', 422);
+            }
+            if ($request->level == 'teacher') {
+                $item = Teacher::find($request->modelId);
+                if (!$item) return ApiResponse::error(null, 'El docente no existe', 404);
+                if (!$item->document_number) return ApiResponse::error(null, 'El docente no tiene un numero de documento', 422);
+                if (!filter_var($item->email, FILTER_VALIDATE_EMAIL)) return ApiResponse::error(null, 'El docente no tiene un correo electronico valido', 422);
+            }
+
+            $account = User::where('model_id', $request->modelId)
+                ->where('model_type', $request->level)
+                ->exists();
+
+            if ($account) return ApiResponse::error(null, "Ya existe una cuenta asociada a este registro", 422);
+
+            DB::beginTransaction();
+            $data = [];
+            $data['guard_name'] = 'sanctum';
+            $data['model_id'] = $request->modelId;
+            $data['model_type'] = $request->level;
+            $data['name'] = $item->name . ' ' . $item->last_name_father . ' ' . $item->last_name_mother;
+            $data['username'] = $item->document_number;
+            $data['email'] = $item->email;
+            $data['is_enabled'] = true;
+            $data['password'] = $request->password;
+
+            $item = User::create($data);
+            $item->syncRoles($request->role);
+
+            DB::commit();
+            return ApiResponse::success($item, 'Registro creado correctamente', 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+
+    public function updateAccount(Request $request)
+    {
+        try {
+            $user = User::where('model_id', $request->modelId)
+                ->where('model_type', $request->level)
+                ->first();
+            if (!$user) return ApiResponse::error(null, 'El registro no existe', 404);
+            DB::beginTransaction();
+            $data = [];
+            $data['is_enabled'] = $request->isEnabled;
+            if ($request->password != null && $request->password != '') {
+                $data['password'] = $request->password;
+            }
+            $user->update($data);
+            DB::commit();
+            return ApiResponse::success($data, 'Registro actualizado correctamente', 200);
         } catch (\Exception $e) {
             DB::rollBack();
             return ApiResponse::error($e->getMessage());

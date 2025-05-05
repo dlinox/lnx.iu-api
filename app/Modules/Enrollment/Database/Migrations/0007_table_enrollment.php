@@ -23,10 +23,9 @@ return new class extends Migration
             $table->foreign('module_id')->references('id')->on('modules');
             // $table->foreign('payment_id')->references('id')->on('payments');
         });
-
-
-        $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
-        DB::unprepared($sql);
+        
+        // $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
+        // DB::unprepared($sql);
     }
 
     public function down(): void

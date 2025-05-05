@@ -5,6 +5,7 @@ namespace App\Modules\Laboratory\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Modules\Group\Models\Group;
 use App\Modules\Laboratory\Models\Laboratory;
 use App\Modules\Laboratory\Http\Requests\LaboratorySaveRequest;
 use App\Modules\Laboratory\Http\Resources\LaboratoryDataTableItemsResource;
@@ -26,7 +27,7 @@ class LaboratoryController extends Controller
     {
         try {
             $data =  $request->validated();
-            $item = Laboratory::updateOrCreate(['id' => $request->id], $data);
+            Laboratory::updateOrCreate(['id' => $request->id], $data);
             return ApiResponse::success(null, $request->id ? 'Registro actualizado correctamente' : 'Registro creado correctamente', 200);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
@@ -37,6 +38,11 @@ class LaboratoryController extends Controller
     {
         try {
             $item = Laboratory::find($request->id);
+
+            if (!$item) return ApiResponse::error(null, 'No se encontró el laboratorio', 404);
+            if (Group::where('laboratory_id', $item->id)->exists()) {
+                return ApiResponse::error(null, 'No se puede eliminar el laboratorio tiene grupos asociados', 422);
+            }
             $item->delete();
             return ApiResponse::success(null, 'Registro eliminado correctamente', 204);
         } catch (\Exception $e) {

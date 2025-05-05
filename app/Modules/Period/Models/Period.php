@@ -28,7 +28,7 @@ class Period extends Model
     static $searchColumns = [
         'periods.year',
         'periods.month',
-        'view_month_constants.label',
+        'months.name',
     ];
 
     public function getActivitylogOptions(): LogOptions

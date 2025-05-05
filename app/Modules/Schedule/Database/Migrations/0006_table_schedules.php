@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
         });
 
-        $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
-        DB::unprepared($sql);
+        // $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
+        // DB::unprepared($sql);
     }
 
     public function down(): void

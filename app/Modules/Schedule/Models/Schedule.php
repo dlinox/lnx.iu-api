@@ -2,14 +2,11 @@
 
 namespace App\Modules\Schedule\Models;
 
-use App\Traits\HasDataTable;
-use App\Traits\HasEnabledState;
 use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
-    use HasDataTable, HasEnabledState;
-
+    
     protected $fillable = [
         'day',
         'start_hour',
@@ -17,4 +14,25 @@ class Schedule extends Model
         'group_id',
     ];
     public $timestamps = false;
+
+    public static function byGroup($groupId)
+    {
+        $shedule =  self::select(
+            'start_hour as startHour',
+            'end_hour as endHour',
+        )
+            ->selectRaw('GROUP_CONCAT(`day`) AS days')
+            ->where('group_id', $groupId)
+            ->groupBy('start_hour', 'end_hour')
+            ->first();
+
+        if (!$shedule) {
+            return null;
+        }
+
+        $shedule->startHour = date('h:i A', strtotime($shedule->startHour));
+        $shedule->endHour = date('h:i A', strtotime($shedule->endHour));
+
+        return $shedule;
+    }
 }

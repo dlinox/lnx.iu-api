@@ -14,6 +14,7 @@ class Module extends Model
     protected $fillable = [
         'name',
         'code',
+        'level',
         'description',
         'curriculum_id',
         'is_enabled',

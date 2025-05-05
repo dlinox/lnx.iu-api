@@ -2,22 +2,19 @@
 
 namespace App\Modules\Module\Http\Requests;
 
+use App\Http\Requests\BaseRequest;
+use Faker\Provider\Base;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
-class ModuleStoreRequest extends FormRequest
+class ModuleStoreRequest extends BaseRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     public function rules()
     {
         return [
+            'level' => 'required|integer',
             'curriculum_id' => 'required|integer|exists:curriculums,id',
             'code' => 'required|string|max:10|unique:modules,code,NULL,id,curriculum_id,' . $this->curriculum_id,
             'name' => 'required|string|max:50|unique:modules,name,NULL,id,curriculum_id,' . $this->curriculum_id,
@@ -30,6 +27,8 @@ class ModuleStoreRequest extends FormRequest
     public function messages()
     {
         return [
+            'level.required' => 'Obligatorio',
+            'level.integer' => 'No es un nivel válido',
             'curriculum_id.required' => 'Obligatorio',
             'curriculum_id.integer' => 'No es un identificador válido',
             'curriculum_id.exists' => 'No existe un registro con este identificador',
@@ -54,16 +53,4 @@ class ModuleStoreRequest extends FormRequest
         ]);
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = collect($validator->errors())->mapWithKeys(function ($messages, $field) {
-            return [
-                Str::camel($field) => $messages[0]
-            ];
-        });
-
-        throw new HttpResponseException(
-            response()->json(['errors' => $errors], 422)
-        );
-    }
 }

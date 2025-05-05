@@ -2,22 +2,16 @@
 
 namespace App\Modules\Curriculum\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Http\Requests\BaseRequest;
 
-class CurriculumUpdateRequest extends FormRequest
+class CurriculumUpdateRequest extends BaseRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     public function rules()
     {
         $id = $this->id;
         return [
             'name' => 'required|string|max:50|unique:curriculums,name,' . $id,
+            'grading_model' => 'required|in:1,2',
             'is_enabled' => 'required|boolean',
         ];
     }
@@ -35,16 +29,8 @@ class CurriculumUpdateRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
+            'grading_model' => $this->input('gradingModel', $this->grading_model),
             'is_enabled' => $this->input('isEnabled', $this->is_enabled),
         ]);
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = collect($validator->errors())->map(fn($messages) => $messages[0]);
-
-        throw new HttpResponseException(
-            response()->json(['errors' => $errors], 422)
-        );
     }
 }

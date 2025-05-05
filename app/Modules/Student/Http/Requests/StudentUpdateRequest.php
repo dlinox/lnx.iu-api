@@ -10,23 +10,21 @@ class StudentUpdateRequest extends BaseRequest
 
     public function rules()
     {
-        $personId = $this->person_id;
+        $id = $this->id;
 
         return [
             'id' => 'required',
-            'person_id' => 'required|exists:people,id',
             'document_type_id' => 'required|exists:document_types,id',
-            'document_number' => 'required|max:15|unique:people,document_number,' . $personId,
+            'document_number' => 'required|max:15|unique:students,document_number,' . $id,
             'name' => 'required|max:50',
             'last_name_father' => 'nullable|max:50',
             'last_name_mother' => 'nullable|max:50',
-            'gender' => 'nullable|in:1,2,0',
-            // 'email' => 'required|email|max:80|unique:people,email,' . $personId,
+            'gender' => 'nullable|in:1,2',
             'email' => [
                 'required',
                 'email',
                 'max:80',
-                Rule::unique('people', 'email')->ignore($this->personId),
+                Rule::unique('students', 'email')->ignore($this->id),
             ],
             'phone' => 'nullable|max:15',
             'address' => 'nullable|max:100',
@@ -67,7 +65,6 @@ class StudentUpdateRequest extends BaseRequest
         $this->merge([
             'id' => $this->id,
             'address' => isset($this->address) ? $this->address : null,
-            'person_id' => $this->input('personId', $this->person_id),
             'document_type_id' => $this->input('documentTypeId', $this->document_type_id),
             'document_number' => $this->input('documentNumber', $this->document_number),
             'last_name_father' => $this->input('lastNameFather', $this->last_name_father),

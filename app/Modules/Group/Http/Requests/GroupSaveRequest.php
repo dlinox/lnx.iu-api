@@ -2,6 +2,7 @@
 
 namespace App\Modules\Group\Http\Requests;
 
+use App\Http\Requests\BaseRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
@@ -9,16 +10,14 @@ use Illuminate\Foundation\Http\FormRequest;
 
 use Illuminate\Support\Str;
 
-class GroupSaveRequest extends FormRequest
+class GroupSaveRequest extends BaseRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
 
     public function rules()
     {
 
+        //add validation:
+        // schedule: {days: [], startHour: "", endHour: ""}
         return [
             'groups.*' => 'required|array',
             'groups.*.id' => 'nullable|int',
@@ -28,7 +27,10 @@ class GroupSaveRequest extends FormRequest
             'groups.*.modality' => 'required|in:PRESENCIAL,VIRTUAL',
             'groups.*.teacher_id' => 'nullable|exists:teachers,id',
             'groups.*.laboratory_id' => 'nullable|exists:laboratories,id',
-            'groups.*.schedule' => 'nullable',
+            'groups.*.schedule' => 'required',
+            'groups.*.schedule.days' => 'required|array',
+            'groups.*.schedule.start_hour' => 'required',
+            'groups.*.schedule.end_hour' => 'required',
             'course_id' => 'required|exists:courses,id',
             'period_id' => 'required|exists:periods,id',
         ];
@@ -47,6 +49,12 @@ class GroupSaveRequest extends FormRequest
             'groups.*.max_students.int' => 'El número máximo de estudiantes no es válido',
             'groups.*.teacher_id.exists' => 'El profesor no es válido',
             'groups.*.laboratory_id.exists' => 'El laboratorio no es válido',
+            'groups.*.schedule.required' => 'El horario es requerido',
+            'groups.*.schedule.days.required' => 'Los días del horario son requeridos',
+            'groups.*.schedule.days.array' => 'Los días del horario son requeridos',
+            'groups.*.schedule.start_hour.required' => 'La hora de inicio es requerida',
+            'groups.*.schedule.end_hour.required' => 'La hora de fin es requerida',
+
             'course_id.required' => 'El curso es requerido',
             'course_id.exists' => 'El curso no es válido',
             'period_id.required' => 'El periodo es requerido',
@@ -74,29 +82,15 @@ class GroupSaveRequest extends FormRequest
 
         return array_map(function ($group) {
             if (is_array($group)) {
+                //schedule: {days: [], startHour: "", endHour: ""}
+                $group['schedule'] = collect($group['schedule'])
+                    ->mapWithKeys(fn($value, $key) => [Str::snake($key) => $value])
+                    ->toArray();
                 $group = collect($group)
                     ->mapWithKeys(fn($value, $key) => [Str::snake($key) => $value])
                     ->toArray();
             }
             return $group;
         }, $groups);
-    }
-    protected function failedValidation(Validator $validator)
-    {
-        $errors = collect($validator->errors())->mapWithKeys(function ($messages, $field) {
-            return [
-                Str::camel($field) => $messages[0]
-            ];
-        });
-
-        throw new HttpResponseException(
-            response()->json(
-                [
-                    'errors' => $errors,
-                    'message' => 'Error al guardar los registros, verifique los datos ingresados' . $errors
-                ],
-                422
-            )
-        );
     }
 }

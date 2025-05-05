@@ -17,7 +17,7 @@ class PeriodController extends Controller
     {
         try {
             $items = Period::select('periods.*')
-                ->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
+                ->join('months', 'periods.month', '=', 'months.id')
                 ->orderBy('year', 'desc')
                 ->orderBy('month', 'desc')
                 ->dataTable($request);
@@ -67,11 +67,11 @@ class PeriodController extends Controller
         try {
             $item = Period::select(
                 'periods.id as value',
-                DB::raw('CONCAT(year, "-", view_month_constants.label) as label')
-            )->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
+                DB::raw('CONCAT(year, "-", upper(months.name)) as label')
+            )->join('months', 'periods.month', '=', 'months.id')
                 ->orderBy('year', 'desc')
                 ->orderBy('month', 'desc')
-                ->whereRaw('CONCAT(year, "-", view_month_constants.label) LIKE ?', ['%' . $request->search . '%'])
+                ->whereRaw('CONCAT(year, "-", upper(months.name)) LIKE ?', ['%' . $request->search . '%'])
                 ->limit($request->limit ? $request->limit : 12)
                 ->get();
 

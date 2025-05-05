@@ -31,7 +31,7 @@ class EnrollmentDeadline extends Model
         'enrollment_deadlines.start_date',
         'enrollment_deadlines.end_date',
         'enrollment_deadlines.type',
-        'CONCAT( periods.year, "-",view_month_constants.label)',
+        'CONCAT( periods.year, "-",months.name)',
     ];
 
     protected $casts = [
@@ -70,10 +70,10 @@ class EnrollmentDeadline extends Model
             'enrollment_deadlines.start_date as startDate',
             'enrollment_deadlines.end_date as endDate',
             'enrollment_deadlines.virtual',
-            DB::raw('CONCAT(periods.year, "-", view_month_constants.label) as period')
+            DB::raw('CONCAT(periods.year, "-", upper(months.name)) as period')
         )
             ->join('periods', 'enrollment_deadlines.period_id', '=', 'periods.id')
-            ->join('view_month_constants', 'periods.month', '=', 'view_month_constants.value')
+            ->join('months', 'periods.month', '=', 'months.id')
             ->where('enrollment_deadlines.start_date', '<=', now())  // Verifica que el período ya inició
             ->where('enrollment_deadlines.end_date', '>=', now())   // Verifica que el período no haya terminado
             ->first();

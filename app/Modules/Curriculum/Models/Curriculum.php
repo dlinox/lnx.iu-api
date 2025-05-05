@@ -14,10 +14,12 @@ class Curriculum extends Model
 
     protected $fillable = [
         'name',
+        'grading_model',
         'is_enabled',
     ];
 
     protected $casts = [
+        'grading_model' => 'integer',
         'is_enabled' => 'boolean',
     ];
 

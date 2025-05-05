@@ -19,17 +19,15 @@ class StudentStoreRequest extends FormRequest
     {
         return [
             'document_type_id' => 'required|exists:document_types,id',
-            'document_number' => 'required|max:15|unique:people',
+            'document_number' => 'required|max:15|unique:students',
             'name' => 'required|max:50',
             'last_name_father' => 'nullable|max:50',
             'last_name_mother' => 'nullable|max:50',
-            'gender' => 'nullable|in:1,2,0',
+            'gender' => 'nullable|exists:genders,id',
             'email' => [
                 'required',
                 'email',
                 'max:80',
-                Rule::unique('people', 'email'), // Asegura que el email no exista en `people`
-                Rule::unique('users', 'email'),
             ],
             'phone' => 'nullable|max:15',
             'address' => 'nullable|max:100',

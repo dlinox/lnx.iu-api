@@ -11,6 +11,7 @@ class SaveRequest extends BaseRequest
         $id = $this->id ? $this->id : null;
         return [
             'name' => 'required|string|max:50|unique:payment_types,name,' . $id,
+            'commission' => 'required|numeric|min:0',
             'is_enabled' => 'required|boolean',
         ];
     }
@@ -21,6 +22,8 @@ class SaveRequest extends BaseRequest
             'name.required' => 'Obligatorio',
             'name.max' => 'Máximo de 50 caracteres',
             'name.unique' => 'Ya existe un registro con este nombre',
+            'commission.required' => 'Obligatorio',
+            'commission.numeric' => 'No es un número válido',
             'is_enabled.required' => 'Obligatorio',
         ];
     }

@@ -26,7 +26,7 @@ class BaseRequest extends FormRequest
         throw new HttpResponseException(
             response()->json([
                 'errors' => $errors,
-                'message' => 'Verifique los campos del formulario'
+                'message' => $errors->values()->first(),
             ], 422)
         );
     }

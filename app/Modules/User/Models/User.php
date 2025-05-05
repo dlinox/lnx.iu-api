@@ -42,15 +42,15 @@ class User extends Authenticatable
         'users.email',
     ];
 
-    public static function createAccountStudent($person, $studentId)
+    public static function createAccountStudent($student)
     {
         $password = rand(10000000, 99999999);
         $item =  self::create([
-            'name' => $person['name'] . ' ' . $person['last_name_father'] . ' ' . $person['last_name_mother'],
-            'username' => $person['document_number'],
-            'email' => $person['email'],
+            'name' => $student['name'] . ' ' . $student['last_name_father'] . ' ' . $student['last_name_mother'],
+            'username' => $student['document_number'],
+            'email' => $student['email'],
             'password' => $password,
-            'model_id' => $studentId,
+            'model_id' => $student['id'],
             'is_enabled' => true,
             'model_type' => 'student',
         ]);
@@ -59,7 +59,28 @@ class User extends Authenticatable
 
         return [
             'password' => $password,
-            'username' => $person['document_number'],
+            'username' => $student['document_number'],
+        ];
+    }
+
+    public static function createAccountTeacher($teacher)
+    {
+        $password = rand(10000000, 99999999);
+        $item =  self::create([
+            'name' => $teacher['name'] . ' ' . $teacher['last_name_father'] . ' ' . $teacher['last_name_mother'],
+            'username' => $teacher['document_number'],
+            'email' => $teacher['email'],
+            'password' => $password,
+            'model_id' => $teacher['id'],
+            'is_enabled' => true,
+            'model_type' => 'teacher',
+        ]);
+
+        $item->syncRoles(['docente']);
+
+        return [
+            'password' => $password,
+            'username' => $teacher['document_number'],
         ];
     }
 }

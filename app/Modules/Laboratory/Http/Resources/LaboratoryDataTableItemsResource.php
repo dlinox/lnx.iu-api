@@ -11,8 +11,8 @@ class LaboratoryDataTableItemsResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'deviceCount' => $this->device_count,
-            'deviceDetail' => $this->device_detail,
+            'type' => $this->type,
+            'virtualLink' => $this->virtual_link,
             'isEnabled' => $this->is_enabled,
         ];
         return parent::toArray($request);

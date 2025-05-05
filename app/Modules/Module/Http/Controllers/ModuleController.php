@@ -20,10 +20,12 @@ class ModuleController extends Controller
                 'modules.id',
                 'modules.name',
                 'modules.code',
-                'curriculums.name as curriculum',
+                'modules.level',
+                'modules.description',
                 'modules.curriculum_id',
                 'modules.is_extracurricular',
                 'modules.is_enabled',
+                'curriculums.name as curriculum',
             )
                 ->join('curriculums', 'modules.curriculum_id', '=', 'curriculums.id')
                 ->where('modules.curriculum_id', 'LIKE', '%' .   $request->filters['curriculumId'] . '%')
@@ -86,14 +88,11 @@ class ModuleController extends Controller
     public function getItemsCurriculumForSelect(Request $request)
     {
         try {
-            $query = Module::select('id as value', 'name as label');
-            $query->whereIn('id', function ($query) use ($request) {
-                $query->select('module_id')
-                    ->from('curriculum_courses')
-                    ->where('curriculum_id', $request->id);
-            });
-            $item = $query->get();
-            return ApiResponse::success($item);
+            $items = Module::select('id as value', 'name as label')
+                ->where('curriculum_id', $request->id)
+                ->where('is_enabled', 1)
+                ->get();
+            return ApiResponse::success($items);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
         }

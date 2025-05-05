@@ -11,6 +11,7 @@ class CurriculumDataTableItemsResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'gradingModel' => $this->grading_model,
             'isEnabled' => $this->is_enabled,
         ];
     }

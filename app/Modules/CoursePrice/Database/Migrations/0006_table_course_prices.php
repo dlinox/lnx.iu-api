@@ -21,8 +21,8 @@ return new class extends Migration
             $table->foreign('student_type_id')->references('id')->on('student_types');
         });
 
-        $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
-        DB::unprepared($sql);
+        // $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
+        // DB::unprepared($sql);
     }
 
     public function down(): void

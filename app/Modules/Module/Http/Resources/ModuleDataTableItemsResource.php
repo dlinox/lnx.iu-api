@@ -12,6 +12,8 @@ class ModuleDataTableItemsResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'code' => $this->code,
+            'level' => $this->level,
+            'description' => $this->description,
             'curriculum' => $this->curriculum,
             'curriculumId' => $this->curriculum_id,
             'isExtracurricular' => $this->is_extracurricular,

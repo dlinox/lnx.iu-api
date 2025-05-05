@@ -8,7 +8,6 @@ class TeacherDataTableItemsResource extends JsonResource
 {
     public function toArray($request)
     {
-
         return [
             'id' => $this->id,
             'code' => $this->code,
@@ -21,7 +20,8 @@ class TeacherDataTableItemsResource extends JsonResource
             'gender' => $this->gender,
             'email' => $this->email,
             'phone' => $this->phone,
-            'isEnabled' => $this->is_enabled
+            'userId' => $this->user_id,
+            'isEnabled' => $this->is_enabled,
         ];
         return parent::toArray($request);
     }

@@ -11,7 +11,7 @@ class PaymentTypeDataTableItemsResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'commission' => $this->commission,
+            'commission' => (float)$this->commission,
             'isEnabled' => $this->is_enabled,
         ];
         return parent::toArray($request);

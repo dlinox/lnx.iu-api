@@ -18,12 +18,12 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
-        DB::unprepared($sql);
+        // $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
+        // DB::unprepared($sql);
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('prices');
+        Schema::dropIfExists('module_prices');
     }
 };

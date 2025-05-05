@@ -10,18 +10,19 @@ return new class extends Migration
     public function up(): void
     {
 
-
         Schema::create('laboratories', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50)->unique();
-            $table->integer('device_count');
-            $table->string('device_detail', 150);
+            $table->enum('type', ['LABORATORIO', 'VIRTUAL'])->default('LABORATORIO');
+            $table->text('virtual_link')->nullable();
             $table->boolean('is_enabled')->default(true);
             $table->timestamps();
+            $table->index('name');
+            $table->index('type');
+            $table->index('is_enabled');
         });
-
-        $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
-        DB::unprepared($sql);
+        // $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
+        // DB::unprepared($sql);
     }
 
     public function down(): void

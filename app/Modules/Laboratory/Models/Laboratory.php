@@ -13,14 +13,13 @@ class Laboratory extends Model
 
     protected $fillable = [
         'name',
-        'device_count',
-        'device_detail',
+        'type',
+        'virtual_link',
         'is_enabled',
     ];
 
     protected $casts = [
         'is_enabled' => 'boolean',
-        'device_count' => 'integer',
     ];
 
     static $searchColumns = [
@@ -29,8 +28,8 @@ class Laboratory extends Model
 
     protected $logAttributes = [
         'name',
-        'device_count',
-        'device_detail',
+        'type',
+        'virtual_link',
         'is_enabled',
     ];
 

@@ -17,14 +17,13 @@ class TeacherStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|max:8|unique:people',
             'document_type_id' => 'required|exists:document_types,id',
-            'document_number' => 'required|max:15|unique:people',
+            'document_number' => 'required|max:15|unique:teachers',
             'name' => 'required|max:50',
             'last_name_father' => 'nullable|max:50',
             'last_name_mother' => 'nullable|max:50',
             'gender' => 'nullable|in:1,2,0',
-            'email' => 'nullable|email|max:80',
+            'email' => 'nullable|email|max:80|unique:teachers',
             'phone' => 'nullable|max:15',
             'address' => 'nullable|max:100',
             'date_of_birth' => 'nullable',
@@ -35,9 +34,6 @@ class TeacherStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'code.required' => 'Obligatorio',
-            'code.max' => 'Máximo de 8 caracteres',
-            'code.unique' => 'Ya existe un registro con este código',
             'document_type_id.required' => 'Obligatorio',
             'document_type_id.exists' => 'No existe un registro con este identificador',
             'document_number.required' => 'Obligatorio',

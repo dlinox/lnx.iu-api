@@ -9,14 +9,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaymentType extends Model
 {
-    use HasDataTable, HasEnabledState,  HasLogs;
+    use HasDataTable, HasEnabledState, HasLogs;
 
     protected $fillable = [
         'name',
+        'commission',
         'is_enabled',
     ];
 
     protected $casts = [
+        'commission' => 'decimal:2',
         'is_enabled' => 'boolean',
     ];
 

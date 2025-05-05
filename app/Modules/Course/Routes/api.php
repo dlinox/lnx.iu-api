@@ -12,7 +12,8 @@ Route::prefix('api/course')->group(function () {
     Route::get('items/for-select', [CourseController::class, 'getItemsForSelect']);
     Route::get('get-item-by-id/{id}', [CourseController::class, 'getItemById']);
 
-
+    Route::get('items/for-select/module/{moduleId}', [CourseController::class, 'getItemsByModuleForSelect']);
+    
     //deprecated
     Route::get('prerequisite-by-curriculum/items/for-select/{curriculumId}', [CourseController::class, 'getPreRequisiteByCurriculumItemsForSelect']);
     //deprecated
