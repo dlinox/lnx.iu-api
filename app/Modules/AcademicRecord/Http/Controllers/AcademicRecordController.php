@@ -6,10 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Modules\AcademicRecord\Http\Resources\AcademicRecordDataTableItemsResource;
 use App\Modules\AcademicRecord\Models\AcademicRecord;
-use App\Modules\Group\Models\Group;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class AcademicRecordController extends Controller
 {
@@ -83,7 +80,7 @@ class AcademicRecordController extends Controller
                 'format' => 'A4',
                 'margin_left' => 10,
                 'margin_right' => 10,
-                'margin_top' => 10,
+                'margin_top' => 32,
                 'margin_bottom' => 10,
                 'margin_header' => 5,
                 'margin_footer' => 5,
