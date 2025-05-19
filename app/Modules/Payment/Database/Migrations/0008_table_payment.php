@@ -13,20 +13,20 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_id');
-            $table->date('date')->nullable();
+            $table->date('date');
             $table->decimal('amount', 10, 2);
             $table->char('sequence_number', 15);
             $table->unsignedBigInteger('payment_type_id');
-            $table->enum('enrollment_type', ['M', 'G'])->nullable();
             $table->unsignedBigInteger('enrollment_id')->nullable();
+            $table->string('ref')->nullable();
             $table->boolean('is_used')->default(0);
             $table->boolean('is_enabled')->default(1);
             $table->timestamps();
 
             $table->index('student_id');
             $table->unique(['sequence_number', 'date', 'amount']);
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('no action');
-            $table->foreign('payment_type_id')->references('id')->on('payment_types')->onDelete('no action');
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('restrict');
+            $table->foreign('payment_type_id')->references('id')->on('payment_types')->onDelete('restrict');
         });
 
         // DB::statement('ALTER TABLE payments ADD CONSTRAINT check_amount_used CHECK (amount_used <= amount)');

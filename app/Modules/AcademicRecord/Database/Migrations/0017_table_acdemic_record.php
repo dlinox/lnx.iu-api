@@ -13,6 +13,8 @@ return new class extends Migration
             $table->id();
             $table->json('payload')->nullable();
             $table->text('observations')->nullable();
+            $table->char('code', 12)->unique()->nullable();
+            $table->boolean('is_enabled')->default(true);
             $table->unsignedBigInteger('group_id');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('grade_deadline_id')->nullable();

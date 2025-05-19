@@ -35,6 +35,8 @@ class ExtractDataCommand extends Command
         $this->insertEnrollmentGrades();
         $this->insertEnrollmentUnitGrades();
 
+        $this->insertPayment();
+
         $this->insertCurriculum();
 
         $this->info('Data extraction completed.');
@@ -685,5 +687,99 @@ class ExtractDataCommand extends Command
             ORDER BY eg.id, t.row_num;
         ");
         $this->info('Enrollment unit grades inserted successfully.');
+    }
+
+    private function insertPayment()
+    {
+        $this->info('Inserting payments...');
+        if (DB::table('payments')->count() > 0) {
+            $this->info('Payments already exist in the database. Skipping insertion.');
+            return;
+        }
+
+        DB::statement("
+            UPDATE siga200.taregistramatricula
+            SET Fecha = '2010-01-01'
+            WHERE Fecha like '0000-00-00';
+        ");
+
+        DB::statement("SET @counter := 0;");
+
+        DB::statement("
+        
+            INSERT INTO payments (
+                student_id,
+                `date`,
+                amount,
+                ref,
+                sequence_number,
+                payment_type_id,
+                enrollment_id,
+                is_used,
+                is_enabled
+            )
+            SELECT
+                cas.id_Estudiante AS student_id,
+                rm.Fecha  AS `date`,
+                (rm.CostoMensualidad + rm.CostoMatricula) AS amount,
+                rm.NumeroComprobante AS ref,
+                LPAD(@counter := @counter + 1, 7, '0') AS sequence_number,
+                IF(rm.id_TipoPago = 0, 1, rm.id_TipoPago) AS payment_type_id,
+                eg.id AS enrollment_id,
+                1 AS is_used,
+                0 AS is_enabled
+            FROM siga200.taregistramatricula AS rm
+            JOIN siga200.tacursosaperturadosestudiante cas ON cas.id_CursosAperturadosEstu = rm.id_CursosAperturadosEstu
+            JOIN enrollment_groups eg ON eg.id = rm.id_CodigoMatricula
+            join students s on s.id = cas.id_Estudiante
+            WHERE rm.id_CodigoMatricula IN (
+                SELECT min(rm2.id_CodigoMatricula)
+                FROM siga200.taregistramatricula rm2
+                GROUP BY rm2.NumeroComprobante, rm2.Fecha, (rm2.CostoMensualidad + rm2.CostoMatricula)
+                HAVING COUNT(*) > 1
+            );
+
+        ");
+
+        
+        DB::statement("
+            INSERT INTO payments (
+                `student_id`,
+                `date`,
+                `amount`,
+                `ref`,
+                `sequence_number`,
+                `payment_type_id`,
+                `enrollment_id`,
+                `is_used`,
+                `is_enabled`
+            )
+            SELECT
+                cas.id_Estudiante AS student_id,
+                rm.Fecha  AS `date`,
+                (rm.CostoMensualidad + rm.CostoMatricula) AS amount,
+                rm.NumeroComprobante AS ref,
+                CASE 
+                    WHEN rm.NumeroComprobante REGEXP '^[0-9]{6}-[0-9]{1}$' THEN SUBSTRING_INDEX(rm.NumeroComprobante, '-', 1)
+                    WHEN rm.NumeroComprobante REGEXP '^[0-9]+$' THEN rm.NumeroComprobante
+                    ELSE LPAD(@counter := @counter + 1, 7, '0')
+                END AS sequence_number,
+                IF(rm.id_TipoPago = 0, 1, rm.id_TipoPago) AS payment_type_id,
+                eg.id AS enrollment_id,
+                1 AS is_used,
+                0 AS is_enabled
+            FROM siga200.taregistramatricula AS rm
+            JOIN siga200.tacursosaperturadosestudiante cas ON cas.id_CursosAperturadosEstu = rm.id_CursosAperturadosEstu
+            JOIN enrollment_groups eg ON eg.id = rm.id_CodigoMatricula
+            JOIN students s ON s.id = cas.id_Estudiante
+            WHERE rm.id_CodigoMatricula IN (
+                SELECT MIN(rm2.id_CodigoMatricula)
+                FROM siga200.taregistramatricula rm2
+                GROUP BY rm2.NumeroComprobante, rm2.Fecha, (rm2.CostoMensualidad + rm2.CostoMatricula)
+                HAVING COUNT(*) = 1
+            );
+        ");
+
+        $this->info('Payments inserted successfully.');
     }
 }

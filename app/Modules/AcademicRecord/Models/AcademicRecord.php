@@ -16,6 +16,8 @@ class AcademicRecord extends Model
         'created_by',
         'grade_deadline_id',
         'payload',
+        'code',
+        'is_enabled',
         'observations',
     ];
 
@@ -32,11 +34,14 @@ class AcademicRecord extends Model
         'payload' => 'array',
         'group_id' => 'integer',
         'created_by' => 'integer',
+        'is_enabled' => 'boolean',
         'grade_deadline_id' => 'integer',
     ];
 
     protected $logAttributes = [
         'group_id',
+        'is_enabled',
+        'code',
     ];
 
     protected $logName = 'Registro Académico';

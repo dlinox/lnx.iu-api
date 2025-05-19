@@ -12,6 +12,7 @@ Route::prefix('api/reports')->group(function () {
     Route::prefix('group')->group(function () {
         Route::post('enrolled-students', [ReportController::class, 'groupEnrolledStudents']);
         Route::post('enabled-groups', [ReportController::class, 'enabledGroups']);
+        Route::post('collection-group', [ReportController::class, 'collectionGroup']);
     });
 
     Route::prefix('dashboard')->group(function () {

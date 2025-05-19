@@ -24,6 +24,7 @@ class AcademicRecordDataTableItemsResource extends JsonResource
             'teacher' => $this->teacher,
             'period' => $this->period,
             'records' =>  $records,
+            'recordCodes' => $this->recordCodes,
             'lastCreatedAt' => $this->last_created_at ? Carbon::parse($this->last_created_at)->format('d/m/Y H:i:s') : null,
         ];
     }

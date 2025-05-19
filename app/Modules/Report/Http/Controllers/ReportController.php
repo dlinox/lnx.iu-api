@@ -317,6 +317,63 @@ class ReportController extends Controller
             ->header('Content-Type', 'application/pdf');
     }
 
+    public function collectionGroup(Request $request)
+    {
+        $mpdf = new \Mpdf\Mpdf(
+            [
+                'mode' => 'utf-8',
+                'format' => 'A4',
+                'margin_left' => 10,
+                'margin_right' => 10,
+                'margin_top' => 32,
+                'margin_bottom' => 10,
+                'margin_header' => 5,
+                'margin_footer' => 5,
+            ]
+        );
+
+        $period = DB::table('periods')
+            ->selectRaw(
+                'CONCAT(months.short_name, ". del " , periods.`year`) AS period,
+                periods.id AS id'
+            )
+            ->join('months', 'months.id', 'periods.month')
+            ->where('periods.id', $request->periodId)
+            ->first();
+
+
+        $groups = Group::select(
+            'groups.id',
+            'groups.name AS group',
+            'courses.module_id',
+            'courses.name AS course',
+            DB::raw('SUM(IFNULL(payments.amount,0)) AS amount')
+        )
+            ->join('courses', 'courses.id', 'groups.course_id')
+            ->leftJoin('enrollment_groups', 'enrollment_groups.group_id', 'groups.id')
+            ->leftJoin('payments', 'payments.enrollment_id', 'enrollment_groups.id')
+            ->where('groups.period_id', $request->periodId)
+            ->groupBy('groups.id')
+            ->orderBy('courses.module_id')
+            ->orderBy('courses.name')
+            ->get();
+
+        $total = $groups->sum('amount');
+        $total = number_format($total, 2, '.', '');
+
+
+        $htmlContent = view('pdf.Report.Group.CollectionGroups', compact('period', 'groups', 'total'))->render();
+        $htmlHeader = view('pdf.Report.Group._header')->render();
+        $htmlFooter = view('pdf.Report.Group._footer')->render();
+        $mpdf->SetHTMLHeader($htmlHeader);
+
+        $mpdf->SetHTMLFooter($htmlFooter);
+        $mpdf->SetTitle('Recaudación por Grupo');
+        $mpdf->WriteHTML($htmlContent);
+        return response($mpdf->Output('', 'S'), 200)
+            ->header('Content-Type', 'application/pdf');
+    }
+
     public function dashboardEnrollments()
     {
         $enrollments = 0;

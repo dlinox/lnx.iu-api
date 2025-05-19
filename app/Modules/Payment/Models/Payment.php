@@ -15,10 +15,10 @@ class Payment extends Model
         'student_id',
         'sequence_number',
         'payment_type_id',
-        'enrollment_type',
         'enrollment_id',
         'amount',
         'date',
+        'ref',
         'is_used',
         'is_enabled',
     ];
@@ -31,7 +31,7 @@ class Payment extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['student_id', 'enrollment_type', 'enrollment_id', 'amount', 'date', 'is_used', 'is_enabled'])
+            ->logOnly(['student_id', 'enrollment_id', 'amount', 'date', 'is_used', 'is_enabled'])
             ->logOnlyDirty()
             ->useLogName('periodo');
     }

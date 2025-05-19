@@ -165,7 +165,6 @@ class EnrollmentController extends Controller
 
             foreach ($paymentsIds as $paymentId) {
                 $payment = Payment::find($paymentId);
-                $payment->enrollment_type = 'G';
                 $payment->enrollment_id = $enrollmentGroup->id;
                 $payment->is_used = true;
                 $payment->save();
@@ -266,7 +265,6 @@ class EnrollmentController extends Controller
 
             foreach ($paymentsIds as $paymentId) {
                 $payment = Payment::find($paymentId);
-                $payment->enrollment_type = 'G';
                 $payment->enrollment_id = $enrollmentGroup->id;
                 $payment->is_used = true;
                 $payment->save();
@@ -366,7 +364,6 @@ class EnrollmentController extends Controller
 
             foreach ($paymentsIds as $paymentId) {
                 $payment = Payment::find($paymentId);
-                $payment->enrollment_type = 'G';
                 $payment->enrollment_id = $enrollmentGroup->id;
                 $payment->is_used = true;
                 $payment->save();
@@ -410,14 +407,12 @@ class EnrollmentController extends Controller
             if (!$enrollmentGroup) return ApiResponse::error(null, 'No se encontró el registro');
 
             $payments = Payment::where('enrollment_id', $request->id)
-                ->where('enrollment_type', 'G')
                 ->get();
 
             DB::beginTransaction();
 
             foreach ($payments as $payment) {
                 $payment->enrollment_id = null;
-                $payment->enrollment_type = null;
                 $payment->is_used = false;
                 $payment->save();
             }
@@ -438,7 +433,6 @@ class EnrollmentController extends Controller
 
         try {
             $payments = Payment::where('enrollment_id', $request->id)
-                ->where('enrollment_type', 'G')
                 ->get()
                 ->map(function ($payment) {
                     $payment['amount'] = number_format($payment->amount, 2);
