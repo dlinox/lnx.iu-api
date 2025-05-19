@@ -15,7 +15,7 @@
             </h4>
         </td>
         <td style="width: 20%; text-align: right;">
-            <img src="{{ asset('assets/img/logo-info.jpg') }}" alt="Logo INFOUNA" style="width: 70px; height: auto; margin: 0; padding: 0;">
+            <img src="{{ public_path('assets/img/logo-info.jpg') }}" alt="Logo INFOUNA" style="width: 70px; height: auto; margin: 0; padding: 0;">
         </td>
     </tr>
 </table>
