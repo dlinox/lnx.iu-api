@@ -42,4 +42,6 @@ return [
     App\Modules\AcademicRecord\Providers\AcademicRecordServiceProvider::class,
 
     App\Modules\Report\Providers\ReportServiceProvider::class,
+    
+    App\Modules\Recognition\Providers\RecognitionServiceProvider::class,
 ];

@@ -20,4 +20,8 @@ Route::prefix('api/student')->group(function () {
 
     //getInfoById
     Route::get('info/{id}', [StudentController::class, 'getInfoById']);
+
+    //searchForSelect
+    Route::post('search-for-select', [StudentController::class, 'searchForSelect']);
 });
+

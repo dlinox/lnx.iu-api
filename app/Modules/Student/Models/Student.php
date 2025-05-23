@@ -128,4 +128,30 @@ class Student extends Model
 
         return $item;
     }
+
+    public static function search($search)
+    {
+        $items = self::select(
+            'students.id',
+            'students.document_number',
+            DB::raw('CONCAT_WS(" ", students.name, students.last_name_father, students.last_name_mother) as fullName'),
+        )
+            ->where(function ($query) use ($search) {
+                $query->where('students.code', 'like', '%' . $search . '%')
+                    ->orWhere('students.document_number', 'like', '%' . $search . '%')
+                    ->orWhereRaw(
+                        "CONCAT_WS(' ', students.name, students.last_name_father, students.last_name_mother) like ?",
+                        ["%{$search}%"]
+                    );
+            })
+            ->limit(20)
+            ->get()->map(function ($item) {
+                return [
+                    'value' => $item->id,
+                    'label' => $item->document_number . ' - ' . $item->fullName,
+                ];
+            });
+
+        return $items;
+    }
 }

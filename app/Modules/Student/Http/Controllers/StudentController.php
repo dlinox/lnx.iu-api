@@ -171,7 +171,7 @@ class StudentController extends Controller
             return ApiResponse::error($e->getMessage());
         }
     }
-    
+
     public function getItemsForSelect(Request $request)
     {
         try {
@@ -249,6 +249,16 @@ class StudentController extends Controller
             return ApiResponse::success($item);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage());
+        }
+    }
+
+    public function searchForSelect(Request $request)
+    {
+        try {
+            $items = Student::search($request->search);
+            return ApiResponse::success($items);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), 'Error al cargar los registros');
         }
     }
 }

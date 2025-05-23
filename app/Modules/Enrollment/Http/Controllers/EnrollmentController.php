@@ -14,12 +14,14 @@ use App\Modules\EnrollmentDeadline\Models\EnrollmentDeadline;
 use App\Modules\EnrollmentGroup\Models\EnrollmentGroup;
 use App\Modules\Group\Models\Group;
 use App\Modules\Module\Models\Module;
+use App\Modules\ModulePrice\Models\ModulePrice;
 use App\Modules\Student\Models\Student;
 use App\Modules\Payment\Models\Payment;
 use App\Modules\Schedule\Models\Schedule;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class EnrollmentController extends Controller
@@ -33,6 +35,7 @@ class EnrollmentController extends Controller
                 'enrollment_groups.id as id',
                 'modules.name as module',
                 'enrollment_groups.status as enrollmentStatus',
+                'enrollment_groups.special_enrollment as isSpecial',
                 'groups.id as groupId',
                 'groups.name as group',
                 'groups.modality as modality',
@@ -208,6 +211,7 @@ class EnrollmentController extends Controller
 
             $group = Group::find($request->groupId);
             $shedules = Schedule::where('group_id', $group->id)->get();
+
             if ($shedules->count() == 0) {
                 return ApiResponse::error(null, 'El grupo no tiene horarios asignados');
             }
@@ -242,8 +246,82 @@ class EnrollmentController extends Controller
 
             $price = $group->modality == 'PRESENCIAL' ? $coursePrice->presential_price : $coursePrice->virtual_price;
 
+            if ($request->isSpecial) {
+                $specialPrice = CoursePrice::select('presential_price', 'virtual_price')
+                    ->join('courses', 'courses.id', '=', 'course_prices.course_id')
+                    ->join('modules', 'modules.id', '=', 'courses.module_id')
+                    ->where('course_prices.student_type_id', $student->student_type_id)
+                    ->where('modules.is_extracurricular', true)
+                    ->first();
+
+                if (!$specialPrice) return ApiResponse::error(null, 'No se encontró el precio para el tipo de estudiante y el curso');
+
+                $price = $group->modality == 'PRESENCIAL' ? $specialPrice->presential_price : $specialPrice->virtual_price;
+            }
+
+            $withEnrollment = false;
+
+            if ($request->isSpecial == false) {
+                $module = Module::select('modules.id as moduleId', 'modules.name as moduleName')
+                    ->join('courses', 'courses.module_id', '=', 'modules.id')
+                    ->where('courses.id', $group->course_id)
+                    ->first();
+
+                $lastEnrollment = EnrollmentGroup::select(
+                    'periods.year',
+                    'periods.month',
+                )
+                    ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
+                    ->join('courses', 'groups.course_id', '=', 'courses.id')
+                    ->join('periods', 'enrollment_groups.period_id', '=', 'periods.id')
+                    ->where('enrollment_groups.student_id', $request->studentId)
+                    ->where('courses.module_id', $module->moduleId)
+                    ->where('enrollment_groups.special_enrollment', false)
+                    ->where('enrollment_groups.with_enrollment', true)
+                    ->where('enrollment_groups.status', 'MATRICULADO')
+                    ->orderBy('periods.id', 'desc')
+                    ->first();
+
+                if ($lastEnrollment) {
+                    $lastEnrollmentDate = Carbon::createFromFormat('Y-m', $lastEnrollment->year . '-' . $lastEnrollment->month);
+                    $currentDate = Carbon::now();
+                    if ($lastEnrollmentDate->diffInMonths($currentDate) > 12) {
+
+                        $modulePrice = ModulePrice::select('module_prices.price')
+                            ->where('module_prices.module_id', $module->moduleId)
+                            ->where('module_prices.student_type_id', $student->student_type_id)
+                            ->first();
+
+                        if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
+
+                        $enrollmentPrice = (float) $modulePrice->price;
+                        $price += $enrollmentPrice;
+                        $withEnrollment = true;
+                    }
+                } else {
+                    $modulePrice = ModulePrice::select('module_prices.price')
+                        ->where('module_prices.module_id', $module->moduleId)
+                        ->where('module_prices.student_type_id', $student->student_type_id)
+                        ->first();
+
+                    if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
+
+                    $enrollmentPrice = (float) $modulePrice->price;
+                    $price += $enrollmentPrice;
+                    $withEnrollment = true;
+                }
+            }
+
+
             if ($totalPayment < $price) {
-                return  ApiResponse::error(null, 'El monto de los pagos no cubre el precio del grupo');
+                return  ApiResponse::error(
+                    [
+                        'lastEnrollmentDate' => $lastEnrollmentDate ?? null,
+                        'totalPayment' => number_format($totalPayment, 2),
+                        'price' => number_format($price, 2),
+                    ],
+                    'El monto de los pagos no cubre el precio del grupo'
+                );
             }
 
             DB::beginTransaction();
@@ -260,6 +338,8 @@ class EnrollmentController extends Controller
                     'status' => 'MATRICULADO',
                     'created_by' => $user->id,
                     'enrollment_modality' => 'PRESENCIAL',
+                    'special_enrollment' => $request->isSpecial,
+                    'with_enrollment' => $withEnrollment,
                 ]);
             }
 
@@ -271,7 +351,10 @@ class EnrollmentController extends Controller
             }
 
             DB::commit();
-            return ApiResponse::success(null, 'Matriculado correctamente');
+            return ApiResponse::success([
+                'totalPayment' => number_format($totalPayment, 2),
+                'price' => number_format($price, 2),
+            ], 'Matriculado correctamente');
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), 'Error al matricular el grupo');
         }
@@ -292,19 +375,11 @@ class EnrollmentController extends Controller
 
             if (!$enrollmentGroup) return ApiResponse::error(null, 'No se encontró el registro');
 
-            $currentPayments = Payment::where('enrollment_id', $request->id)->get()->pluck('id')->toArray();
-
-            $paymentsIds = array_diff($paymentsIds, $currentPayments);
-
             $totalNewPayment = Payment::where('student_id', $request->studentId)
                 ->whereIn('id', array_unique($paymentsIds))
                 ->sum('amount');
 
-            $totalCurrentPayment = Payment::whereIn('id', $currentPayments)
-                ->where('student_id', $request->studentId)
-                ->sum('amount');
-
-            $totalPayment = $totalNewPayment + $totalCurrentPayment;
+            $totalPayment = $totalNewPayment;
 
             $student = Student::select('student_type_id')
                 ->where('id', $request->studentId)
@@ -326,11 +401,10 @@ class EnrollmentController extends Controller
                 ->join('enrollment_groups', 'groups.id', '=', 'enrollment_groups.group_id')
                 ->where('enrollment_groups.student_id', $student->id)
                 ->where('enrollment_groups.period_id', $enrollmentPeriod['periodId'])
-                ->where('groups.id', '!=', $enrollmentGroup->group_id)
+                ->where('enrollment_groups.group_id', '!=', $enrollmentGroup->group_id)
                 ->where('enrollment_groups.status', 'MATRICULADO')
                 ->get();
 
-            //verificamos que no haya cruce de horarios
             foreach ($shedules as $shedule) {
                 foreach ($enrolledSchedules as $enrolledShedule) {
                     if ($shedule->day == $enrolledShedule->day) {
@@ -352,6 +426,79 @@ class EnrollmentController extends Controller
 
             $price = $group->modality == 'PRESENCIAL' ? $coursePrice->presential_price : $coursePrice->virtual_price;
 
+            if ($enrollmentGroup->with_enrollment) {
+                $module = Module::select('modules.id as moduleId', 'modules.name as moduleName')
+                    ->join('courses', 'courses.module_id', '=', 'modules.id')
+                    ->where('courses.id', $group->course_id)
+                    ->first();
+
+                $modulePrice = ModulePrice::select('module_prices.price')
+                    ->where('module_prices.module_id', $module->moduleId)
+                    ->where('module_prices.student_type_id', $student->student_type_id)
+                    ->first();
+
+                if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
+
+                $enrollmentPrice = (float) $modulePrice->price;
+                $price += $enrollmentPrice;
+            } else if ($enrollmentGroup->special_enrollment && $request->isSpecial) {
+                $specialPrice = CoursePrice::select('presential_price', 'virtual_price')
+                    ->join('courses', 'courses.id', '=', 'course_prices.course_id')
+                    ->join('modules', 'modules.id', '=', 'courses.module_id')
+                    ->where('course_prices.student_type_id', $student->student_type_id)
+                    ->where('modules.is_extracurricular', true)
+                    ->first();
+
+                if (!$specialPrice) return ApiResponse::error(null, 'No se encontró el precio para el tipo de estudiante y el curso');
+
+                $price = $group->modality == 'PRESENCIAL' ? $specialPrice->presential_price : $specialPrice->virtual_price;
+            } else {
+
+                $module = Module::select('modules.id as moduleId', 'modules.name as moduleName')
+                    ->join('courses', 'courses.module_id', '=', 'modules.id')
+                    ->where('courses.id', $group->course_id)
+                    ->first();
+
+                $lastEnrollment = EnrollmentGroup::select('periods.year', 'periods.month')
+                    ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
+                    ->join('courses', 'groups.course_id', '=', 'courses.id')
+                    ->join('periods', 'enrollment_groups.period_id', '=', 'periods.id')
+                    ->where('enrollment_groups.student_id', $request->studentId)
+                    ->where('courses.module_id', $module->moduleId)
+                    ->where('enrollment_groups.special_enrollment', false)
+                    ->where('enrollment_groups.with_enrollment', true)
+                    ->where('enrollment_groups.status', 'MATRICULADO')
+                    ->orderBy('periods.id', 'desc')
+                    ->first();
+
+                if ($lastEnrollment) {
+                    $lastEnrollmentDate = Carbon::createFromFormat('Y-m', $lastEnrollment->year . '-' . $lastEnrollment->month);
+                    $currentDate = Carbon::now();
+                    if ($lastEnrollmentDate->diffInMonths($currentDate) > 12) {
+
+                        $modulePrice = ModulePrice::select('module_prices.price')
+                            ->where('module_prices.module_id', $module->moduleId)
+                            ->where('module_prices.student_type_id', $student->student_type_id)
+                            ->first();
+
+                        if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
+
+                        $enrollmentPrice = (float) $modulePrice->price;
+                        $price += $enrollmentPrice;
+                    }
+                } else {
+                    $modulePrice = ModulePrice::select('module_prices.price')
+                        ->where('module_prices.module_id', $module->moduleId)
+                        ->where('module_prices.student_type_id', $student->student_type_id)
+                        ->first();
+
+                    if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
+
+                    $enrollmentPrice = (float) $modulePrice->price;
+                    $price += $enrollmentPrice;
+                }
+            }
+
             if ($totalPayment < $price) {
                 return  ApiResponse::error(null, 'El monto de los pagos no cubre el precio del grupo');
             }
@@ -362,12 +509,20 @@ class EnrollmentController extends Controller
             $enrollmentGroup->status = 'MATRICULADO';
             $enrollmentGroup->save();
 
-            foreach ($paymentsIds as $paymentId) {
-                $payment = Payment::find($paymentId);
-                $payment->enrollment_id = $enrollmentGroup->id;
-                $payment->is_used = true;
-                $payment->save();
-            }
+            Payment::whereIn('id', array_unique($paymentsIds))
+                ->where('student_id', $request->studentId)
+                ->update([
+                    'enrollment_id' => $enrollmentGroup->id,
+                    'is_used' => true,
+                ]);
+
+            Payment::whereNotIn('id', array_unique($paymentsIds))
+                ->where('student_id', $request->studentId)
+                ->where('enrollment_id', $request->id)
+                ->update([
+                    'enrollment_id' => null,
+                    'is_used' => false,
+                ]);
 
             DB::commit();
             return ApiResponse::success(null, 'Matriculado correctamente');
@@ -460,15 +615,11 @@ class EnrollmentController extends Controller
                 'modules.is_extracurricular as isExtracurricular',
             )
                 ->distinct()
-                ->join('modules', function ($join) {
-                    $join->on('enrollments.module_id', '=', 'modules.id')
-                        ->orWhere('modules.is_extracurricular', true);
-                })
+                ->join('modules', 'enrollments.module_id', '=', 'modules.id')
                 ->where('modules.curriculum_id', $request->curriculumId)
                 ->where('enrollments.student_id', $request->studentId)
                 ->orderBy('modules.is_extracurricular', 'asc')
                 ->orderBy('modules.name', 'asc')
-                // ->where('modules.is_extracurricular', false)
                 ->get()->map(function ($enrollment) use ($request) {
                     $courses = Course::select(
                         'courses.id',
@@ -495,7 +646,7 @@ class EnrollmentController extends Controller
                                 ->join('periods', 'groups.period_id', '=', 'periods.id')
                                 ->join('months', 'periods.month', '=', 'months.id')
                                 ->where('groups.course_id', $course->id)
-
+                                ->where('enrollment_groups.special_enrollment', false)
                                 ->where('enrollment_groups.student_id', $request->studentId)
                                 ->get();
 
@@ -556,8 +707,54 @@ class EnrollmentController extends Controller
                 ->where('students.id', $request->studentId)
                 ->first();
 
+
+            // if (!$request->courseId) {
+            //     $course = Course::select('courses.id')
+            //         ->join('groups', 'courses.id', '=', 'groups.course_id')
+            //         ->where('groups.id', $request->groupId)
+            //         ->first();
+            //     if (!$course) return ApiResponse::error(null, 'Parámetros incorrectos, recargue la página e intente nuevamente');
+
+            //     $request['courseId'] = $course->id;
+            // }
+
+
             $enrollmentPeriod = EnrollmentDeadline::activeEnrollmentPeriod();
+
             if (!$enrollmentPeriod) return ApiResponse::error(null, 'No se encontró el periodo de matrícula');
+
+            $requireEnrollmentPrice = false;
+
+            $module = Module::select('modules.id as moduleId', 'modules.name as moduleName')
+                ->join('courses', 'courses.module_id', '=', 'modules.id')
+                ->where('courses.id', $request->courseId)
+                ->first();
+
+            if (!$request->isSpecial) {
+                $lastEnrollment = EnrollmentGroup::select(
+                    'periods.year',
+                    'periods.month',
+                )
+                    ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
+                    ->join('courses', 'groups.course_id', '=', 'courses.id')
+                    ->join('periods', 'enrollment_groups.period_id', '=', 'periods.id')
+                    ->where('enrollment_groups.student_id', $request->studentId)
+                    ->where('courses.module_id', $module->moduleId)
+                    ->where('enrollment_groups.special_enrollment', false)
+                    ->where('enrollment_groups.with_enrollment', true)
+                    ->orderBy('periods.id', 'desc')
+                    ->first();
+
+                if ($lastEnrollment) {
+                    $lastEnrollmentDate = Carbon::createFromFormat('Y-m', $lastEnrollment->year . '-' . $lastEnrollment->month);
+                    $currentDate = Carbon::now();
+                    if ($lastEnrollmentDate->diffInMonths($currentDate) > 12) {
+                        $requireEnrollmentPrice = true;
+                    }
+                } else {
+                    $requireEnrollmentPrice = true;
+                }
+            }
 
             $enrollmentGroups = Group::select(
                 'groups.id',
@@ -569,7 +766,6 @@ class EnrollmentController extends Controller
                 'max_students as maxStudents',
                 'min_students as minStudents',
                 'groups.status as status',
-
             )
                 ->join('periods', 'groups.period_id', '=', 'periods.id')
                 ->join('courses', 'groups.course_id', '=', 'courses.id')
@@ -581,8 +777,7 @@ class EnrollmentController extends Controller
                 ->where('periods.id', $enrollmentPeriod['periodId'])
                 ->whereIn('groups.status', ['ABIERTO', 'CERRADO'])
                 ->get()
-                ->map(function ($group) use ($request) {
-
+                ->map(function ($group) use ($request, $student, $requireEnrollmentPrice, $module, $enrollmentPeriod) {
                     $enrolledStudents = EnrollmentGroup::where('enrollment_groups.group_id', $group->id)
                         ->where('status', 'MATRICULADO')
                         ->count();
@@ -592,9 +787,50 @@ class EnrollmentController extends Controller
                         ->where('enrollment_groups.status', 'RESERVADO')
                         ->count();
 
+                    if ($request->isSpecial) {
+                        $specialPrice = CoursePrice::select('presential_price', 'virtual_price')
+                            ->join('courses', 'courses.id', '=', 'course_prices.course_id')
+                            ->join('modules', 'modules.id', '=', 'courses.module_id')
+                            ->where('course_prices.student_type_id', $student->student_type_id)
+                            ->where('modules.is_extracurricular', true)
+                            ->first();
+
+                        if (!$specialPrice) return ApiResponse::error(null, 'No se encontró el precio para el tipo de estudiante y el curso');
+
+                        $price = $group->modality == 'PRESENCIAL' ? $specialPrice->presential_price : $specialPrice->virtual_price;
+                        $group['price'] = number_format($price, 2);
+                    } else {
+                        $withEnrollment = EnrollmentGroup::select('with_enrollment')
+                            ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
+                            ->where('enrollment_groups.student_id', $student->id)
+                            ->where('enrollment_groups.period_id', $enrollmentPeriod['periodId'])
+                            ->where('groups.course_id', $request->courseId)
+                            ->where('enrollment_groups.status', 'MATRICULADO')
+                            ->first();
+                        if ($withEnrollment) {
+                            if ($withEnrollment->with_enrollment) {
+                                $requireEnrollmentPrice = true;
+                            }
+                        }
+                    }
+
+                    if ($requireEnrollmentPrice) {
+
+                        $modulePrice = ModulePrice::select('module_prices.price')
+                            ->where('module_prices.module_id', $module->moduleId)
+                            ->where('module_prices.student_type_id', $student->student_type_id)
+                            ->first();
+
+                        if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
+
+                        $enrollmentPrice = (float) $modulePrice->price;
+
+                        $group['price'] += $enrollmentPrice;
+                        $group['price'] = number_format($group['price'], 2);
+                    }
+
                     $group['enrolledStudents'] = $enrolledStudents;
                     $group['reservedStudents'] = $reservedStudents;
-
                     $group['schedules'] = Schedule::byGroup($group->id);
 
                     return $group;
@@ -612,11 +848,14 @@ class EnrollmentController extends Controller
             'enrollment_groups.id',
             'students.document_number as documentNumber',
             DB::raw('CONCAT_WS(" ", students.name, students.last_name_father, students.last_name_mother) as student'),
+            'student_types.id as studentTypeId',
             'student_types.name as studentType',
             'students.code as studentCode',
             'modules.name as module',
             'module_prices.price as modulePrice',
+            'courses.id as courseId',
             'courses.name as course',
+            'groups.id as groupId',
             'groups.name as group',
             'groups.modality as modality',
             DB::raw('GROUP_CONCAT(DISTINCT payment_types.name SEPARATOR ", ") as paymentType'),
@@ -638,16 +877,18 @@ class EnrollmentController extends Controller
             ->join('payment_types', 'payments.payment_type_id', '=', 'payment_types.id')
             ->join('student_types', 'students.student_type_id', '=', 'student_types.id')
             ->where('enrollment_groups.id', $request->id)
-            // Agrupar por los datos principales (excluyendo los de "payments")
             ->groupBy(
                 'enrollment_groups.id',
                 'students.name',
                 'students.last_name_father',
                 'students.last_name_mother',
+                'student_types.id',
                 'student_types.name',
                 'students.code',
                 'modules.name',
+                'courses.id',
                 'courses.name',
+                'groups.id',
                 'groups.name',
                 'groups.modality',
                 'module_prices.price',
@@ -655,6 +896,15 @@ class EnrollmentController extends Controller
                 'periods.year'
             )
             ->first();
+
+        $coursePrice = CoursePrice::select('presential_price', 'virtual_price')
+            ->where('course_id', $enrollment->courseId)
+            ->where('student_type_id', $enrollment->studentTypeId)
+            ->first();
+
+        $enrollment->coursePrice = $enrollment->modality == 'PRESENCIAL' ? $coursePrice->presential_price : $coursePrice->virtual_price;
+
+        $enrollment->schedule = Schedule::byGroup($enrollment->groupId);
 
         $pdf = PDF::loadView('pdf.EnrollmentRecord', ['enrollment' => $enrollment]);
         return $pdf->output();
@@ -677,7 +927,6 @@ class EnrollmentController extends Controller
                         ->where('courses.is_enabled', true);
                 })
                 ->where('modules.curriculum_id', $request->curriculumId)
-                ->where('modules.is_extracurricular', false)
                 ->whereNotIn('modules.id', function ($query) use ($request) {
                     $query->select('enrollments.module_id')
                         ->from('enrollments')

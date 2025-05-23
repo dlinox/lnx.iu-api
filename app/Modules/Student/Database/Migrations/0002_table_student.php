@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -47,9 +46,6 @@ return new class extends Migration
             //fulltext indexes name
             $table->index(['name', 'last_name_father', 'last_name_mother']);
         });
-
-        // $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
-        // DB::unprepared($sql);
     }
 
     public function down(): void

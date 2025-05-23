@@ -15,8 +15,9 @@ class EnrollmentGroup extends Model
         'group_id',
         'period_id',
         'created_by',
-        'enrollment_modality'
-        // 'payment_id',
+        'enrollment_modality',
+        'special_enrollment',
+        'with_enrollment',
     ];
 
     protected $hidden = [

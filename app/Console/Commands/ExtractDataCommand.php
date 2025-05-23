@@ -30,8 +30,8 @@ class ExtractDataCommand extends Command
 
         $this->insertGroups();
         $this->insertSchedules();
-        $this->insertEnrollments();
         $this->insertEnrollmentGroups();
+        $this->insertEnrollments();
         $this->insertEnrollmentGrades();
         $this->insertEnrollmentUnitGrades();
 
@@ -338,7 +338,10 @@ class ExtractDataCommand extends Command
                 NULL AS description,
                 '' AS code,
                 1 AS curriculum_id,
-                0 AS is_extracurricular,
+                CASE
+                    WHEN modulo.id_Modulos = 8 THEN 1
+                    ELSE 0
+                END AS is_extracurricular,
                 1 AS is_enabled,
                 modulo.id_Modulos AS level
             FROM siga200.tamodulos modulo;
@@ -360,7 +363,7 @@ class ExtractDataCommand extends Command
             co.id_Costos AS 'id',
             mo.id AS 'module_id',
             st.id AS 'student_type_id',
-            co.CostoMensualidad AS 'price'
+            co.CostoMatricula AS 'price'
             FROM siga200.tacostos co 
             JOIN modules mo ON co.id_Modulos = mo.id
             JOIN student_types st ON st.id =  co.id_TipoEstudiante
@@ -545,6 +548,49 @@ class ExtractDataCommand extends Command
         $this->info('Schedules inserted successfully.');
     }
 
+       //enrollment groups
+    private function insertEnrollmentGroups()
+    {
+        $this->info('Inserting enrollment groups...');
+        if (DB::table('enrollment_groups')->count() > 0) {
+            $this->info('Enrollment groups already exist in the database. Skipping insertion.');
+            return;
+        }
+
+        DB::statement("
+            INSERT INTO enrollment_groups (id, student_id, group_id, period_id, `status`, enrollment_modality, special_enrollment, with_enrollment)
+            SELECT
+                DISTINCT mat.id_CodigoMatricula AS id,
+                st.id AS student_id,
+                gr.id AS group_id,
+                pe.id AS period_id,
+                'MATRICULADO' AS `status`,
+                'PRESENCIAL' AS enrollment_modality,
+                CASE WHEN mo.id = 8 THEN 1 ELSE 0 END AS special_enrollment,
+                CASE WHEN mat.CostoMatricula > 0 THEN 1 
+                    WHEN st.student_type_id = 3 AND mo.id = 4 AND mat.CostoMensualidad = 86.0 THEN 1 
+                    ELSE 0 
+                    END 
+                AS with_enrollment
+            FROM
+                siga200.tacursosaperturadosestudiante ap
+                JOIN siga200.taregistramatricula mat ON mat.id_CursosAperturadosEstu = ap.id_CursosAperturadosEstu
+                JOIN v_student_references vsr ON ap.id_Estudiante = vsr.referenced_student_id
+                JOIN students st ON vsr.primary_student_id = st.id
+                JOIN `groups` gr ON gr.id = ap.id_Grupo
+                JOIN siga200.taaniomatricula ani ON ani.id_AnioMatricula = ap.id_AnioMatricula
+                JOIN periods pe ON pe.`year` = ani.NombreAnioMatricula
+                AND pe.`month` = ap.id_MesMatricula
+                JOIN courses cur ON cur.id = gr.course_id
+                JOIN modules mo ON mo.id = cur.module_id
+            ORDER BY
+                id,
+                period_id,
+                group_id;
+        ");
+        $this->info('Enrollment groups inserted successfully.');
+    }
+
     //enrollment
     private function insertEnrollments()
     {
@@ -582,64 +628,43 @@ class ExtractDataCommand extends Command
         ");
 
         DB::statement("
-            INSERT INTO enrollments (student_id, module_id)
+            INSERT INTO enrollments (student_id, module_id, created_at)
             SELECT DISTINCT
                 st.id AS student_id,
-                mo.id AS module_id
+                mo.id AS module_id,
+                fe.full_date AS created_at
             FROM
                 siga200.tacursosaperturadosestudiante ap
-            JOIN
-                v_student_references vsr ON ap.id_Estudiante = vsr.referenced_student_id
-            JOIN
-                students st ON vsr.primary_student_id = st.id
+            JOIN v_student_references vsr ON ap.id_Estudiante = vsr.referenced_student_id
+            JOIN students st ON vsr.primary_student_id = st.id
             JOIN siga200.tagrupo gru ON gru.id_Grupo = ap.id_Grupo
-            JOIN courses cur ON cur.id= gru.id_Cursos
+            JOIN courses cur ON cur.id = gru.id_Cursos
             JOIN modules mo ON mo.id = cur.module_id
-            WHERE
-                ap.id_CursosAperturadosEstu IN (
-                    SELECT DISTINCT mat.id_CursosAperturadosEstu
-                    FROM siga200.taregistramatricula mat
-                )
+            LEFT JOIN (
+                SELECT
+                    eg.student_id, 
+                    co.module_id, 
+                    MIN(STR_TO_DATE(CONCAT(pe.`year`, '-', pe.`month`, '-01 00:00:00'), '%Y-%m-%d %H:%i:%s')) AS full_date
+                FROM enrollment_groups eg
+                JOIN `groups` gr ON gr.id = eg.group_id
+                JOIN courses co ON co.id = gr.course_id
+                JOIN periods pe ON pe.id = eg.period_id
+                WHERE co.module_id != 8
+                GROUP BY eg.student_id, co.module_id
+            ) fe ON fe.student_id = st.id AND fe.module_id = mo.id
+            WHERE ap.id_CursosAperturadosEstu IN (
+                SELECT DISTINCT mat.id_CursosAperturadosEstu
+                FROM siga200.taregistramatricula mat
+            )
             AND mo.id NOT IN (8)
-            ORDER BY st.id ASC;
+            ORDER BY created_at ASC;
         ");
 
         // DB::statement("DROP VIEW IF EXISTS v_student_references;");
 
         $this->info('Enrollments inserted successfully.');
     }
-    //enrollment groups
-    private function insertEnrollmentGroups()
-    {
-        $this->info('Inserting enrollment groups...');
-        if (DB::table('enrollment_groups')->count() > 0) {
-            $this->info('Enrollment groups already exist in the database. Skipping insertion.');
-            return;
-        }
-
-        DB::statement("
-            INSERT INTO enrollment_groups (id, student_id, group_id, period_id, `status`, enrollment_modality)
-            SELECT
-                DISTINCT
-                mat.id_CodigoMatricula AS id,
-                st.id AS student_id,
-                gr.id AS group_id,
-                pe.id AS period_id,
-                'MATRICULADO' AS `status`,
-                'PRESENCIAL' AS enrollment_modality
-            FROM
-                siga200.tacursosaperturadosestudiante ap
-                JOIN siga200.taregistramatricula mat ON mat.id_CursosAperturadosEstu = ap.id_CursosAperturadosEstu
-                JOIN v_student_references vsr ON ap.id_Estudiante = vsr.referenced_student_id
-                JOIN students st ON vsr.primary_student_id = st.id
-                JOIN `groups` gr ON gr.id = ap.id_Grupo
-                JOIN siga200.taaniomatricula ani ON ani.id_AnioMatricula = ap.id_AnioMatricula
-                JOIN periods pe ON pe.`year` = ani.NombreAnioMatricula AND pe.`month` = ap.id_MesMatricula
-            ORDER BY id, period_id, group_id;
-        ");
-        $this->info('Enrollment groups inserted successfully.');
-    }
-
+ 
     //enrollment grades
     private function insertEnrollmentGrades()
     {
@@ -741,7 +766,7 @@ class ExtractDataCommand extends Command
 
         ");
 
-        
+
         DB::statement("
             INSERT INTO payments (
                 `student_id`,

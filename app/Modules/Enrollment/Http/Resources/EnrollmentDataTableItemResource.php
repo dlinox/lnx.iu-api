@@ -3,6 +3,7 @@
 namespace App\Modules\Enrollment\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class EnrollmentDataTableItemResource extends JsonResource
 {
@@ -10,7 +11,6 @@ class EnrollmentDataTableItemResource extends JsonResource
     {
 
         return [
-
             'id' => $this->id,
             'module' => $this->module,
             'enrollmentStatus' => $this->enrollmentStatus,
@@ -23,6 +23,7 @@ class EnrollmentDataTableItemResource extends JsonResource
             'period' => $this->period,
             'courseId' => $this->courseId,
             'course' => $this->course,
+            'isSpecial' => (Boolean)$this->isSpecial,
         ];
     }
 }

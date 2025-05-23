@@ -16,7 +16,7 @@
         .record {
             height: 524px;
             width: 100vw;
-            padding: 1rem 2rem;
+            padding: 1rem 1rem;
         }
 
         .header-record {
@@ -36,29 +36,13 @@
         }
 
         .title {
-            background-color: rgba(11, 40, 230, 0.27);
+            background-color: #ccdcfb;
             margin: 1rem 0;
             width: 100vw;
             padding: .5rem;
             text-align: center;
             font-weight: 800;
-        }
-
-        .record-body {
-            border: 1px solid #000;
-            display: flex;
-
-
-        }
-
-        .record-body .left {
-            width: 49%;
-            background-color: #0000AA44;
-        }
-
-        .record-body .right {
-            width: 49%;
-            background-color: #AA00AA44;
+            font-size: 20px;
         }
 
         p {
@@ -77,13 +61,24 @@
 <body>
     <div class="record" style="border-bottom: 1px dashed #999;">
         <div class="header-record">
-            <span style="text-align: center; width: 100%;">
-                <strong>
-                    UNIVERSIDAD NACIONAL DEL ALTIPLANO
-                </strong>
-                <br>
-                INSTITUTO DE INFORMÁTICA
-            </span>
+            <table style="width: 100%; border: none;">
+                <tr>
+                    <td style="width: 20%; text-align: right;">
+                        <img src="{{ public_path('assets/img/logo-unap.png') }}" alt="Logo UNAP" style="width: auto; height: 45px; margin: 0; padding: 0;">
+                    </td>
+                    <td style="width: 60%; text-align: center;">
+                        <h4>
+                            UNIVERSIDAD NACIONAL DEL ALTIPLANO
+                        </h4>
+                        <h5>
+                            INSTITUTO DE INFORMÁTICA
+                        </h5>
+                    </td>
+                    <td style="width: 20%; text-align: left;">
+                        <img src="{{ public_path('assets/img/logo-info.jpg') }}" alt="Logo INFOUNA" style="width: auto; height: 45px; margin: 0; padding: 0;">
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="title">
             FICHA DE MATRÍCULA
@@ -91,7 +86,7 @@
 
         <table width="100%" style="border-collapse: collapse;">
             <tr>
-                <td width="50%" style="vertical-align: top; padding: 2px; ">
+                <td width="55%" style="vertical-align: top; padding: 2px; ">
 
                     <p>
                         <strong>Estudiante:</strong> {{$enrollment['student']}}
@@ -106,13 +101,13 @@
                         <strong>Tipo de Comprobante:</strong> {{$enrollment['paymentType']}}
                     </p>
                     <p>
-                        <strong>Costo Matrícula:</strong> {{$enrollment['modulePrice']}}
+                        <strong>Costo Matrícula:</strong> S/. {{$enrollment['modulePrice']}}
                     </p>
                     <p>
                         <strong>Mes:</strong> {{$enrollment['period']}}
                     </p>
                 </td>
-                <td width="50%" style="vertical-align: top; padding: 2px; ">
+                <td width="45%" style="vertical-align: top; padding: 2px; ">
 
                     <p>
                         <strong>Código:</strong> {{$enrollment['studentCode']}}
@@ -122,12 +117,13 @@
                     </p>
                     <p>
                         <strong>Horario:</strong>
+                        {{$enrollment['schedule']['days']}} {{$enrollment['schedule']['startHour']}} {{$enrollment['schedule']['endHour']}}
                     </p>
                     <p>
                         <strong>Nro Comprobante:</strong> {{$enrollment['paymentSequence']}}
                     </p>
                     <p>
-                        <strong>Costo Mensualidad:</strong> {{$enrollment['paymentAmount']}}
+                        <strong>Costo Mensualidad:</strong> S/. {{$enrollment['coursePrice']}}
                     </p>
                     <p>
                         <strong>Tipo Estu.:</strong> {{$enrollment['studentType']}}
@@ -163,21 +159,32 @@
                     <td width="50%" style="vertical-align: top; padding: 10px; ">
                     </td>
                     <td width="50%" style="vertical-align: top; padding: 10px; text-align: right;">
-                        <strong>Fecha:</strong> {{now()}}
+                        <strong>Fecha:</strong> Puno, {{Carbon\Carbon::now()->format('d-m-Y H:i a')}}
                     </td>
                 </tr>
             </table>
         </div>
     </div>
-    <div class="record" style="border-bottom: 1px dashed #999;">
+    <div class="record">
         <div class="header-record">
-            <span style="text-align: center; width: 100%;">
-                <strong>
-                    UNIVERSIDAD NACIONAL DEL ALTIPLANO
-                </strong>
-                <br>
-                INSTITUTO DE INFORMÁTICA
-            </span>
+            <table style="width: 100%; border: none;">
+                <tr>
+                    <td style="width: 20%; text-align: right;">
+                        <img src="{{ public_path('assets/img/logo-unap.png') }}" alt="Logo UNAP" style="width: auto; height: 45px; margin: 0; padding: 0;">
+                    </td>
+                    <td style="width: 60%; text-align: center;">
+                        <h4>
+                            UNIVERSIDAD NACIONAL DEL ALTIPLANO
+                        </h4>
+                        <h5>
+                            INSTITUTO DE INFORMÁTICA
+                        </h5>
+                    </td>
+                    <td style="width: 20%; text-align: left;">
+                        <img src="{{ public_path('assets/img/logo-info.jpg') }}" alt="Logo INFOUNA" style="width: auto; height: 45px; margin: 0; padding: 0;">
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="title">
             FICHA DE MATRÍCULA
@@ -185,7 +192,7 @@
 
         <table width="100%" style="border-collapse: collapse;">
             <tr>
-                <td width="50%" style="vertical-align: top; padding: 2px; ">
+                <td width="55%" style="vertical-align: top; padding: 2px; ">
 
                     <p>
                         <strong>Estudiante:</strong> {{$enrollment['student']}}
@@ -200,13 +207,13 @@
                         <strong>Tipo de Comprobante:</strong> {{$enrollment['paymentType']}}
                     </p>
                     <p>
-                        <strong>Costo Matrícula:</strong> {{$enrollment['modulePrice']}}
+                        <strong>Costo Matrícula:</strong> S/. {{$enrollment['modulePrice']}}
                     </p>
                     <p>
                         <strong>Mes:</strong> {{$enrollment['period']}}
                     </p>
                 </td>
-                <td width="50%" style="vertical-align: top; padding: 2px; ">
+                <td width="45%" style="vertical-align: top; padding: 2px; ">
 
                     <p>
                         <strong>Código:</strong> {{$enrollment['studentCode']}}
@@ -216,12 +223,13 @@
                     </p>
                     <p>
                         <strong>Horario:</strong>
+                        {{$enrollment['schedule']['days']}} {{$enrollment['schedule']['startHour']}} {{$enrollment['schedule']['endHour']}}
                     </p>
                     <p>
                         <strong>Nro Comprobante:</strong> {{$enrollment['paymentSequence']}}
                     </p>
                     <p>
-                        <strong>Costo Mensualidad:</strong> {{$enrollment['paymentAmount']}}
+                        <strong>Costo Mensualidad:</strong> S/. {{$enrollment['coursePrice']}}
                     </p>
                     <p>
                         <strong>Tipo Estu.:</strong> {{$enrollment['studentType']}}
@@ -257,7 +265,7 @@
                     <td width="50%" style="vertical-align: top; padding: 10px; ">
                     </td>
                     <td width="50%" style="vertical-align: top; padding: 10px; text-align: right;">
-                        <strong>Fecha:</strong> {{now()}}
+                        <strong>Fecha:</strong> Puno, {{Carbon\Carbon::now()->format('d-m-Y H:i a')}}
                     </td>
                 </tr>
             </table>

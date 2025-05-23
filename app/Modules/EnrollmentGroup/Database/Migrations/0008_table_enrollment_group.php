@@ -17,7 +17,9 @@ return new class extends Migration
             $table->unsignedBigInteger('period_id');
             $table->unsignedBigInteger('created_by')->nullable(); // ID del usuario que creó la matrícula
             $table->enum('enrollment_modality', ['PRESENCIAL', 'VIRTUAL'])->default('PRESENCIAL'); // Modalidad del grupo
-            $table->enum('status', ['MATRICULADO','RESERVADO','RETIRADO','EXPULSADO','CANCELADO'])->default('MATRICULADO');
+            $table->enum('status', ['MATRICULADO', 'RESERVADO', 'RETIRADO', 'EXPULSADO', 'CANCELADO'])->default('MATRICULADO');
+            $table->boolean('special_enrollment')->default(false); // Indica si es una matrícula especial
+            $table->boolean('with_enrollment')->default(false); // Indica si el estudiante tiene matrícula previa
             $table->timestamps();
             $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('group_id')->references('id')->on('groups');
