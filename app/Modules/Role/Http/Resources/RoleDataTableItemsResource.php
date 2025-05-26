@@ -3,6 +3,7 @@
 namespace App\Modules\Role\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
 
 class RoleDataTableItemsResource extends JsonResource
 {
@@ -11,8 +12,9 @@ class RoleDataTableItemsResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            // '1,2,3,4,5' = ['1', '2', '3', '4', '5']
-            'permissions' => explode(',', $this->permissions),
+            'permissions' => DB::table('role_has_permissions')
+                ->where('role_id', $this->id)
+                ->pluck('permission_id'),
             'isEnabled' => $this->is_enabled,
         ];
         return parent::toArray($request);

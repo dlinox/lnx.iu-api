@@ -10,6 +10,10 @@ Route::prefix('api/role')->group(function () {
     Route::delete('', [RoleController::class, 'destroy']);
 
     Route::get('items/for-select', [RoleController::class, 'getItemsForSelect']);
+
+    Route::get('permissions', [RoleController::class, 'getAllPermissions']);
+
+    Route::post('asign-permissions', [RoleController::class, 'asignPermissions']);
 });
 
 

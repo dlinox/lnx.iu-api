@@ -114,4 +114,47 @@ class RoleController extends Controller
             return ApiResponse::error($e->getMessage());
         }
     }
+
+    public function  getAllPermissions()
+    {
+        try {
+            $permissions = Permission::select(
+                'permissions.id',
+                'permissions.display_name',
+                'permissions.name',
+            )
+                ->where('permissions.group', null)
+                ->get()->map(function ($permission) {
+                    return [
+                        'id' => $permission->id,
+                        'display_name' => $permission->display_name,
+                        'children' => Permission::where('group', $permission->name)
+                            ->select('id', 'display_name', 'name')
+                            ->get()
+                    ];
+                });
+
+
+            return ApiResponse::success($permissions);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage());
+        }
+    }
+    // asignPermissions
+    public function asignPermissions(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $role = SpatieRole::find($request->id);
+            if (!$role) {
+                return ApiResponse::error(null, 'El rol no existe', 404);
+            }
+            $role->syncPermissions($request->permissions);
+            DB::commit();
+            return ApiResponse::success(null, 'Permisos asignados correctamente', 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ApiResponse::error($e->getMessage());
+        }
+    }
 }

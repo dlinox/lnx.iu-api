@@ -79,7 +79,6 @@ class EnrollmentController extends Controller
             $enrollmentPeriod = EnrollmentDeadline::activeEnrollmentPeriod();
             if (!$enrollmentPeriod)  ApiResponse::error(null, 'No se encontró el periodo de matrícula');
 
-
             $paymentsIds = array_map(function ($payment) {
                 return Crypt::decrypt($payment);
             }, $request->payments);
@@ -164,6 +163,8 @@ class EnrollmentController extends Controller
                 'status' => 'MATRICULADO',
                 'created_by' => $user->id,
                 'enrollment_modality' => 'PRESENCIAL',
+                'special_enrollment' => false,
+                'with_enrollment' => true,
             ]);
 
             foreach ($paymentsIds as $paymentId) {

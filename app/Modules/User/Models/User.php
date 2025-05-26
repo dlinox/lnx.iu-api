@@ -6,11 +6,12 @@ use App\Traits\HasDataTable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use  Notifiable,  HasRoles, HasApiTokens, HasDataTable;
+    use  Notifiable,  HasRoles, HasApiTokens, HasDataTable, HasPermissions;
 
     protected $fillable = [
         'name',
