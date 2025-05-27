@@ -30,7 +30,7 @@ class CurriculumCourseController extends Controller
                 'curriculum_courses.is_enabled',
             )->join('courses', 'courses.id', '=', 'curriculum_courses.course_id')
                 ->where('curriculum_courses.curriculum_id', $request->filters['curriculumId'])
-                ->join('areas', 'areas.id', '=', 'curriculum_courses.area_id')
+                ->leftJoin('areas', 'areas.id', '=', 'curriculum_courses.area_id')
                 ->leftJoin('modules', 'modules.id', '=', 'curriculum_courses.module_id')
                 ->orderBy('curriculum_courses.module_id', 'asc')
                 ->orderBy('curriculum_courses.order', 'asc')

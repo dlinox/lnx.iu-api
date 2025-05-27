@@ -628,7 +628,7 @@ class EnrollmentController extends Controller
                         'courses.code',
                         'areas.name as area',
                     )
-                        ->join('areas', 'courses.area_id', '=', 'areas.id')
+                        ->leftJoin('areas', 'courses.area_id', '=', 'areas.id')
                         ->where('courses.module_id', $enrollment->moduleId)
                         ->where('courses.is_enabled', true)
                         ->get()->map(function ($course) use ($request) {
@@ -941,7 +941,7 @@ class EnrollmentController extends Controller
                         'courses.code',
                         'areas.name as area',
                     )
-                        ->join('areas', 'courses.area_id', '=', 'areas.id')
+                        ->leftJoin('areas', 'courses.area_id', '=', 'areas.id')
                         ->where('courses.module_id', $enrollment->moduleId)
                         ->where('courses.is_enabled', true)
                         ->get()->map(function ($course) use ($request) {

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('order')->default(0);
             //cantidad unidades del curso
             $table->integer('units')->default(0);
-            $table->unsignedBigInteger('area_id');
+            $table->unsignedBigInteger('area_id')->nullable();
             $table->unsignedBigInteger('module_id');
             $table->unsignedBigInteger('curriculum_id');
             $table->unsignedBigInteger('pre_requisite_id')->nullable();
@@ -32,12 +32,7 @@ return new class extends Migration
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('restrict');
             $table->foreign('curriculum_id')->references('id')->on('curriculums')->onDelete('restrict');
             $table->foreign('pre_requisite_id')->references('id')->on('courses')->onDelete('restrict');
-
-            // $table->unique(['code', 'name', 'area_id', 'module_id', 'curriculum_id']);
         });
-
-        // $sql = file_get_contents(__DIR__ . '/../Data/recovered.sql');
-        // DB::unprepared($sql);
     }
 
     public function down(): void

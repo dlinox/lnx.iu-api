@@ -65,7 +65,7 @@ class Module extends Model
             DB::raw('group_concat(distinct curriculum_courses.curriculum_id) as curriculumId'),
         )
             ->join('curriculum_courses', 'modules.id', '=', 'curriculum_courses.module_id')
-            ->join('areas', 'curriculum_courses.area_id', '=', 'areas.id')
+            ->leftJoin('areas', 'curriculum_courses.area_id', '=', 'areas.id')
             ->leftJoin('module_prices', 'modules.id', '=', 'module_prices.module_id')
             ->where('curriculum_courses.curriculum_id', $curriculum_id)
             ->where('curriculum_courses.module_id', $id)

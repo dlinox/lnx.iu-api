@@ -67,7 +67,7 @@ class Course extends Model
             'areas.name as area',
         )
             ->join('curriculum_courses', 'courses.id', '=', 'curriculum_courses.course_id')
-            ->join('areas', 'curriculum_courses.area_id', '=', 'areas.id')
+            ->leftJoin('areas', 'curriculum_courses.area_id', '=', 'areas.id')
             ->where('curriculum_courses.curriculum_id', $curriculum_id)
             ->where('curriculum_courses.module_id', $module_id)
             ->get();

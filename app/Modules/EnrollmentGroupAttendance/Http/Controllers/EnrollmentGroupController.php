@@ -31,7 +31,7 @@ class EnrollmentGroupController extends Controller
                 'laboratories.name as laboratory',
             )
                 ->join('courses', 'courses.id', '=', 'groups.course_id')
-                ->join('areas', 'areas.id', '=', 'courses.area_id')
+                ->leftJoin('areas', 'areas.id', '=', 'courses.area_id')
                 ->join('modules', 'modules.id', '=', 'courses.module_id')
                 ->leftJoin('teachers', 'teachers.id', '=', 'groups.teacher_id')
                 ->leftJoin('laboratories', 'laboratories.id', '=', 'groups.laboratory_id')

@@ -40,7 +40,7 @@ class GroupController extends Controller
                     $join->on('courses.id', '=', 'groups.course_id')
                         ->where('groups.period_id', $request->filters['periodId']);
                 })
-                ->join('areas', 'areas.id', '=', 'courses.area_id')
+                ->leftJoin('areas', 'areas.id', '=', 'courses.area_id')
                 ->leftJoin('course_prices', 'courses.id', '=', 'course_prices.course_id')
                 ->leftJoin('modules', 'modules.id', '=', 'courses.module_id')
                 ->leftJoin('student_types', 'student_types.id', '=', 'course_prices.student_type_id')

@@ -35,7 +35,7 @@ class CourseController extends Controller
                 'courses.units',
                 DB::raw("CONCAT_WS(' - ', pre_requisite.code, pre_requisite.name) as pre_requisite")
             )
-                ->join('areas', 'courses.area_id', '=', 'areas.id')
+                ->leftJoin('areas', 'courses.area_id', '=', 'areas.id')
                 ->join('curriculums', 'curriculums.id', '=', 'courses.curriculum_id')
                 ->join('modules', 'modules.id', '=', 'courses.module_id')
                 ->leftJoin('courses as pre_requisite', 'pre_requisite.id', '=', 'courses.pre_requisite_id')
