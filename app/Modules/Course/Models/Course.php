@@ -19,6 +19,7 @@ class Course extends Model
         'credits',
         'area_id',
         'module_id',
+        'units',
         'curriculum_id',
         'pre_requisite_id',
         'order',
