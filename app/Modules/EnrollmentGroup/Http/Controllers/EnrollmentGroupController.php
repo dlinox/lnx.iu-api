@@ -49,7 +49,10 @@ class EnrollmentGroupController extends Controller
                     'groups.status',
                     'modules.name',
                     'areas.name',
-                    'courses.name'
+                    'courses.name',
+                    'teachers.name',
+                    'teachers.last_name_father',
+                    'teachers.last_name_mother',
                 ]);
             EnrollmentGroupDataTableItemsResource::collection($items);
             return ApiResponse::success($items);

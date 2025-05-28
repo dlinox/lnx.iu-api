@@ -6,11 +6,15 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Modules\Course\Models\Course;
+use App\Modules\Enrollment\Models\Enrollment;
+use App\Modules\EnrollmentGroup\Models\EnrollmentGrade;
+use App\Modules\EnrollmentGroup\Models\EnrollmentGroup;
 use App\Modules\Group\Http\Requests\GroupSaveRequest;
 use App\Modules\Group\Models\Group;
 use App\Modules\Group\Http\Resources\GroupDataTableItemsResource;
 use App\Modules\Group\Http\Resources\GroupFormItemResource;
 use App\Modules\Laboratory\Models\Laboratory;
+use App\Modules\Payment\Models\Payment;
 use App\Modules\Period\Models\Period;
 use App\Modules\Schedule\Models\Schedule;
 use App\Modules\Teacher\Models\Teacher;
@@ -47,6 +51,8 @@ class GroupController extends Controller
                 ->leftJoin('module_prices', 'module_prices.module_id', '=', 'modules.id')
                 ->leftJoin('student_types as student_types_module', 'student_types_module.id', '=', 'module_prices.student_type_id')
                 ->where('courses.curriculum_id', $request->filters['curriculumId'])
+                ->where('courses.is_enabled', true)
+                ->where('modules.is_enabled', true)
                 ->groupBy('courses.id')
                 ->orderBy('modules.id', 'asc')
                 ->orderBy('courses.name', 'asc')
@@ -241,13 +247,40 @@ class GroupController extends Controller
             $group = Group::find($request->id);
             if (!$group) return ApiResponse::error(null, 'No se encontró el registro');
 
-            $group->teacher_id = $request->teacherId;
-            $group->laboratory_id = $request->laboratoryId;
-            $group->status = $request->status;
+            DB::beginTransaction();
 
-            $group->save();
+
+            if ($request->status === 'CANCELADO') {
+                $enrollments =  EnrollmentGroup::where('group_id', $group->id)->get();
+                foreach ($enrollments as $enrollment) {
+
+                    $payments = Payment::where('enrollment_id', $enrollment->id)->get();
+
+                    foreach ($payments as $payment) {
+                        $payment->enrollment_id = null;
+                        $payment->is_used = false;
+                        $payment->save();
+                    }
+
+                    $enrollment->status = 'CANCELADO';
+                    $enrollment->save();
+                }
+
+                $group->teacher_id = null;
+                $group->laboratory_id = null;
+                $group->status = $request->status;
+                $group->save();
+            } else {
+                $group->teacher_id = $request->teacherId;
+                $group->laboratory_id = $request->laboratoryId;
+                $group->status = $request->status;
+                $group->save();
+            }
+
+            DB::commit();
             return ApiResponse::success(null, 'Estado actualizado correctamente');
         } catch (\Exception $e) {
+            DB::rollBack();
             return ApiResponse::error($e->getMessage(), 'Error al actualizar el estado');
         }
     }

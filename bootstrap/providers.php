@@ -44,4 +44,6 @@ return [
     App\Modules\Report\Providers\ReportServiceProvider::class,
     
     App\Modules\Recognition\Providers\RecognitionServiceProvider::class,
+
+    App\Modules\TeacherReport\Providers\TeacherReportServiceProvider::class,
 ];

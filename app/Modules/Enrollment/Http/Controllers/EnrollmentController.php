@@ -575,7 +575,7 @@ class EnrollmentController extends Controller
 
             $enrollmentGroup->status = 'CANCELADO';
             $enrollmentGroup->save();
-
+            
             DB::commit();
             return ApiResponse::success(null, 'Grupo cancelado correctamente');
         } catch (\Exception $e) {
