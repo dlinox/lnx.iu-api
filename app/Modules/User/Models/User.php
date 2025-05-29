@@ -59,7 +59,6 @@ class User extends Authenticatable
         $item->syncRoles(['estudiante']);
 
         return [
-            'name' => $item->name,
             'password' => $password,
             'username' => $student['document_number'],
         ];
