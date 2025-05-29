@@ -63,7 +63,7 @@
         </div>
         <p>
             Estimado(a) {{ $student->student }},<br>
-            Su matrícula ha sido confirmada exitosamente. A continuación, encontrará mas detalles de su matrícula:
+            "Su matrícula ha sido confirmada exitosamente. A continuación, se adjunta su ficha de matrícula para su revisión."
         </p>
         <div class="footer">
             Instituto de Informática - UNA Puno <br>
