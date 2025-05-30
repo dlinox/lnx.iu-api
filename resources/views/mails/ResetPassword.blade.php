@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>
-        Reestablecer Contraseña
+        Restablecer Contraseña
     </title>
     <style>
         body {
@@ -55,7 +55,7 @@
     <div class="container">
         <img class="logo" src="https://revistas.unap.edu.pe/portal/img/logo.png" alt="UNA Puno">
         <div class="header">
-            Reestablecer Contraseña
+            Restablecer Contraseña
         </div>
         <p>Estimado usuario,</p>
         <p>Se reestableció su contraseña. Su nueva contraseña es:</p>
@@ -65,7 +65,6 @@
         <div class="footer">
             Instituto de Informática - UNA Puno <br>
             © {{ date('Y') }} Universidad Nacional del Altiplano Puno
-
         </div>
 </body>
 
