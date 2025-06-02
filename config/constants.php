@@ -2,19 +2,6 @@
 return [
   'permissions' => [
     [
-      'name' => 'module.dashboard',
-      'display_name' => 'Dashboard',
-      'group' => null,
-      'model_type' => 'admin',
-      'guard_name' => 'sanctum',
-    ],
-    [
-      'name' => 'dashboard.view',
-      'display_name' => 'Ver Dashboard',
-      'group' => 'module.dashboard',
-      'model_type' => 'admin',
-    ],
-    [
       'name' => 'module.student',
       'display_name' => 'Estudiantes',
       'group' => null,

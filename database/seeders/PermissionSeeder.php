@@ -18,7 +18,7 @@ class PermissionSeeder extends Seeder
         if (empty($permissions)) {
             return;
         }
-
+        
         //elimnar role_has_permissions
         DB::table('role_has_permissions')->truncate();
         //eliminar todas las permisos existentes
