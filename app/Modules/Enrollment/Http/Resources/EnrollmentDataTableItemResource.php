@@ -14,6 +14,7 @@ class EnrollmentDataTableItemResource extends JsonResource
             'id' => $this->id,
             'module' => $this->module,
             'enrollmentStatus' => $this->enrollmentStatus,
+            'enrollmentModality' => $this->enrollmentModality,
             'groupId' => $this->groupId,
             'group' => $this->group,
             'modality' => $this->modality,

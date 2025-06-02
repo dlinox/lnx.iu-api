@@ -36,6 +36,7 @@ class EnrollmentController extends Controller
                 'modules.name as module',
                 'enrollment_groups.status as enrollmentStatus',
                 'enrollment_groups.special_enrollment as isSpecial',
+                'enrollment_groups.enrollment_modality as enrollmentModality',
                 'groups.id as groupId',
                 'groups.name as group',
                 'groups.modality as modality',
@@ -62,6 +63,7 @@ class EnrollmentController extends Controller
                     'students.document_number',
                     'students.code',
                     'students.name',
+                    'enrollment_groups.status',
                 ]);
 
             EnrollmentDataTableItemResource::collection($items);
@@ -578,6 +580,7 @@ class EnrollmentController extends Controller
             }
 
             $enrollmentGroup->status = 'CANCELADO';
+            $enrollmentGroup->with_enrollment = false;
             $enrollmentGroup->save();
 
             DB::commit();
