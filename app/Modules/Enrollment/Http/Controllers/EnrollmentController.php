@@ -179,7 +179,7 @@ class EnrollmentController extends Controller
 
             if (preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $student->email)) {
                 $details = Group::getDetails($enrollmentGroup->group_id);
-                // Mail::to($student->email)->send(new EnrolledMail($student, $details, false));
+                Mail::to($student->email)->send(new EnrolledMail($student, $details, false));
             }
 
             DB::commit();
@@ -361,7 +361,7 @@ class EnrollmentController extends Controller
 
             if (preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $student->email)) {
                 $details = Group::getDetails($enrollmentGroup->group_id);
-                // Mail::to($student->email)->send(new EnrolledMail($student, $details, false));
+                Mail::to($student->email)->send(new EnrolledMail($student, $details, false));
             }
 
             DB::commit();
@@ -541,7 +541,7 @@ class EnrollmentController extends Controller
 
             if (preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $student->email)) {
                 $details = Group::getDetails($enrollmentGroup->group_id);
-                // Mail::to($student->email)->send(new EnrolledMail($student, $details, true));
+                Mail::to($student->email)->send(new EnrolledMail($student, $details, true));
             }
 
             DB::commit();
