@@ -8,46 +8,41 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ConfirmEnrolledMail extends Mailable
+class EnrolledMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     protected $student;
-    protected $enrollment;
-    protected $attachment;
-    public function __construct($student, $enrollment, $attachment = null)
+    protected $details;
+    protected $updated;
+    public function __construct($student, $details, $updated = false)
     {
-        $this->attachment = $attachment;
         $this->student = $student;
-        $this->enrollment = $enrollment;
+        $this->details = $details;
+        $this->updated = $updated;
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Confirmación matricula',
+            subject: 'Matricula registrada',
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            view: 'mails.ConfirmEnrolled',
+            view: 'mails.Enrolled',
             with: [
                 'student' => $this->student,
-                'enrollment' => $this->enrollment,
-                'withAttachment' => $this->attachment == null ? false : true,
+                'details' => $this->details,
+                'updated' => $this->updated,
             ],
         );
     }
 
     public function attachments(): array
     {
-        if ($this->attachment == null) {
-            return [];
-        }
-        return [
-            $this->attachment
-        ];
+        return [];
     }
 }

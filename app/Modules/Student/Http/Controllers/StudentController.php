@@ -110,7 +110,18 @@ class StudentController extends Controller
             DB::beginTransaction();
             $data = $request->validated();
             $data['id'] = $request->id;
-            Student::updateItem($data);
+            $student = Student::updateItem($data);
+
+            $user = User::where('model_id', $student->id)
+                ->where('model_type', 'student')
+                ->first();
+
+            if ($user) {
+                $user->name = $student->name . ' ' . $student->last_name_father . ' ' . $student->last_name_mother;
+                $user->email  = $student->email;
+                $user->save();
+            }
+
             DB::commit();
             return ApiResponse::success($request->all(), 'Registro actualizado correctamente', 200);
         } catch (\Exception $e) {

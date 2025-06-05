@@ -4,7 +4,6 @@ namespace App\Modules\Group\Models;
 
 use App\Modules\Schedule\Models\Schedule;
 use App\Traits\HasDataTable;
-use App\Traits\HasEnabledState;
 use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
@@ -32,5 +31,21 @@ class Group extends Model
     public function schedules()
     {
         return $this->hasMany(Schedule::class);
+    }
+
+    public static function getDetails($groupId)
+    {
+        $group = Group::select(
+            'groups.name as groupName',
+            'groups.modality as modality',
+            'courses.name as courseName',
+        )
+            ->join('courses', 'courses.id', '=', 'groups.course_id')
+            ->where('groups.id', $groupId)
+            ->first();
+
+        $group['schedule'] = Schedule::byGroup($groupId);
+
+        return $group;
     }
 }

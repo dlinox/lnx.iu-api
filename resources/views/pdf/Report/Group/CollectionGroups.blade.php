@@ -34,6 +34,12 @@
                 CURSO
             </th>
             <th style="padding: 8px; width: 120px; border: 1px solid #000;">
+                MATRICULAS
+            </th>
+            <th style="padding: 8px; width: 120px; border: 1px solid #000;">
+                MENSUALIDADES
+            </th>
+            <th style="padding: 8px; width: 120px; border: 1px solid #000;">
                 TOTAL
             </th>
         </tr>
@@ -42,13 +48,15 @@
         @foreach ($groups as $index => $item)
         <tr style="text-align: center;">
             <td style="font-size: 12px; padding: 5px; border: 1px solid #000; text-align: left;">{{ $index + 1 }}</td>
-            <td style="font-size: 12px; padding: 5px; border: 1px solid #000; text-align: left;">{{$item['group']}}</td>
-            <td style="font-size: 12px; padding: 5px; border: 1px solid #000; text-align: left;">{{$item['course']}}</td>
-            <td style="font-size: 12px; padding: 5px; border: 1px solid #000; text-align: right;">{{$item['amount']}}</td>
+            <td style="font-size: 12px; padding: 5px; border: 1px solid #000; text-align: left;">{{$item->groupName}}</td>
+            <td style="font-size: 12px; padding: 5px; border: 1px solid #000; text-align: left;">{{$item->courseName}}</td>
+            <td style="font-size: 12px; padding: 5px; border: 1px solid #000; text-align: right;">{{$item->enrollment}}</td>
+            <td style="font-size: 12px; padding: 5px; border: 1px solid #000; text-align: right;">{{$item->enrollmentGroup}}</td>
+            <td style="font-size: 12px; padding: 5px; border: 1px solid #000; text-align: right;">{{$item->total}}</td>
         </tr>
         @endforeach
         <tr style="text-align: center; background-color: #f2f2f2;">
-            <td colspan="3" style="font-size: 14px; padding: 10px; border: 1px solid #000; border-right: none; text-align: right;">
+            <td colspan="5" style="font-size: 14px; padding: 10px; border: 1px solid #000; border-right: none; text-align: right;">
                 <strong>
                     TOTAL:
                 </strong>

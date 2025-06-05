@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>
-        Crear Cuenta
+        Matrícula realizada con éxito
     </title>
     <style>
         body {
@@ -79,16 +79,15 @@
         </table>
 
         <div class="header">
+            @if ($updated)
+            Su matrícula ha sido actualizada con éxito
+            @else
             Matrícula realizada con éxito
+            @endif
         </div>
         <p>
-            Estimado(a) {{ $student->student }},
+            Estimado(a) {{ $student->name }},
         </p>
-        <p>
-            Su matrícula se ha realizado con éxito.
-        </p>
-
-        <!-- detalles de la matricula -->
         <div style="background-color: #f9f9f9; padding: 5px 15px; border-radius: 5px; margin-top: 10px;">
             <p>
                 <b>
@@ -99,19 +98,19 @@
                 <b>
                     Curso:
                 </b>
-                {{ $enrollment->courseName }}
+                {{ $details->courseName }}
             </p>
             <p>
                 <b>
                     Grupo:
                 </b>
-                {{ $enrollment->groupName }} - <b> {{ $enrollment->modality }}</b>
+                {{ $details->groupName }} - <b> {{ $details->modality }}</b>
             </p>
             <p>
                 <b>
                     Horario:
                 </b>
-                {{ $enrollment->schedule['days'] }} - {{ $enrollment->schedule['startHour'] }} a {{ $enrollment->schedule['endHour'] }}
+                {{ $details->schedule['days'] }} - {{ $details->schedule['startHour'] }} a {{ $details->schedule['endHour'] }}
             </p>
         </div>
 
@@ -122,22 +121,12 @@
 
         <p>
             <i>
+                <small>
 
-                Si desea realizar rectificaciones o cambios en su matrícula, por favor ingrese al sistema de matrículas. Recuerde que el plazo para realizar modificaciones estará disponible hasta el final del periodo de matrículas.
+                    En caso de requerir rectificaciones o modificaciones en su matrícula, le solicitamos ingresar al sistema de matrículas. Le recordamos que el plazo para realizar dichos ajustes estará habilitado hasta la finalización del periodo de matrículas. Si necesita asistencia adicional, puede comunicarse con el coordinador académico correspondiente o acudir personalmente a la oficina administrativa.
+                </small>
             </i>
         </p>
-
-        @if ($withAttachment)
-
-        <p>
-            <i>
-                <b>
-                    Se adjunta su ficha de matrícula.
-                </b>
-            </i>
-        </p>
-        @endif
-
         <div class="footer">
             Instituto de Informática - UNA Puno <br>
             © {{ date('Y') }} Universidad Nacional del Altiplano Puno

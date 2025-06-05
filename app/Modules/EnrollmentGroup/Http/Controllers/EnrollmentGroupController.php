@@ -103,8 +103,9 @@ class EnrollmentGroupController extends Controller
             if (!$group) return ApiResponse::error(null, 'No se encontró el registro');
             $students = EnrollmentGroup::select(
                 'enrollment_groups.id as enrollmentGroupId',
-                'students.id as student_id',
-                DB::raw('CONCAT_WS(" ", students.name, students.last_name_father) as student'),
+                'enrollment_groups.group_id as groupId',
+                'students.id as studentId',
+                'students.name as student',
                 'students.email as email',
             )
                 ->join('students', 'students.id', '=', 'enrollment_groups.student_id')
@@ -115,9 +116,23 @@ class EnrollmentGroupController extends Controller
 
             if ($students->isEmpty()) return ApiResponse::error(null, 'No se encontraron estudiantes matriculados en el grupo');
 
+            $enrollment = Group::select(
+                'groups.id as groupId',
+                'groups.name as groupName',
+                'groups.modality as modality',
+                'courses.name as courseName',
+            )
+                ->join('courses', 'courses.id', '=', 'groups.course_id')
+                ->where('groups.id', $request->groupId)
+                ->first();
+
+            $enrollment['schedule'] = Schedule::byGroup($request->groupId);
+
+            if (!$enrollment) return ApiResponse::error(null, 'No se encontró el grupo');
+
             foreach ($students as $student) {
                 $attachment = $this->generateEnrollmentPDF($student->enrollmentGroupId);
-                Mail::to($student->email)->send(new ConfirmEnrolledMail($student, $attachment));
+                Mail::to($student->email)->send(new ConfirmEnrolledMail($student, $enrollment, $attachment));
             }
             return ApiResponse::success(null, 'Correos enviados correctamente');
         } catch (\Exception $e) {

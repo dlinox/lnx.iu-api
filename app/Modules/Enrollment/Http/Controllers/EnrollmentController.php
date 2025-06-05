@@ -5,6 +5,7 @@ namespace App\Modules\Enrollment\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Mail\EnrolledMail;
 use App\Modules\Course\Models\Course;
 use App\Modules\CoursePrice\Models\CoursePrice;
 use App\Modules\Enrollment\Http\Requests\ModuleStoreRequest;
@@ -21,8 +22,9 @@ use App\Modules\Schedule\Models\Schedule;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class EnrollmentController extends Controller
 {
@@ -85,9 +87,7 @@ class EnrollmentController extends Controller
                 return Crypt::decrypt($payment);
             }, $request->payments);
 
-            $student = Student::select('student_type_id')
-                ->where('id', $request->studentId)
-                ->first();
+            $student = Student::where('id', $request->studentId)->first();
 
             if (!$student) return ApiResponse::error(null, 'No se encontró el estudiante');
 
@@ -177,6 +177,11 @@ class EnrollmentController extends Controller
                 $payment->save();
             }
 
+            if (preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $student->email)) {
+                $details = Group::getDetails($enrollmentGroup->group_id);
+                // Mail::to($student->email)->send(new EnrolledMail($student, $details, false));
+            }
+
             DB::commit();
             return ApiResponse::success(null, 'Módulo matriculado correctamente');
         } catch (\Exception $e) {
@@ -209,15 +214,14 @@ class EnrollmentController extends Controller
                     ->sum('amount');
             }
 
-            $student = Student::select('student_type_id', 'id')
-                ->where('id', $request->studentId)
-                ->first();
+            $student = Student::where('id', $request->studentId)->first();
 
             $group = Group::find($request->groupId);
+
             $shedules = Schedule::where('group_id', $group->id)->get();
 
             if ($shedules->count() == 0) {
-                return ApiResponse::error(null, 'El grupo no tiene horarios asignados');
+                return ApiResponse::error(null, 'El grupo no tiene horarios habilitados');
             }
 
             $enrolledSchedules = Schedule::select('schedules.id', 'schedules.start_hour', 'schedules.end_hour', 'schedules.day')
@@ -355,6 +359,11 @@ class EnrollmentController extends Controller
                 $payment->save();
             }
 
+            if (preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $student->email)) {
+                $details = Group::getDetails($enrollmentGroup->group_id);
+                // Mail::to($student->email)->send(new EnrolledMail($student, $details, false));
+            }
+
             DB::commit();
             return ApiResponse::success([
                 'totalPayment' => number_format($totalPayment, 2),
@@ -386,8 +395,7 @@ class EnrollmentController extends Controller
 
             $totalPayment = $totalNewPayment;
 
-            $student = Student::select('student_type_id')
-                ->where('id', $request->studentId)
+            $student = Student::where('id', $request->studentId)
                 ->first();
 
             $group = Group::select('course_id', 'modality')
@@ -530,6 +538,11 @@ class EnrollmentController extends Controller
                     'enrollment_id' => null,
                     'is_used' => false,
                 ]);
+
+            if (preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $student->email)) {
+                $details = Group::getDetails($enrollmentGroup->group_id);
+                // Mail::to($student->email)->send(new EnrolledMail($student, $details, true));
+            }
 
             DB::commit();
             return ApiResponse::success(null, 'Matriculado correctamente');
@@ -714,18 +727,6 @@ class EnrollmentController extends Controller
             )
                 ->where('students.id', $request->studentId)
                 ->first();
-
-
-            // if (!$request->courseId) {
-            //     $course = Course::select('courses.id')
-            //         ->join('groups', 'courses.id', '=', 'groups.course_id')
-            //         ->where('groups.id', $request->groupId)
-            //         ->first();
-            //     if (!$course) return ApiResponse::error(null, 'Parámetros incorrectos, recargue la página e intente nuevamente');
-
-            //     $request['courseId'] = $course->id;
-            // }
-
 
             $enrollmentPeriod = EnrollmentDeadline::activeEnrollmentPeriod();
 

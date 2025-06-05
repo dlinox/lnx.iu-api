@@ -195,6 +195,7 @@ class ReportController extends Controller
             ->join('months', 'months.id', 'periods.month')
             ->leftJoin('teachers', 'teachers.id', 'groups.teacher_id')
             ->where('groups.id', $request->groupId)
+            ->where('enrollment_groups.status', 'MATRICULADO')
             ->first();
 
         $group['schedule'] = Schedule::byGroup($request->groupId);
@@ -342,25 +343,59 @@ class ReportController extends Controller
             ->first();
 
 
-        $groups = Group::select(
-            'groups.id',
-            'groups.name AS group',
-            'courses.module_id',
-            'courses.name AS course',
-            DB::raw('SUM(IFNULL(payments.amount,0)) AS amount')
-        )
-            ->join('courses', 'courses.id', 'groups.course_id')
-            ->leftJoin('enrollment_groups', 'enrollment_groups.group_id', 'groups.id')
-            ->leftJoin('payments', 'payments.enrollment_id', 'enrollment_groups.id')
-            ->where('groups.period_id', $request->periodId)
-            ->groupBy('groups.id')
-            ->orderBy('courses.module_id')
-            ->orderBy('courses.name')
-            ->get();
+        $groups = DB::select("
+                SELECT
+                    groupId,
+                    groupName,
+                    courseName,
+                    SUM(t.total - COALESCE(t.enrollment, 0)) AS enrollmentGroup,
+                    SUM(COALESCE(t.enrollment, 0)) AS enrollment,
+                    SUM(t.total) AS total
+                FROM (
+                    SELECT
+                        enrollment_groups.group_id as groupId,
+                        `groups`.name as groupName,
+                        courses.name as courseName,
+                        SUM(payments.amount) AS total,
+                        MAX(module_prices.price) AS enrollment
+                    FROM enrollment_groups
+                    JOIN payments ON payments.enrollment_id = enrollment_groups.id
+                    JOIN students ON students.id = enrollment_groups.student_id
+                    JOIN student_types ON student_types.id = students.student_type_id
+                    JOIN `groups` ON `groups`.id = enrollment_groups.group_id
+                    JOIN courses ON courses.id = `groups`.course_id
+                    LEFT JOIN module_prices 
+                        ON module_prices.student_type_id = students.student_type_id
+                            AND module_prices.module_id = courses.module_id
+                            AND enrollment_groups.with_enrollment = 1
+                    WHERE enrollment_groups.period_id = ?
+                    GROUP BY enrollment_groups.id, enrollment_groups.group_id
+                ) AS t
+                GROUP BY groupId
+                ORDER BY courseName, groupName;
+        ", [$request->periodId]);
 
-        $total = $groups->sum('amount');
+        // var_dump($groups);
+
+        // $groups = Group::select(
+        //     'groups.id',
+        //     'groups.name AS group',
+        //     'courses.module_id',
+        //     'courses.name AS course',
+        //     DB::raw('SUM(IFNULL(payments.amount,0)) AS amount')
+        // )
+        //     ->join('courses', 'courses.id', 'groups.course_id')
+        //     ->leftJoin('enrollment_groups', 'enrollment_groups.group_id', 'groups.id')
+        //     ->leftJoin('payments', 'payments.enrollment_id', 'enrollment_groups.id')
+        //     ->where('groups.period_id', $request->periodId)
+        //     ->groupBy('groups.id')
+        //     ->orderBy('courses.module_id')
+        //     ->orderBy('courses.name')
+        //     ->get();
+
+        $groups = collect($groups);
+        $total = $groups->sum('total');
         $total = number_format($total, 2, '.', '');
-
 
         $htmlContent = view('pdf.Report.Group.CollectionGroups', compact('period', 'groups', 'total'))->render();
         $htmlHeader = view('pdf.Report.Group._header')->render();
