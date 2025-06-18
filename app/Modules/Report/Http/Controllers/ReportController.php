@@ -195,7 +195,6 @@ class ReportController extends Controller
             ->join('months', 'months.id', 'periods.month')
             ->leftJoin('teachers', 'teachers.id', 'groups.teacher_id')
             ->where('groups.id', $request->groupId)
-            ->where('enrollment_groups.status', 'MATRICULADO')
             ->first();
 
         $group['schedule'] = Schedule::byGroup($request->groupId);
@@ -211,6 +210,7 @@ class ReportController extends Controller
             ->join('students', 'students.id', '=', 'enrollment_groups.student_id')
             ->join('student_types', 'student_types.id', '=', 'students.student_type_id')
             ->where('enrollment_groups.group_id', $request->groupId)
+            ->where('enrollment_groups.status', 'MATRICULADO')
             ->get();
 
 

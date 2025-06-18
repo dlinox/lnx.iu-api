@@ -15,6 +15,7 @@ class EnrollmentDataTableItemResource extends JsonResource
             'module' => $this->module,
             'enrollmentStatus' => $this->enrollmentStatus,
             'enrollmentModality' => $this->enrollmentModality,
+            'withEnrollment' => (bool)$this->withEnrollment,
             'groupId' => $this->groupId,
             'group' => $this->group,
             'modality' => $this->modality,
@@ -24,7 +25,7 @@ class EnrollmentDataTableItemResource extends JsonResource
             'period' => $this->period,
             'courseId' => $this->courseId,
             'course' => $this->course,
-            'isSpecial' => (Boolean)$this->isSpecial,
+            'isSpecial' => (bool)$this->isSpecial,
         ];
     }
 }

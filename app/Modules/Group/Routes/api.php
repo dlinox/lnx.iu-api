@@ -9,6 +9,9 @@ Route::prefix('api/group')->group(function () {
     Route::post('save', [GroupController::class, 'save']);
     //clonar grupos de un periodo a otro
     Route::post('clone', [GroupController::class, 'clone']);
+    //reservar matriculas de un periodo a otro
+    Route::post('reservations', [GroupController::class, 'reservations']);
+
     Route::delete('', [GroupController::class, 'destroy']);
     Route::post('load-form', [GroupController::class, 'loadForm']);
     // group/options/teacher

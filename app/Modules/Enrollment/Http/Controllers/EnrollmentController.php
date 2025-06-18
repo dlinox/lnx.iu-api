@@ -39,6 +39,7 @@ class EnrollmentController extends Controller
                 'enrollment_groups.status as enrollmentStatus',
                 'enrollment_groups.special_enrollment as isSpecial',
                 'enrollment_groups.enrollment_modality as enrollmentModality',
+                'enrollment_groups.with_enrollment as withEnrollment',
                 'groups.id as groupId',
                 'groups.name as group',
                 'groups.modality as modality',
@@ -179,7 +180,7 @@ class EnrollmentController extends Controller
 
             if (preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $student->email)) {
                 $details = Group::getDetails($enrollmentGroup->group_id);
-                Mail::to($student->email)->send(new EnrolledMail($student, $details, false));
+                // Mail::to($student->email)->send(new EnrolledMail($student, $details, false));
             }
 
             DB::commit();
@@ -196,7 +197,10 @@ class EnrollmentController extends Controller
             $user = Auth::user();
 
             $enrollmentPeriod = EnrollmentDeadline::activeEnrollmentPeriod();
-            if (!$enrollmentPeriod)  ApiResponse::error(null, 'No se encontró el periodo de matrícula');
+            if (!$enrollmentPeriod)  return ApiResponse::error(null, 'No se encontró el periodo de matrícula');
+
+            $group = Group::find($request->groupId);
+            if (!$group) return ApiResponse::error(null, 'Seleccione un grupo válido');
 
             $paymentsIds = array_map(function ($payment) {
                 return Crypt::decrypt($payment);
@@ -216,7 +220,6 @@ class EnrollmentController extends Controller
 
             $student = Student::where('id', $request->studentId)->first();
 
-            $group = Group::find($request->groupId);
 
             $shedules = Schedule::where('group_id', $group->id)->get();
 
@@ -291,23 +294,7 @@ class EnrollmentController extends Controller
                     ->orderBy('periods.id', 'desc')
                     ->first();
 
-                if ($lastEnrollment) {
-                    $lastEnrollmentDate = Carbon::createFromFormat('Y-m', $lastEnrollment->year . '-' . $lastEnrollment->month);
-                    $currentDate = Carbon::now();
-                    if ($lastEnrollmentDate->diffInMonths($currentDate) > 12) {
-
-                        $modulePrice = ModulePrice::select('module_prices.price')
-                            ->where('module_prices.module_id', $module->moduleId)
-                            ->where('module_prices.student_type_id', $student->student_type_id)
-                            ->first();
-
-                        if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
-
-                        $enrollmentPrice = (float) $modulePrice->price;
-                        $price += $enrollmentPrice;
-                        $withEnrollment = true;
-                    }
-                } else {
+                if ($request->includeEnrollmentPrice) {
                     $modulePrice = ModulePrice::select('module_prices.price')
                         ->where('module_prices.module_id', $module->moduleId)
                         ->where('module_prices.student_type_id', $student->student_type_id)
@@ -319,6 +306,35 @@ class EnrollmentController extends Controller
                     $price += $enrollmentPrice;
                     $withEnrollment = true;
                 }
+
+                // if ($lastEnrollment) {
+                //     $lastEnrollmentDate = Carbon::createFromFormat('Y-m', $lastEnrollment->year . '-' . $lastEnrollment->month);
+                //     $currentDate = Carbon::now();
+                //     if ($lastEnrollmentDate->diffInMonths($currentDate) > 12) {
+
+                //         $modulePrice = ModulePrice::select('module_prices.price')
+                //             ->where('module_prices.module_id', $module->moduleId)
+                //             ->where('module_prices.student_type_id', $student->student_type_id)
+                //             ->first();
+
+                //         if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
+
+                //         $enrollmentPrice = (float) $modulePrice->price;
+                //         $price += $enrollmentPrice;
+                //         $withEnrollment = true;
+                //     }
+                // } else {
+                //     $modulePrice = ModulePrice::select('module_prices.price')
+                //         ->where('module_prices.module_id', $module->moduleId)
+                //         ->where('module_prices.student_type_id', $student->student_type_id)
+                //         ->first();
+
+                //     if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
+
+                //     $enrollmentPrice = (float) $modulePrice->price;
+                //     $price += $enrollmentPrice;
+                //     $withEnrollment = true;
+                // }
             }
 
 
@@ -361,7 +377,7 @@ class EnrollmentController extends Controller
 
             if (preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $student->email)) {
                 $details = Group::getDetails($enrollmentGroup->group_id);
-                Mail::to($student->email)->send(new EnrolledMail($student, $details, false));
+                // Mail::to($student->email)->send(new EnrolledMail($student, $details, false));
             }
 
             DB::commit();
@@ -381,6 +397,13 @@ class EnrollmentController extends Controller
             $enrollmentPeriod = EnrollmentDeadline::activeEnrollmentPeriod();
             if (!$enrollmentPeriod) return ApiResponse::error(null, 'No se encontró el periodo de matrícula');
 
+
+            $group = Group::select('course_id', 'modality')
+                ->where('id', $request->groupId)
+                ->first();
+            if (!$group) return ApiResponse::error(null, 'Seleccione un grupo válido');
+
+
             $paymentsIds = array_map(function ($payment) {
                 return Crypt::decrypt($payment);
             }, $request->payments);
@@ -396,10 +419,6 @@ class EnrollmentController extends Controller
             $totalPayment = $totalNewPayment;
 
             $student = Student::where('id', $request->studentId)
-                ->first();
-
-            $group = Group::select('course_id', 'modality')
-                ->where('id', $request->groupId)
                 ->first();
 
 
@@ -441,7 +460,36 @@ class EnrollmentController extends Controller
 
             $price = $group->modality == 'PRESENCIAL' ? $coursePrice->presential_price : $coursePrice->virtual_price;
 
-            if ($enrollmentGroup->with_enrollment) {
+            // if ($enrollmentGroup->with_enrollment) {
+            //     $module = Module::select('modules.id as moduleId', 'modules.name as moduleName')
+            //         ->join('courses', 'courses.module_id', '=', 'modules.id')
+            //         ->where('courses.id', $group->course_id)
+            //         ->first();
+
+            //     $modulePrice = ModulePrice::select('module_prices.price')
+            //         ->where('module_prices.module_id', $module->moduleId)
+            //         ->where('module_prices.student_type_id', $student->student_type_id)
+            //         ->first();
+
+            //     if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
+
+            //     $enrollmentPrice = (float) $modulePrice->price;
+            //     $price += $enrollmentPrice;
+            // } else
+            if ($enrollmentGroup->special_enrollment && $request->isSpecial) {
+                $specialPrice = CoursePrice::select('presential_price', 'virtual_price')
+                    ->join('courses', 'courses.id', '=', 'course_prices.course_id')
+                    ->join('modules', 'modules.id', '=', 'courses.module_id')
+                    ->where('course_prices.student_type_id', $student->student_type_id)
+                    ->where('modules.is_extracurricular', true)
+                    ->first();
+
+                if (!$specialPrice) return ApiResponse::error(null, 'No se encontró el precio para el tipo de estudiante y el curso');
+
+                $price = $group->modality == 'PRESENCIAL' ? $specialPrice->presential_price : $specialPrice->virtual_price;
+            }
+
+            if ($request->includeEnrollmentPrice) {
                 $module = Module::select('modules.id as moduleId', 'modules.name as moduleName')
                     ->join('courses', 'courses.module_id', '=', 'modules.id')
                     ->where('courses.id', $group->course_id)
@@ -456,63 +504,54 @@ class EnrollmentController extends Controller
 
                 $enrollmentPrice = (float) $modulePrice->price;
                 $price += $enrollmentPrice;
-            } else if ($enrollmentGroup->special_enrollment && $request->isSpecial) {
-                $specialPrice = CoursePrice::select('presential_price', 'virtual_price')
-                    ->join('courses', 'courses.id', '=', 'course_prices.course_id')
-                    ->join('modules', 'modules.id', '=', 'courses.module_id')
-                    ->where('course_prices.student_type_id', $student->student_type_id)
-                    ->where('modules.is_extracurricular', true)
-                    ->first();
-
-                if (!$specialPrice) return ApiResponse::error(null, 'No se encontró el precio para el tipo de estudiante y el curso');
-
-                $price = $group->modality == 'PRESENCIAL' ? $specialPrice->presential_price : $specialPrice->virtual_price;
-            } else {
-
-                $module = Module::select('modules.id as moduleId', 'modules.name as moduleName')
-                    ->join('courses', 'courses.module_id', '=', 'modules.id')
-                    ->where('courses.id', $group->course_id)
-                    ->first();
-
-                $lastEnrollment = EnrollmentGroup::select('periods.year', 'periods.month')
-                    ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
-                    ->join('courses', 'groups.course_id', '=', 'courses.id')
-                    ->join('periods', 'enrollment_groups.period_id', '=', 'periods.id')
-                    ->where('enrollment_groups.student_id', $request->studentId)
-                    ->where('courses.module_id', $module->moduleId)
-                    ->where('enrollment_groups.special_enrollment', false)
-                    ->where('enrollment_groups.with_enrollment', true)
-                    ->where('enrollment_groups.status', 'MATRICULADO')
-                    ->orderBy('periods.id', 'desc')
-                    ->first();
-
-                if ($lastEnrollment) {
-                    $lastEnrollmentDate = Carbon::createFromFormat('Y-m', $lastEnrollment->year . '-' . $lastEnrollment->month);
-                    $currentDate = Carbon::now();
-                    if ($lastEnrollmentDate->diffInMonths($currentDate) > 12) {
-
-                        $modulePrice = ModulePrice::select('module_prices.price')
-                            ->where('module_prices.module_id', $module->moduleId)
-                            ->where('module_prices.student_type_id', $student->student_type_id)
-                            ->first();
-
-                        if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
-
-                        $enrollmentPrice = (float) $modulePrice->price;
-                        $price += $enrollmentPrice;
-                    }
-                } else {
-                    $modulePrice = ModulePrice::select('module_prices.price')
-                        ->where('module_prices.module_id', $module->moduleId)
-                        ->where('module_prices.student_type_id', $student->student_type_id)
-                        ->first();
-
-                    if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
-
-                    $enrollmentPrice = (float) $modulePrice->price;
-                    $price += $enrollmentPrice;
-                }
             }
+
+            // else {
+
+            //     $module = Module::select('modules.id as moduleId', 'modules.name as moduleName')
+            //         ->join('courses', 'courses.module_id', '=', 'modules.id')
+            //         ->where('courses.id', $group->course_id)
+            //         ->first();
+
+            //     $lastEnrollment = EnrollmentGroup::select('periods.year', 'periods.month')
+            //         ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
+            //         ->join('courses', 'groups.course_id', '=', 'courses.id')
+            //         ->join('periods', 'enrollment_groups.period_id', '=', 'periods.id')
+            //         ->where('enrollment_groups.student_id', $request->studentId)
+            //         ->where('courses.module_id', $module->moduleId)
+            //         ->where('enrollment_groups.special_enrollment', false)
+            //         ->where('enrollment_groups.with_enrollment', true)
+            //         ->where('enrollment_groups.status', 'MATRICULADO')
+            //         ->orderBy('periods.id', 'desc')
+            //         ->first();
+
+            //     if ($lastEnrollment) {
+            //         $lastEnrollmentDate = Carbon::createFromFormat('Y-m', $lastEnrollment->year . '-' . $lastEnrollment->month);
+            //         $currentDate = Carbon::now();
+            //         if ($lastEnrollmentDate->diffInMonths($currentDate) > 12) {
+
+            //             $modulePrice = ModulePrice::select('module_prices.price')
+            //                 ->where('module_prices.module_id', $module->moduleId)
+            //                 ->where('module_prices.student_type_id', $student->student_type_id)
+            //                 ->first();
+
+            //             if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
+
+            //             $enrollmentPrice = (float) $modulePrice->price;
+            //             $price += $enrollmentPrice;
+            //         }
+            //     } else {
+            //         $modulePrice = ModulePrice::select('module_prices.price')
+            //             ->where('module_prices.module_id', $module->moduleId)
+            //             ->where('module_prices.student_type_id', $student->student_type_id)
+            //             ->first();
+
+            //         if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
+
+            //         $enrollmentPrice = (float) $modulePrice->price;
+            //         $price += $enrollmentPrice;
+            //     }
+            // }
 
             if ($totalPayment < $price) {
                 return  ApiResponse::error(null, 'El monto de los pagos no cubre el precio del grupo');
@@ -521,6 +560,7 @@ class EnrollmentController extends Controller
             DB::beginTransaction();
 
             $enrollmentGroup->group_id = $request->groupId;
+            $enrollmentGroup->with_enrollment = $request->includeEnrollmentPrice;
             $enrollmentGroup->status = 'MATRICULADO';
             $enrollmentGroup->save();
 
@@ -541,12 +581,13 @@ class EnrollmentController extends Controller
 
             if (preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $student->email)) {
                 $details = Group::getDetails($enrollmentGroup->group_id);
-                Mail::to($student->email)->send(new EnrolledMail($student, $details, true));
+                // Mail::to($student->email)->send(new EnrolledMail($student, $details, true));
             }
 
             DB::commit();
-            return ApiResponse::success(null, 'Matriculado correctamente');
+            return ApiResponse::success(null, 'Matrícula actualizada correctamente');
         } catch (\Exception $e) {
+            DB::rollBack();
             return ApiResponse::error($e->getMessage(), 'Error al matricular el grupo');
         }
     }
@@ -661,6 +702,7 @@ class EnrollmentController extends Controller
                                 'groups.modality as groupModality',
                                 'enrollment_grades.grade as grade',
                                 DB::raw('CONCAT(periods.year,"-",upper(months.name)) as period'),
+                                'enrollment_groups.with_enrollment as withEnrollment',
                             )
                                 ->leftJoin('enrollment_grades', 'enrollment_groups.id', '=', 'enrollment_grades.enrollment_group_id')
                                 ->join('groups', 'enrollment_groups.group_id', '=', 'groups.id')
@@ -669,7 +711,10 @@ class EnrollmentController extends Controller
                                 ->where('groups.course_id', $course->id)
                                 ->where('enrollment_groups.special_enrollment', false)
                                 ->where('enrollment_groups.student_id', $request->studentId)
-                                ->get();
+                                ->get()->map(function ($enrollmentGroup) {
+                                    $enrollmentGroup['withEnrollment'] = (bool) $enrollmentGroup->withEnrollment;
+                                    return $enrollmentGroup;
+                                });
 
                             $course['enrollmentGroups'] = $enrollmentGroups;
                             return $course;
@@ -711,6 +756,8 @@ class EnrollmentController extends Controller
                         ->from('enrollments')
                         ->where('enrollments.student_id', $request->studentId);
                 })
+                ->where('modules.is_enabled', true)
+                ->where('modules.is_extracurricular', false)
                 ->get();
             return ApiResponse::success($modules);
         } catch (\Exception $e) {
@@ -738,6 +785,15 @@ class EnrollmentController extends Controller
                 ->join('courses', 'courses.module_id', '=', 'modules.id')
                 ->where('courses.id', $request->courseId)
                 ->first();
+
+            $modulePrice = ModulePrice::select('module_prices.price')
+                ->where('module_prices.module_id', $module->moduleId)
+                ->where('module_prices.student_type_id', $student->student_type_id)
+                ->first();
+
+            if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
+
+            $enrollmentPrice = (float) $modulePrice->price;
 
             if (!$request->isSpecial) {
                 $lastEnrollment = EnrollmentGroup::select(
@@ -786,7 +842,7 @@ class EnrollmentController extends Controller
                 ->where('periods.id', $enrollmentPeriod['periodId'])
                 ->whereIn('groups.status', ['ABIERTO', 'CERRADO'])
                 ->get()
-                ->map(function ($group) use ($request, $student, $requireEnrollmentPrice, $module, $enrollmentPeriod) {
+                ->map(function ($group) use ($request, $student, $requireEnrollmentPrice, $enrollmentPrice, $enrollmentPeriod) {
                     $enrolledStudents = EnrollmentGroup::where('enrollment_groups.group_id', $group->id)
                         ->where('status', 'MATRICULADO')
                         ->count();
@@ -795,6 +851,9 @@ class EnrollmentController extends Controller
                         ->where('groups.course_id', $request->courseId)
                         ->where('enrollment_groups.status', 'RESERVADO')
                         ->count();
+
+
+                    $groupPrice = $group->price;
 
                     if ($request->isSpecial) {
                         $specialPrice = CoursePrice::select('presential_price', 'virtual_price')
@@ -807,6 +866,8 @@ class EnrollmentController extends Controller
                         if (!$specialPrice) return ApiResponse::error(null, 'No se encontró el precio para el tipo de estudiante y el curso');
 
                         $price = $group->modality == 'PRESENCIAL' ? $specialPrice->presential_price : $specialPrice->virtual_price;
+                        $groupPrice =  $price;
+
                         $group['price'] = number_format($price, 2);
                     } else {
                         $withEnrollment = EnrollmentGroup::select('with_enrollment')
@@ -825,21 +886,15 @@ class EnrollmentController extends Controller
 
                     if ($requireEnrollmentPrice) {
 
-                        $modulePrice = ModulePrice::select('module_prices.price')
-                            ->where('module_prices.module_id', $module->moduleId)
-                            ->where('module_prices.student_type_id', $student->student_type_id)
-                            ->first();
-
-                        if (!$modulePrice) return ApiResponse::error(null, 'No se encontró el precio del módulo');
-
-                        $enrollmentPrice = (float) $modulePrice->price;
-
                         $group['price'] += $enrollmentPrice;
                         $group['price'] = number_format($group['price'], 2);
                     }
 
                     $group['enrolledStudents'] = $enrolledStudents;
                     $group['reservedStudents'] = $reservedStudents;
+                    $group['enrollmentPrice'] = $request->isSpecial ? 0 : (float)$enrollmentPrice;
+                    $group['groupPrice'] = (float)$groupPrice;
+                    $group['requireEnrollmentPrice'] = $requireEnrollmentPrice;
                     $group['schedules'] = Schedule::byGroup($group->id);
 
                     return $group;
@@ -941,6 +996,7 @@ class EnrollmentController extends Controller
                         ->from('enrollments')
                         ->where('enrollments.student_id', $request->studentId);
                 })
+                ->where('modules.is_enabled', true)
                 ->orderBy('modules.name', 'asc')
                 ->get()->map(function ($enrollment) use ($request) {
                     $courses = Course::select(

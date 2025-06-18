@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Modules\Course\Models\Course;
-use App\Modules\Enrollment\Models\Enrollment;
-use App\Modules\EnrollmentGroup\Models\EnrollmentGrade;
 use App\Modules\EnrollmentGroup\Models\EnrollmentGroup;
 use App\Modules\Group\Http\Requests\GroupSaveRequest;
 use App\Modules\Group\Models\Group;
@@ -15,10 +13,9 @@ use App\Modules\Group\Http\Resources\GroupDataTableItemsResource;
 use App\Modules\Group\Http\Resources\GroupFormItemResource;
 use App\Modules\Laboratory\Models\Laboratory;
 use App\Modules\Payment\Models\Payment;
-use App\Modules\Period\Models\Period;
 use App\Modules\Schedule\Models\Schedule;
 use App\Modules\Teacher\Models\Teacher;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
@@ -185,6 +182,114 @@ class GroupController extends Controller
         }
     }
 
+    //reservations
+    public function reservations(Request $request)
+    {
+        $reservations = EnrollmentGroup::select(
+            'enrollment_groups.id',
+            'enrollment_groups.student_id',
+            'enrollment_groups.group_id',
+            'enrollment_groups.enrollment_modality',
+            'enrollment_groups.special_enrollment',
+            'enrollment_groups.with_enrollment',
+            'payments.id as paymentId',
+        )
+            ->join('payments', 'payments.enrollment_id', '=', 'enrollment_groups.id')
+            ->where('enrollment_groups.period_id', $request->periodReferenceId)
+            ->where('enrollment_groups.status', 'RESERVADO')
+            ->get();
+
+        if ($reservations->isEmpty()) {
+            return ApiResponse::warning([], 'No se encontraron reservas en el periodo de referencia.');
+        }
+
+        try {
+
+            DB::beginTransaction();
+
+            foreach ($reservations as $reservation) {
+
+                $lastGroup = Group::select(
+                    'groups.id',
+                    'groups.name',
+                    'groups.course_id',
+                    'groups.modality',
+                    DB::raw('GROUP_CONCAT(
+                        CONCAT_WS("-", schedules.`day`, schedules.start_hour, schedules.end_hour) 
+                        ORDER BY schedules.`day`, schedules.start_hour
+                        SEPARATOR "--"
+                    ) AS schedules')
+                )
+                    ->join('schedules', 'schedules.group_id', '=', 'groups.id')
+                    ->where('groups.id', $reservation->group_id)
+                    ->groupBy('groups.id')
+                    ->first();
+
+                if (!$lastGroup) {
+                    throw new \App\Exceptions\ApiException('No se encontró el grupo de referencia para la reserva: ' . $reservation->group_id);
+                }
+
+
+                $newGroups = Group::select(
+                    'groups.id',
+                    DB::raw('GROUP_CONCAT(
+                        CONCAT_WS("-", schedules.`day`, schedules.start_hour, schedules.end_hour) 
+                        ORDER BY schedules.`day`, schedules.start_hour
+                        SEPARATOR "--"
+                    ) AS schedules')
+                )
+                    ->join('schedules', 'schedules.group_id', '=', 'groups.id')
+                    ->where('period_id', $request->periodId)
+                    ->where('course_id', $lastGroup->course_id)
+                    ->where('modality', $lastGroup->modality)
+                    ->groupBy('groups.id')
+                    ->get();
+
+                if ($newGroups->isEmpty()) {
+                    throw new \App\Exceptions\ApiException('No se encontraron grupos abiertos con la misma modalidad y curso para la reserva: ' . $lastGroup->name . ' - ' . $lastGroup->modality  . ' - ' . $lastGroup->schedules);
+                }
+
+                //buscamos el grupo con el mismo horario
+                $newGroup = $newGroups->first(function ($g) use ($lastGroup) {
+                    return $g->schedules === $lastGroup->schedules;
+                });
+                if (!$newGroup) {
+                    //si no hay grupo con el mismo horario, tomamos el primero
+                    $newGroup = $newGroups->first();
+                }
+
+                //creamos el registro de matricula
+                $enrollment = EnrollmentGroup::create([
+                    'student_id' => $reservation->student_id,
+                    'special_enrollment' => $reservation->special_enrollment,
+                    'with_enrollment' => $reservation->with_enrollment,
+                    'created_by' => Auth::user()->id,
+                    'period_id' => $request->periodId,
+                    'group_id' => $newGroup->id,
+                    'modality' => 'PRESENCIAL',
+                    'status' => 'MATRICULADO',
+                ]);
+
+                //Actualizamos el pago de la reserva
+                // Payment::update(
+                //     ['id' => $reservation->paymentId],
+                //     ['enrollment_id' => $enrollment->id]
+                // );
+                Payment::find($reservation->paymentId)->update(['enrollment_id' => $enrollment->id]);
+            }
+
+            DB::commit();
+            return ApiResponse::success(null, 'Reservas procesadas correctamente. ' . ' (' . $reservations->count() . ')');
+        } catch (\App\Exceptions\ApiException $e) {
+            DB::rollBack();
+            return ApiResponse::error($e->getMessage(), $e->getMessage());
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ApiResponse::error($e->getMessage(), 'Error al procesar las reservas');
+        }
+    }
+
+
     public function destroy(Request $request)
     {
         try {
@@ -262,7 +367,7 @@ class GroupController extends Controller
                         $payment->save();
                     }
 
-                    $enrollment->status = 'CANCELADO';
+                    $enrollment->status = 'RESERVADO';
                     $enrollment->save();
                 }
 
